@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WS xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <municipio>
+        <code>3543402</code>
+        <homologacao>
+            <CancelarNfse method="CancelarNfse" operation="CancelarNfse" version="3.0.1">https://homologacao.ginfes.com.br/ServiceGinfesImpl</CancelarNfse>
+            <CancelarNfseV3 method="CancelarNfseV3" operation="CancelarNfseV3" version="3.0.1">https://homologacao.ginfes.com.br/ServiceGinfesImpl</CancelarNfseV3>
+            <ConsultarLoteRps method="ConsultarLoteRps" operation="ConsultarLoteRps" version="3.0.1">https://homologacao.ginfes.com.br/ServiceGinfesImpl</ConsultarLoteRps>
+            <ConsultarLoteRpsV3 method="ConsultarLoteRpsV3" operation="ConsultarLoteRpsV3" version="3.0.1">https://homologacao.ginfes.com.br/ServiceGinfesImpl</ConsultarLoteRpsV3>
+            <ConsultarNfse method="ConsultarNfse" operation="ConsultarNfse" version="3.0.1">https://homologacao.ginfes.com.br/ServiceGinfesImpl</ConsultarNfse>
+            <ConsultarNfsePorRps method="ConsultarNfsePorRps" operation="ConsultarNfsePorRps" version="3.0.1">https://homologacao.ginfes.com.br/ServiceGinfesImpl</ConsultarNfsePorRps>
+            <ConsultarNfsePorRpsV3 method="ConsultarNfsePorRpsV3" operation="ConsultarNfsePorRpsV3" version="3.0.1">https://homologacao.ginfes.com.br/ServiceGinfesImpl</ConsultarNfsePorRpsV3>
+            <ConsultarNfseV3 method="ConsultarNfseV3" operation="ConsultarNfseV3" version="3.0.1">https://homologacao.ginfes.com.br/ServiceGinfesImpl</ConsultarNfseV3>
+            <ConsultarSituacaoLoteRps method="ConsultarSituacaoLoteRps" operation="ConsultarSituacaoLoteRps" version="3.0.1">https://homologacao.ginfes.com.br/ServiceGinfesImpl</ConsultarSituacaoLoteRps>
+            <ConsultarSituacaoLoteRpsV3 method="ConsultarSituacaoLoteRpsV3" operation="ConsultarSituacaoLoteRpsV3" version="3.0.1">https://homologacao.ginfes.com.br/ServiceGinfesImpl</ConsultarSituacaoLoteRpsV3>
+            <RecepcionarLoteRps method="RecepcionarLoteRps" operation="RecepcionarLoteRps" version="3.0.1">https://homologacao.ginfes.com.br/ServiceGinfesImpl</RecepcionarLoteRps>
+            <RecepcionarLoteRpsV3 method="RecepcionarLoteRpsV3" operation="RecepcionarLoteRpsV3" version="3.0.1">https://homologacao.ginfes.com.br/ServiceGinfesImpl</RecepcionarLoteRpsV3>
+        </homologacao>
+        <producao>
+            <CancelarNfse method="CancelarNfse" operation="CancelarNfse" version="3.0.1">https://producao.ginfes.com.br/ServiceGinfesImpl</CancelarNfse>
+            <CancelarNfseV3 method="CancelarNfseV3" operation="CancelarNfseV3" version="3.0.1">https://producao.ginfes.com.br/ServiceGinfesImpl</CancelarNfseV3>
+            <ConsultarLoteRps method="ConsultarLoteRps" operation="ConsultarLoteRps" version="3.0.1">https://producao.ginfes.com.br/ServiceGinfesImpl</ConsultarLoteRps>
+            <ConsultarLoteRpsV3 method="ConsultarLoteRpsV3" operation="ConsultarLoteRpsV3" version="3.0.1">https://producao.ginfes.com.br/ServiceGinfesImpl</ConsultarLoteRpsV3>
+            <ConsultarNfse method="ConsultarNfse" operation="ConsultarNfse" version="3.0.1">https://producao.ginfes.com.br/ServiceGinfesImpl</ConsultarNfse>
+            <ConsultarNfsePorRps method="ConsultarNfsePorRps" operation="ConsultarNfsePorRps" version="3.0.1">https://producao.ginfes.com.br/ServiceGinfesImpl</ConsultarNfsePorRps>
+            <ConsultarNfsePorRpsV3 method="ConsultarNfsePorRpsV3" operation="ConsultarNfsePorRpsV3" version="3.0.1">https://producao.ginfes.com.br/ServiceGinfesImpl</ConsultarNfsePorRpsV3>
+            <ConsultarNfseV3 method="ConsultarNfseV3" operation="ConsultarNfseV3" version="3.0.1">https://producao.ginfes.com.br/ServiceGinfesImpl</ConsultarNfseV3>
+            <ConsultarSituacaoLoteRps method="ConsultarSituacaoLoteRps" operation="ConsultarSituacaoLoteRps" version="3.0.1">https://producao.ginfes.com.br/ServiceGinfesImpl</ConsultarSituacaoLoteRps>
+            <ConsultarSituacaoLoteRpsV3 method="ConsultarSituacaoLoteRpsV3" operation="ConsultarSituacaoLoteRpsV3" version="3.0.1">https://producao.ginfes.com.br/ServiceGinfesImpl</ConsultarSituacaoLoteRpsV3>
+            <RecepcionarLoteRps method="RecepcionarLoteRps" operation="RecepcionarLoteRps" version="3.0.1">https://producao.ginfes.com.br/ServiceGinfesImpl</RecepcionarLoteRps>
+            <RecepcionarLoteRpsV3 method="RecepcionarLoteRpsV3" operation="RecepcionarLoteRpsV3" version="3.0.1">https://producao.ginfes.com.br/ServiceGinfesImpl</RecepcionarLoteRpsV3>
+        </producao>
+    </municipio>
+</WS>

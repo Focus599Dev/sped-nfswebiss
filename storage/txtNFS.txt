@@ -1,0 +1,22 @@
+A|NumeroLote|versao
+B|Cnpj|InscricaoMunicipal|QuantidadeRps
+//Prestador do serviço
+C|Cnpj|InscricaoMunicipal
+//Tomador do serviço
+E|RazaoSocial|Endereco|Contato|Telefone|Email|Numero|Complemento|Bairro|CodigoMunicipio|Uf|Cep|
+E02|Cnpj|InscricaoMunicipal
+//IntermediarioServico não sei bem oque é mais tem
+E03|RazaoSocial|CpfCnpj|InscricaoMunicipal
+// Dados para construção Civil
+F|CodigoObra|Art
+//numero gerado pelo sistema
+H|RPSNum|
+//IdentificacaoRps
+H01|Numero|Serie|Tipo
+// RpsSubstituido também não sei para que server mais tem
+I02|Numero|Serie|Tipo
+//Dados do serviço
+M|ValorServicos|ValorDeducoes|ValorPis|ValorCofins|ValorInss|ValorIr|ValorCsll|IssRetido|ValorIss|ValorIssRetido|OutrasRetencoes|BaseCalculo|Aliquota|ValorLiquidoNfse|DescontoIncondicionado|DescontoCondicionado
+N|ItemListaServico|CodigoCnae|CodigoTributacaoMunicipio|Discriminacao|CodigoMunicipio
+//dados do RPS
+W|DataEmissao|NaturezaOperacao|RegimeEspecialTributacao|OptanteSimplesNacional|IncentivadorCultural|Status|

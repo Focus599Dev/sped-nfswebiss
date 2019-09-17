@@ -1,0 +1,16 @@
+{
+    "NOTAFISCAL":"NOTAFISCAL|1|",
+    "A" : "A|NumeroLote|versao|",
+    "B" : "B|Cnpj|InscricaoMunicipal|QuantidadeRps|",
+    "C" : "C|Cnpj|InscricaoMunicipal|",
+    "E" : "E|RazaoSocial|Endereco|Contato|Telefone|Email|Numero|Complemento|Bairro|CodigoMunicipio|Uf|Cep|",
+    "E02" : "E02|CpfCnpj|InscricaoMunicipal|",
+    "E03" :"E03|RazaoSocial|CpfCnpj|InscricaoMunicipal|",
+    "F" : "F|CodigoObra|Art|",
+    "H" : "H|",
+    "H01" : "H01|Numero|Serie|Tipo|",
+    "I02" : "I02|Numero|Serie|Tipo|",
+    "M" : "M|ValorServicos|ValorDeducoes|ValorPis|ValorCofins|ValorInss|ValorIr|ValorCsll|IssRetido|ValorIss|ValorIssRetido|OutrasRetencoes|BaseCalculo|Aliquota|ValorLiquidoNfse|DescontoIncondicionado|DescontoCondicionado|",
+    "N" : "N|ItemListaServico|CodigoCnae|CodigoTributacaoMunicipio|Discriminacao|CodigoMunicipio|",
+    "W" : "W|DataEmissao|NaturezaOperacao|RegimeEspecialTributacao|OptanteSimplesNacional|IncentivadorCultural|Status|"
+}
