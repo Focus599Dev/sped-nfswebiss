@@ -1,5 +1,5 @@
 {
-    "name": "/sped-nfsginfe",
+    "name": "sped-nfsginfe",
     "type": "library",
     "description": "Api para comunicação com prefeituras que usando o padrão GINFE",
     "keywords": ["nfs","sped","nfephp"],
