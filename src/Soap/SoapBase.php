@@ -49,7 +49,7 @@ abstract class SoapBase implements SoapInterface
     /**
      * @var array
      */
-    protected $prefixes = [1 => 'soapenv', 2 => 'soap', 3 => 'soap12', 4 => 'SOAP-ENV' ];
+    protected $prefixes = [1 => 'soapenv', 2 => 'soap', 3 => 'soap12', 4 => 'env' ];
     /**
      * @var Certificate
      */
@@ -410,7 +410,7 @@ abstract class SoapBase implements SoapInterface
         return $this->mountEnvelopString(
             $prefix,
             $envelopeAttributes,
-            $this->mountSoapHeaders($prefix, $header),
+            $header,
             $request
         );
     }
@@ -429,6 +429,7 @@ abstract class SoapBase implements SoapInterface
         $header = '',
         $bodyContent = ''
     ) {
+
         return sprintf(
             '<%s:Envelope %s>' . $header . '<%s:Body>%s</%s:Body></%s:Envelope>',
             $envelopPrefix,

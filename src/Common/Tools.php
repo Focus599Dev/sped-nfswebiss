@@ -7,7 +7,7 @@ namespace NFePHP\NFSe\GINFE\Common;
  * @package    NFePHP\NFSe\GINFE\Common
  * @copyright  Copyright (c) 2008-2019
  * @license    http://www.gnu.org/licenses/lesser.html LGPL v3
- * @author     Marlon O. Barbosa <lmarlon.academi at gmail dot com>
+ * @author     Marlon O. Barbosa <marlon.academi at gmail dot com>
  * @link       https://github.com/Focus599Dev/sped-nfsginfe for the canonical source repository
  */
 
@@ -107,7 +107,7 @@ class Tools {
      *
      * @var string
      */
-    protected $urlPortal = 'http://www.ginfes.com.br/servico_enviar_lote_rps_envio_v03.xsd';
+    protected $urlPortal = 'https://homologacao.ginfes.com.br';
     /**
      * urlcUF
      * @var int
@@ -152,12 +152,15 @@ class Tools {
      */
     
     protected $soapnamespaces = [
-        'xmlns:xsd'   => "http://www.w3.org/2001/XMLSchema",
         'xmlns:tipos' => "http://www.ginfes.com.br/tipos_v03.xsd",
         'xmlns'       => "http://www.ginfes.com.br/servico_enviar_lote_rps_envio_v03.xsd",
         'xmlns:dsig'  => "http://www.w3.org/2000/09/xmldsig#",
-        'xmlns:xsi'   => "http://www.w3.org/2001/XMLSchema-instance",
+    ];
+
+    protected $soapnamespacesEnv = [
         'xmlns:soap'  => "http://www.w3.org/2003/05/soap-envelope",
+        'xmlns:xsd'   => "http://www.w3.org/2001/XMLSchema",
+        'xmlns:xsi'   => "http://www.w3.org/2001/XMLSchema-instance",
     ];
 
     /**
@@ -330,9 +333,8 @@ class Tools {
         $this->urlOperation = $stdServ->$service->operation;
         //montagem do namespace do serviço
         $this->urlNamespace = sprintf(
-            "%s/wsdl/%s",
+            "%s",
             $this->urlPortal,
-            $this->urlOperation
         );
 
         //montagem do cabeçalho da comunicação SOAP
@@ -352,6 +354,36 @@ class Tools {
             ['versao' => substr($this->versao, 0, 1)]
         );
         
+    }
+
+    /**
+     * Send request message to webservice
+     * @param array $parameters
+     * @param string $request
+     * @return string
+     */
+    protected function sendRequest($request, array $parameters = []){
+        $this->checkSoap();
+
+        return (string) $this->soap->send(
+            $this->urlService,
+            $this->urlMethod,
+            $this->urlAction,
+            SOAP_1_2,
+            $parameters,
+            $this->soapnamespacesEnv,
+            $request,
+            Header::get(substr($this->versao, 0, 1))
+        );
+    }
+
+    /**
+     * Verify if SOAP class is loaded, if not, force load SoapCurl
+     */
+    protected function checkSoap(){
+        if (empty($this->soap)) {
+            $this->soap = new SoapCurl($this->certificate);
+        }
     }
     
     /**

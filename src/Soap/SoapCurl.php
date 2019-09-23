@@ -58,23 +58,31 @@ class SoapCurl extends SoapBase implements SoapInterface
         
         $response = '';
 
+        $request = trim(preg_replace("/<\?xml.*?\?>/", "", $request));
+
         $envelope = $this->makeEnvelopeSoap(
             $request,
             $namespaces,
             $soapver,
             $soapheader
         );
+
         $msgSize = strlen($envelope);
         $parameters = [
-            "Content-Type: application/soap+xml;charset=utf-8;",
+            "Content-Type: text/xml;charset=utf-8;",
             "Content-length: $msgSize"
         ];
+
         if (!empty($action)) {
-            $parameters[0] .= "action=$action";
+            $parameters[0] .= "SOAPAction=$action";
         }
+    
+        var_dump($parameters);
+
         $this->requestHead = implode("\n", $parameters);
         $this->requestBody = '<?xml version="1.0" encoding="utf-8"?>' . chr(10) . $envelope;
 
+        var_dump($url);
         try {
             $oCurl = curl_init();
             $this->setCurlProxy($oCurl);
@@ -112,6 +120,7 @@ class SoapCurl extends SoapBase implements SoapInterface
                 curl_setopt($oCurl, CURLOPT_HTTPHEADER, $parameters);
             }
 
+            var_dump($envelope);
 
             $response = curl_exec($oCurl);
 
@@ -123,6 +132,8 @@ class SoapCurl extends SoapBase implements SoapInterface
             $headsize = curl_getinfo($oCurl, CURLINFO_HEADER_SIZE);
             $httpcode = curl_getinfo($oCurl, CURLINFO_HTTP_CODE);
 
+            var_dump($response);
+            var_dump($this->soapinfo);
             curl_close($oCurl);
             $this->responseHead = trim(substr($response, 0, $headsize));
             $this->responseBody = trim(substr($response, $headsize));

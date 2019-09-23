@@ -7,7 +7,7 @@ namespace NFePHP\NFSe\GINFE\Common;
  * @package    NFePHP\NFSe\GINFE\Common
  * @copyright  Copyright (c) 2008-2019
  * @license    http://www.gnu.org/licenses/lesser.html LGPL v3
- * @author     Marlon O. Barbosa <lmarlon.academi at gmail dot com>
+ * @author     Marlon O. Barbosa <marlon.academi at gmail dot com>
  * @link       https://github.com/Focus599Dev/sped-nfsginfe for the canonical source repository
  */
 
@@ -118,7 +118,7 @@ class Signer
         $idSigned = trim($node->getAttribute($mark));
         $digestValue = self::makeDigest($node, $digestAlgorithm, $canonical);
         $signatureNode = $dom->createElementNS($nsDSIG, 'dsig:Signature');
-        $node->appendChild($signatureNode);
+        $root->appendChild($signatureNode);
         $signedInfoNode = $dom->createElement('dsig:SignedInfo');
         $signatureNode->appendChild($signedInfoNode);
         $canonicalNode = $dom->createElement('dsig:CanonicalizationMethod');
