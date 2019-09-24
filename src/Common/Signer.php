@@ -20,8 +20,7 @@ use DOMDocument;
 use DOMNode;
 use DOMElement;
 
-class Signer
-{
+class Signer{
     private static $canonical = [true,false,null,null];
     
     /**
@@ -68,16 +67,17 @@ class Signer
         if (empty($node) || empty($root)) {
             throw SignerException::tagNotFound($tagname);
         }
-        $dom = self::createSignature(
-            $certificate,
-            $dom,
-            $root,
-            $node,
-            $mark,
-            $algorithm,
-            $canonical
-        );
-
+        if (! self::existsSignature($content)) {
+            $dom = self::createSignature(
+                $certificate,
+                $dom,
+                $root,
+                $node,
+                $mark,
+                $algorithm,
+                $canonical
+            );
+        };
         return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
             . $dom->saveXML($dom->documentElement, LIBXML_NOXMLDECL);
     }
@@ -112,12 +112,12 @@ class Signer
             $nsSignatureMethod = 'http://www.w3.org/2001/04/xmldsig-more#rsa-sha256';
             $nsDigestMethod = 'http://www.w3.org/2001/04/xmlenc#sha256';
         }
-
         $nsTransformMethod1 ='http://www.w3.org/2000/09/xmldsig#enveloped-signature';
         $nsTransformMethod2 = 'http://www.w3.org/TR/2001/REC-xml-c14n-20010315';
         $idSigned = trim($node->getAttribute($mark));
         $digestValue = self::makeDigest($node, $digestAlgorithm, $canonical);
-        $signatureNode = $dom->createElementNS($nsDSIG, 'dsig:Signature');
+        $signatureNode = $dom->createElementNS($nsDSIG, 'Signature');
+        $signatureNode->setAttribute('xmlns:dsig', $nsDSIG);
         $root->appendChild($signatureNode);
         $signedInfoNode = $dom->createElement('dsig:SignedInfo');
         $signatureNode->appendChild($signedInfoNode);

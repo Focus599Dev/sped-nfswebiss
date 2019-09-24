@@ -26,7 +26,7 @@ class Tools extends ToolsBase {
         //remove all invalid strings
         $xml = Strings::clearXmlString($xml);
 
-        $servico = 'RecepcionarLoteRps';
+        $servico = 'RecepcionarLoteRpsV3';
 
         $this->servico(
             $servico,
@@ -50,21 +50,10 @@ class Tools extends ToolsBase {
         $signed = Signer::sign(
             $this->certificate,
             $request,
-            'InfRps',
-            'Id',
-            $this->algorithm,
-            $this->canonical,
-            'Rps',
-        );
-
-        $signed = Signer::sign(
-            $this->certificate,
-            $signed,
-            'LoteRps',
-            'Id',
-            $this->algorithm,
-            $this->canonical,
             'EnviarLoteRpsEnvio',
+            'Id',
+            $this->algorithm,
+            $this->canonical,
         );
 
         $request = $signed;
@@ -73,10 +62,28 @@ class Tools extends ToolsBase {
         
         $this->isValid($this->versao, $request, 'servico_enviar_lote_rps_envio');
 
+        $request = $this->MakeEnvelope($servico, $request);
+
+        $request = Signer::sign(
+            $this->certificate,
+            $request,
+            'LoteRps',
+            'Id',
+            $this->algorithm,
+            $this->canonical,
+        );
+
         $parameters = ['RecepcionarLoteRps' => $request];
 
         $this->lastResponse = $this->sendRequest($request, $parameters);
         
+        $this->lastResponse = $this->removeStuffs($this->lastResponse);
+
+        $aux = simplexml_load_string($this->lastResponse);
+
+        // var_dump(  (String) $aux->return[0]->EnviarLoteRpsResposta);
+        // var_dump(  (String) $aux->return[0]);
+
         return $this->lastResponse;
 
 	}

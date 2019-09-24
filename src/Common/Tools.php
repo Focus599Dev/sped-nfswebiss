@@ -90,12 +90,8 @@ class Tools {
      * Canonical conversion options
      * @var array
      */
-    protected $canonical = [true,false,null,null];
-    /**
-     * Model of NFe 55 or 65
-     * @var int
-     */
-    protected $modelo = 55;
+    protected $canonical = [false,false,null,null];
+    
     /**
      * Version of layout
      * @var string
@@ -107,7 +103,7 @@ class Tools {
      *
      * @var string
      */
-    protected $urlPortal = 'https://homologacao.ginfes.com.br';
+    protected $urlPortal = '';
     /**
      * urlcUF
      * @var int
@@ -158,9 +154,9 @@ class Tools {
     ];
 
     protected $soapnamespacesEnv = [
-        'xmlns:soap'  => "http://www.w3.org/2003/05/soap-envelope",
-        'xmlns:xsd'   => "http://www.w3.org/2001/XMLSchema",
         'xmlns:xsi'   => "http://www.w3.org/2001/XMLSchema-instance",
+        'xmlns:xsd'   => "http://www.w3.org/2001/XMLSchema",
+        'xmlns:soap12'  => "http://www.w3.org/2003/05/soap-envelope",
     ];
 
     /**
@@ -202,6 +198,8 @@ class Tools {
             $this->soap->proxy($this->config->proxy, $this->config->proxyPort, $this->config->proxyUser, $this->config->proxyPass);
 
         }
+
+        $this->urlPortal = 'http://' . $this->ambiente . '.ginfes.com.br';
 
     }
 
@@ -307,7 +305,7 @@ class Tools {
            
             throw new \RuntimeException(
                 "Nenhum serviço foi localizado para esta unidade "
-                . "da federação [$sigla], com o modelo [$this->modelo]."
+                . "da federação [$sigla]"
             );
 
         }
@@ -315,10 +313,7 @@ class Tools {
         if (empty($stdServ->$service->url)) {
 
             throw new \RuntimeException(
-                "Este serviço [$service] não está disponivel para esta "
-                . "unidade da federação [$uf] ou para este modelo de Nota ["
-                . $this->modelo
-                ."]."
+                "Este serviço [$service] não está disponivel."
             );
 
         }
@@ -369,11 +364,11 @@ class Tools {
             $this->urlService,
             $this->urlMethod,
             $this->urlAction,
-            SOAP_1_2,
+            3,
             $parameters,
             $this->soapnamespacesEnv,
             $request,
-            Header::get(substr($this->versao, 0, 1))
+            Header::get(substr($this->versao, 0, 1)),
         );
     }
 
@@ -384,6 +379,101 @@ class Tools {
         if (empty($this->soap)) {
             $this->soap = new SoapCurl($this->certificate);
         }
+    }
+
+    /**
+     * Create envelope padrão
+     */
+    protected function MakeEnvelope($servico, $request){
+
+        
+        $request = trim(preg_replace("/<\?xml.*?\?>/", "", $request));
+        
+        $xml = '<tns:'.$servico.' xmlns:tns="' . $this->urlPortal . '">';
+
+            if ($servico != 'CancelarNfse') {
+               
+                $xml .= '<arg0>'.Header::get(substr($this->versao, 0, 1)).'</arg0>';
+
+                $xml .= '<arg1>'.$request.'</arg1>';
+
+            } else {
+
+                $xml .= '<arg0>'.$request.'</arg0>';
+
+            }
+
+        $xml .= '</tns:'.$servico.'>';
+
+        return $xml;
+    }
+
+
+    public function removeStuffs($xml){     
+
+        if (preg_match('/<soap:Body>/', $xml)){
+
+            $tag = '<soap:Body>';
+
+            $xml = substr( $xml, ( strpos($xml, $tag) + strlen($tag) ), strlen($xml)  );
+            
+            $tag = '</soap:Body>';
+
+            $xml = substr( $xml, 0 , strpos($xml, $tag) );
+        
+        } else if (preg_match('/<soapenv:Body>/', $xml)){
+
+            $tag = '<soapenv:Body>';
+
+            $xml = substr( $xml, ( strpos($xml, $tag) + strlen($tag) ), strlen($xml)  );
+            
+            $tag = '</soapenv:Body>';
+
+            $xml = substr( $xml, 0 , strpos($xml, $tag) );
+
+        }  else if (preg_match('/<soap12:Body>/', $xml)){
+
+            $tag = '<soap12:Body>';
+
+            $xml = substr( $xml, ( strpos($xml, $tag) + strlen($tag) ), strlen($xml)  );
+            
+            $tag = '</soap12:Body>';
+
+            $xml = substr( $xml, 0 , strpos($xml, $tag) );
+
+        } else if (preg_match('/<env:Body>/', $xml)){
+
+            $tag = '<env:Body>';
+
+            $xml = substr( $xml, ( strpos($xml, $tag) + strlen($tag) ), strlen($xml)  );
+            
+            $tag = '</env:Body>';
+
+            $xml = substr( $xml, 0 , strpos($xml, $tag) );
+
+        } else if (preg_match('/<env:Body/', $xml)){
+
+            $tag = '<env:Body xmlns:env=\'http://www.w3.org/2003/05/soap-envelope\'>';
+
+            $xml = substr( $xml, ( strpos($xml, $tag) + strlen($tag) ), strlen($xml)  );
+            
+            $tag = '</env:Body>';
+
+            $xml = substr( $xml, 0 , strpos($xml, $tag) );
+
+        } else if (preg_match('/<S:Body>/', $xml)){
+
+            $tag = '<S:Body>';
+
+            $xml = substr( $xml, ( strpos($xml, $tag) + strlen($tag) ), strlen($xml)  );
+            
+            $tag = '</S:Body>';
+
+            $xml = substr( $xml, 0 , strpos($xml, $tag) );
+
+        }
+
+        return $xml;
     }
     
     /**

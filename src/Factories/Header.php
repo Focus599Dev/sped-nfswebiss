@@ -23,9 +23,9 @@ class Header
      */
     public static function get($version)
     {
-        return "<cabecalho "
-            . "xmlns=\"http://www.ginfes.com.br/tipos_v03.xsd\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" versao=\"$version\">"
+        return "<ns2:cabecalho "
+            . "versao=\"$version\" xmlns:ns2=\"http://www.ginfes.com.br/cabecalho_v03.xsd\">"
             . "<versaoDados>$version</versaoDados>"
-            . "</cabecalho>";
+            . "</ns2:cabecalho>";
     }
 }
