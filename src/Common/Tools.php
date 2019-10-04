@@ -146,12 +146,6 @@ class Tools {
     /**
      * @var array
      */
-    
-    protected $soapnamespaces = [
-        'xmlns:tipos' => "http://www.ginfes.com.br/tipos_v03.xsd",
-        'xmlns'       => "http://www.ginfes.com.br/servico_enviar_lote_rps_envio_v03.xsd",
-        'xmlns:dsig'  => "http://www.w3.org/2000/09/xmldsig#",
-    ];
 
     protected $soapnamespacesEnv = [
         'xmlns:xsi'   => "http://www.w3.org/2001/XMLSchema-instance",
@@ -329,7 +323,7 @@ class Tools {
         //montagem do namespace do serviço
         $this->urlNamespace = sprintf(
             "%s",
-            $this->urlPortal,
+            $this->urlPortal
         );
 
         //montagem do cabeçalho da comunicação SOAP
@@ -368,7 +362,7 @@ class Tools {
             $parameters,
             $this->soapnamespacesEnv,
             $request,
-            Header::get(substr($this->versao, 0, 1)),
+            Header::get(substr($this->versao, 0, 1))
         );
     }
 
@@ -385,9 +379,6 @@ class Tools {
      * Create envelope padrão
      */
     protected function MakeEnvelope($servico, $request){
-
-        
-        $request = trim(preg_replace("/<\?xml.*?\?>/", "", $request));
         
         $xml = '<tns:'.$servico.' xmlns:tns="' . $this->urlPortal . '">';
 
@@ -471,6 +462,22 @@ class Tools {
 
             $xml = substr( $xml, 0 , strpos($xml, $tag) );
 
+        } 
+
+        if (preg_match('/ns3:/', $xml)){
+
+           $xml = preg_replace('/ns3:/', '', $xml);
+
+        } 
+
+        if (preg_match('/ns2:/', $xml)){
+
+           $xml = preg_replace('/ns2:/', '', $xml);
+        }
+
+        if (preg_match('/ns4:/', $xml)){
+
+           $xml = preg_replace('/ns4:/', '', $xml);
         }
 
         return $xml;

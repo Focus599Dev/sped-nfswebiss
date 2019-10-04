@@ -41,7 +41,7 @@ class Signer{
         $tagname,
         $mark = 'Id',
         $algorithm = OPENSSL_ALGO_SHA1,
-        $canonical = [true,false,null,null],
+        $canonical = [false,false,null,null],
         $rootname = ''
     ) {
         if (!empty($canonical)) {
@@ -54,7 +54,7 @@ class Signer{
             throw SignerException::isNotXml();
         }
         $dom = new DOMDocument('1.0', 'UTF-8');
-        $dom->loadXML($content);
+        $dom->loadXML($content,LIBXML_NOBLANKS | LIBXML_NOEMPTYTAG);
         $dom->preserveWhiteSpace = false;
         $dom->formatOutput = false;
         $root = $dom->documentElement;
@@ -67,7 +67,7 @@ class Signer{
         if (empty($node) || empty($root)) {
             throw SignerException::tagNotFound($tagname);
         }
-        if (! self::existsSignature($content)) {
+        // if (!self::existsSignature($content)) {
             $dom = self::createSignature(
                 $certificate,
                 $dom,
@@ -77,9 +77,9 @@ class Signer{
                 $algorithm,
                 $canonical
             );
-        };
+        // };
         return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
-            . $dom->saveXML($dom->documentElement, LIBXML_NOXMLDECL);
+            . $dom->saveXML($dom->documentElement, LIBXML_NOBLANKS | LIBXML_NOEMPTYTAG);
     }
     
     /**
@@ -100,7 +100,7 @@ class Signer{
         DOMElement $node,
         $mark,
         $algorithm = OPENSSL_ALGO_SHA1,
-        $canonical = [true,false,null,null]
+        $canonical = [false,false,null,null]
     ) {
         $nsDSIG = 'http://www.w3.org/2000/09/xmldsig#';
         $nsCannonMethod = 'http://www.w3.org/TR/2001/REC-xml-c14n-20010315';
@@ -117,46 +117,45 @@ class Signer{
         $idSigned = trim($node->getAttribute($mark));
         $digestValue = self::makeDigest($node, $digestAlgorithm, $canonical);
         $signatureNode = $dom->createElementNS($nsDSIG, 'Signature');
-        $signatureNode->setAttribute('xmlns:dsig', $nsDSIG);
         $root->appendChild($signatureNode);
-        $signedInfoNode = $dom->createElement('dsig:SignedInfo');
+        $signedInfoNode = $dom->createElement('SignedInfo');
         $signatureNode->appendChild($signedInfoNode);
-        $canonicalNode = $dom->createElement('dsig:CanonicalizationMethod');
+        $canonicalNode = $dom->createElement('CanonicalizationMethod');
         $signedInfoNode->appendChild($canonicalNode);
         $canonicalNode->setAttribute('Algorithm', $nsCannonMethod);
-        $signatureMethodNode = $dom->createElement('dsig:SignatureMethod');
+        $signatureMethodNode = $dom->createElement('SignatureMethod');
         $signedInfoNode->appendChild($signatureMethodNode);
         $signatureMethodNode->setAttribute('Algorithm', $nsSignatureMethod);
-        $referenceNode = $dom->createElement('dsig:Reference');
+        $referenceNode = $dom->createElement('Reference');
         $signedInfoNode->appendChild($referenceNode);
         if (!empty($idSigned)) {
             $idSigned = "#$idSigned";
         }
         $referenceNode->setAttribute('URI', $idSigned);
-        $transformsNode = $dom->createElement('dsig:Transforms');
+        $transformsNode = $dom->createElement('Transforms');
         $referenceNode->appendChild($transformsNode);
-        $transfNode1 = $dom->createElement('dsig:Transform');
+        $transfNode1 = $dom->createElement('Transform');
         $transformsNode->appendChild($transfNode1);
         $transfNode1->setAttribute('Algorithm', $nsTransformMethod1);
-        $transfNode2 = $dom->createElement('dsig:Transform');
+        $transfNode2 = $dom->createElement('Transform');
         $transformsNode->appendChild($transfNode2);
         $transfNode2->setAttribute('Algorithm', $nsTransformMethod2);
-        $digestMethodNode = $dom->createElement('dsig:DigestMethod');
+        $digestMethodNode = $dom->createElement('DigestMethod');
         $referenceNode->appendChild($digestMethodNode);
         $digestMethodNode->setAttribute('Algorithm', $nsDigestMethod);
-        $digestValueNode = $dom->createElement('dsig:DigestValue', $digestValue);
+        $digestValueNode = $dom->createElement('DigestValue', $digestValue);
         $referenceNode->appendChild($digestValueNode);
         $c14n = self::canonize($signedInfoNode, $canonical);
         $signature = $certificate->sign($c14n, $algorithm);
         $signatureValue = base64_encode($signature);
-        $signatureValueNode = $dom->createElement('dsig:SignatureValue', $signatureValue);
+        $signatureValueNode = $dom->createElement('SignatureValue', $signatureValue);
         $signatureNode->appendChild($signatureValueNode);
-        $keyInfoNode = $dom->createElement('dsig:KeyInfo');
+        $keyInfoNode = $dom->createElement('KeyInfo');
         $signatureNode->appendChild($keyInfoNode);
-        $x509DataNode = $dom->createElement('dsig:X509Data');
+        $x509DataNode = $dom->createElement('X509Data');
         $keyInfoNode->appendChild($x509DataNode);
         $pubKeyClean = $certificate->publicKey->unFormated();
-        $x509CertificateNode = $dom->createElement('dsig:X509Certificate', $pubKeyClean);
+        $x509CertificateNode = $dom->createElement('X509Certificate', $pubKeyClean);
         $x509DataNode->appendChild($x509CertificateNode);
         return $dom;
     }
@@ -196,7 +195,7 @@ class Signer{
     public static function isSigned(
         $content,
         $tagname = '',
-        $canonical = [true,false,null,null]
+        $canonical = [false,false,null,null]
     ) {
         if (self::existsSignature($content)) {
             if (self::digestCheck($content, $tagname, $canonical)) {
@@ -335,7 +334,7 @@ class Signer{
     private static function makeDigest(
         DOMNode $node,
         $algorithm,
-        $canonical = [true,false,null,null]
+        $canonical = [false,false,null,null]
     ) {
         //calcular o hash dos dados
         $c14n = self::canonize($node, $canonical);
@@ -351,7 +350,7 @@ class Signer{
      */
     private static function canonize(
         DOMNode $node,
-        $canonical = [true,false,null,null]
+        $canonical = [false,false,null,null]
     ) {
         return $node->C14N(
             $canonical[0],

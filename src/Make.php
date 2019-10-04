@@ -93,6 +93,12 @@ class Make{
     
     private $xml;
 
+    protected $soapnamespaces = [
+        'xmlns'  => "http://www.w3.org/2000/09/xmldsig#",
+        'xmlns:p'       => "http://www.ginfes.com.br/servico_enviar_lote_rps_envio_v03.xsd",
+        'xmlns:tipos' => "http://www.ginfes.com.br/tipos_v03.xsd",
+    ];
+
 	/**
      * Função construtora cria um objeto DOMDocument
      * que será carregado com o documento fiscal
@@ -108,6 +114,13 @@ class Make{
 
     public function monta(){
 
+        $EnviarLoteRpsEnvio = $this->dom->createElement('p:EnviarLoteRpsEnvio');
+
+        foreach ($this->soapnamespaces as $key => $namespace) {
+            
+            $EnviarLoteRpsEnvio->setAttribute($key, $namespace);
+        }
+
         $this->loteRps->setAttribute('Id', $this->NumeroLote);
         
         $ListaRps = $this->dom->createElement("tipos:ListaRps");
@@ -122,7 +135,9 @@ class Make{
 
         $this->dom->appChild($this->loteRps, $ListaRps , 'Falta tag "InfRps"');
 
-        $this->dom->appendChild($this->loteRps);
+        $this->dom->appChild($EnviarLoteRpsEnvio, $this->loteRps , 'Falta tag "InfRps"');
+
+        $this->dom->appendChild($EnviarLoteRpsEnvio);
 
         $this->xml = $this->dom->saveXML();
 
@@ -141,7 +156,7 @@ class Make{
 
         $std = $this->equilizeParameters($std, $possible);
         
-        $loteRps = $this->dom->createElement("LoteRps");
+        $loteRps = $this->dom->createElement("p:LoteRps");
 
         $this->dom->addChild(
             $loteRps,
