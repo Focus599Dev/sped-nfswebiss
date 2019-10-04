@@ -1,15 +1,15 @@
 {
     "name": "sped-nfsginfe",
     "type": "library",
-    "description": "Api para comunicação com prefeituras que usando o padrão GINFE",
+    "description": "Api para comunicação com prefeituras que usando o sistema WebISS",
     "keywords": ["nfs","sped","nfephp"],
-    "homepage": "https://github.com/Focus599Dev/sped-nfsginfe",
+    "homepage": "https://github.com/Focus599Dev/sped-nfswebiss",
     "license": ["LGPL-3.0-or-later", "GPL-3.0-or-later", "MIT"],
     "authors": [
         {
             "name": "Marlon Oliveira Barbosa",
             "email": "marlon.academi@gmail.com",
-            "homepage": "https://github.com/Focus599Dev/sped-nfsginfe",
+            "homepage": "https://github.com/Focus599Dev/sped-nfswebiss",
             "role": "Developer"
         },
     ],
@@ -27,12 +27,12 @@
     },
     "autoload": {
         "psr-4": {
-          "NFePHP\\NFSe\\GINFE\\": "src/"
+          "NFePHP\\NFSe\\WebISS\\": "src/"
         } 
     },
     "autoload-dev": {
         "psr-4": {
-            "NFePHP\\NFSe\\GINFE\\Tests\\": "tests/"
+            "NFePHP\\NFSe\\WebISS\\Tests\\": "tests/"
         }
     },
     "scripts": {
