@@ -1,10 +1,10 @@
 <?php
 
-namespace NFePHP\NFSe\GINFE\Common;
+namespace NFePHP\NFSe\WebISS\Common;
 
 /**
  * @category   NFePHP
- * @package    NFePHP\NFSe\GINFE\Common
+ * @package    NFePHP\NFSe\WebISS\Common
  * @copyright  Copyright (c) 2008-2019
  * @license    http://www.gnu.org/licenses/lesser.html LGPL v3
  * @author     Marlon O. Barbosa <marlon.academi at gmail dot com>

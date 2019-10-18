@@ -1,10 +1,10 @@
 <?php
 
-namespace NFePHP\NFSe\GINFE\Common;
+namespace NFePHP\NFSe\WebISS\Common;
 
 /**
  * @category   NFePHP
- * @package    NFePHP\NFSe\GINFE\Common
+ * @package    NFePHP\NFSe\WebISS\Common
  * @copyright  Copyright (c) 2008-2019
  * @license    http://www.gnu.org/licenses/lesser.html LGPL v3
  * @author     Marlon O. Barbosa <marlon.academi at gmail dot com>
@@ -21,7 +21,7 @@ use DOMNode;
 use DOMElement;
 
 class Signer{
-    private static $canonical = [true,false,null,null];
+    private static $canonical = [false,false,null,null];
     
     /**
      * Make Signature tag
@@ -35,7 +35,7 @@ class Signer{
      * @return string
      * @throws SignnerException
      */
-    public static function sign(
+ public static function sign(
         Certificate $certificate,
         $content,
         $tagname,
@@ -278,7 +278,7 @@ class Signer{
     private static function digestCheck(
         $xml,
         $tagname = '',
-        $canonical = [true,false,null,null]
+        $canonical = [false,false,null,null]
     ) {
         $dom = new \DOMDocument('1.0', 'utf-8');
         $dom->formatOutput = false;

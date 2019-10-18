@@ -1,10 +1,10 @@
 <?php 
 
-namespace NFePHP\NFSe\GINFE;
+namespace NFePHP\NFSe\WebISS;
 
 /**
  * @category   NFePHP
- * @package    NFePHP\NFSe\GINFE
+ * @package    NFePHP\NFSe\WebISS
  * @copyright  Copyright (c) 2008-2019
  * @license    http://www.gnu.org/licenses/lesser.html LGPL v3
  * @author     Marlon O. Barbosa <marlon.academi at gmail dot com>
@@ -94,9 +94,9 @@ class Make{
     private $xml;
 
     protected $soapnamespaces = [
-        'xmlns'  => "http://www.w3.org/2000/09/xmldsig#",
-        'xmlns:p'       => "http://www.ginfes.com.br/servico_enviar_lote_rps_envio_v03.xsd",
-        'xmlns:tipos' => "http://www.ginfes.com.br/tipos_v03.xsd",
+        'xmlns:xsi' => "http://www.w3.org/2001/XMLSchema-instance",
+        'xmlns:xsd' => "http://www.w3.org/2001/XMLSchema",
+        'xmlns'     => "http://www.abrasf.org.br/nfse"
     ];
 
 	/**
@@ -114,7 +114,7 @@ class Make{
 
     public function monta(){
 
-        $EnviarLoteRpsEnvio = $this->dom->createElement('p:EnviarLoteRpsEnvio');
+        $EnviarLoteRpsEnvio = $this->dom->createElement('EnviarLoteRpsEnvio');
 
         foreach ($this->soapnamespaces as $key => $namespace) {
             
@@ -123,7 +123,7 @@ class Make{
 
         $this->loteRps->setAttribute('Id', $this->NumeroLote);
         
-        $ListaRps = $this->dom->createElement("tipos:ListaRps");
+        $ListaRps = $this->dom->createElement("ListaRps");
 
         foreach ($this->rps as $key => $rps) {
             
@@ -156,11 +156,11 @@ class Make{
 
         $std = $this->equilizeParameters($std, $possible);
         
-        $loteRps = $this->dom->createElement("p:LoteRps");
+        $loteRps = $this->dom->createElement("LoteRps");
 
         $this->dom->addChild(
             $loteRps,
-            "tipos:NumeroLote",
+            "NumeroLote",
             $std->NumeroLote,
             true,
             "Numero do Lote RPS"
@@ -168,7 +168,7 @@ class Make{
 
         $this->dom->addChild(
             $loteRps,
-            "tipos:Cnpj",
+            "Cnpj",
             $std->Cnpj,
             true,
             "Numero do CNPJ"
@@ -176,7 +176,7 @@ class Make{
 
         $this->dom->addChild(
             $loteRps,
-            "tipos:InscricaoMunicipal",
+            "InscricaoMunicipal",
             $std->InscricaoMunicipal,
             true,
             "Numero de InscricaoMunicipal"
@@ -184,7 +184,7 @@ class Make{
 
         $this->dom->addChild(
             $loteRps,
-            "tipos:QuantidadeRps",
+            "QuantidadeRps",
             $std->QuantidadeRps ? $std->QuantidadeRps : 1,
             true,
             "Numero de QuantidadeRps"
@@ -208,11 +208,11 @@ class Make{
 
         $std = $this->equilizeParameters($std, $possible);
 
-        $identificacaoRps = $this->dom->createElement("tipos:IdentificacaoRps");
+        $identificacaoRps = $this->dom->createElement("IdentificacaoRps");
 
         $this->dom->addChild(
             $identificacaoRps,
-            "tipos:Numero",
+            "Numero",
             $std->Numero,
             true,
             "Numero do Lote RPS"
@@ -220,7 +220,7 @@ class Make{
 
         $this->dom->addChild(
             $identificacaoRps,
-            "tipos:Serie",
+            "Serie",
             $std->Serie,
             true,
             "Serie do Lote RPS"
@@ -228,7 +228,7 @@ class Make{
 
         $this->dom->addChild(
             $identificacaoRps,
-            "tipos:Tipo",
+            "Tipo",
             $std->Tipo,
             true,
             "Tipo do Lote RPS"
@@ -242,7 +242,7 @@ class Make{
 
         $this->item = $this->item + 1;
 
-        $this->rps[$this->item] = $this->dom->createElement("tipos:Rps");
+        $this->rps[$this->item] = $this->dom->createElement("Rps");
 
         $possible = [
             'Cnpj',
@@ -251,11 +251,11 @@ class Make{
 
         $std = $this->equilizeParameters($std, $possible);
 
-        $prestador = $this->dom->createElement("tipos:Prestador");
+        $prestador = $this->dom->createElement("Prestador");
 
         $this->dom->addChild(
             $prestador,
-            "tipos:Cnpj",
+            "Cnpj",
             $std->Cnpj,
             true,
             "Cnpj Prestador"
@@ -263,7 +263,7 @@ class Make{
 
         $this->dom->addChild(
             $prestador,
-            "tipos:InscricaoMunicipal",
+            "InscricaoMunicipal",
             $std->InscricaoMunicipal,
             true,
             "InscricaoMunicipal Prestador"
@@ -293,19 +293,19 @@ class Make{
 
         $std = $this->equilizeParameters($std, $possible);
 
-        $tomador = $this->dom->createElement("tipos:Tomador");
+        $tomador = $this->dom->createElement("Tomador");
 
         if ($std->CpfCnpj || $std->InscricaoMunicipal){
             
-            $identificacaoTomador = $this->dom->createElement("tipos:IdentificacaoTomador");
+            $identificacaoTomador = $this->dom->createElement("IdentificacaoTomador");
 
-            $CpfCnpj = $this->dom->createElement("tipos:CpfCnpj");
+            $CpfCnpj = $this->dom->createElement("CpfCnpj");
 
             if (strlen($std->CpfCnpj) > 11){
                
                 $this->dom->addChild(
                     $CpfCnpj,
-                    "tipos:Cnpj",
+                    "Cnpj",
                     $std->CpfCnpj,
                     false,
                     "Cnpj Tomador"
@@ -315,7 +315,7 @@ class Make{
 
                 $this->dom->addChild(
                     $CpfCnpj,
-                    "tipos:Cpf",
+                    "Cpf",
                     $std->CpfCnpj,
                     false,
                     "Cpf Tomador"
@@ -327,7 +327,7 @@ class Make{
 
             $this->dom->addChild(
                 $identificacaoTomador,
-                "tipos:InscricaoMunicipal",
+                "InscricaoMunicipal",
                 $std->InscricaoMunicipal,
                 false,
                 "InscricaoMunicipal Tomador"
@@ -339,7 +339,7 @@ class Make{
 
         $this->dom->addChild(
             $tomador,
-            "tipos:RazaoSocial",
+            "RazaoSocial",
             $std->RazaoSocial,
             false,
             "RazaoSocial Tomador"
@@ -347,11 +347,11 @@ class Make{
 
         if ($std->Endereco || $std->Numero || $std->Complemento || $std->Bairro || $std->CodigoMunicipio || $std->Uf || $std->Cep){
 
-            $endereco = $this->dom->createElement("tipos:Endereco");
+            $endereco = $this->dom->createElement("Endereco");
 
             $this->dom->addChild(
                 $endereco,
-                "tipos:Endereco",
+                "Endereco",
                 $std->Endereco,
                 false,
                 "Endereco Tomador"
@@ -359,7 +359,7 @@ class Make{
 
             $this->dom->addChild(
                 $endereco,
-                "tipos:Numero",
+                "Numero",
                 $std->Numero,
                 false,
                 "Numero Tomador"
@@ -367,7 +367,7 @@ class Make{
 
             $this->dom->addChild(
                 $endereco,
-                "tipos:Complemento",
+                "Complemento",
                 $std->Complemento,
                 false,
                 "Complemento Tomador"
@@ -375,7 +375,7 @@ class Make{
 
             $this->dom->addChild(
                 $endereco,
-                "tipos:Bairro",
+                "Bairro",
                 $std->Bairro,
                 false,
                 "Bairro Tomador"
@@ -383,7 +383,7 @@ class Make{
 
             $this->dom->addChild(
                 $endereco,
-                "tipos:CodigoMunicipio",
+                "CodigoMunicipio",
                 $std->CodigoMunicipio,
                 false,
                 "CodigoMunicipio Tomador"
@@ -391,7 +391,7 @@ class Make{
 
             $this->dom->addChild(
                 $endereco,
-                "tipos:Uf",
+                "Uf",
                 $std->Uf,
                 false,
                 "Uf Tomador"
@@ -399,7 +399,7 @@ class Make{
 
             $this->dom->addChild(
                 $endereco,
-                "tipos:Cep",
+                "Cep",
                 $std->Cep,
                 false,
                 "Cep Tomador"
@@ -411,11 +411,11 @@ class Make{
 
         if ( $std->Telefone || $std->Email ){
 
-            $contato = $this->dom->createElement("tipos:Contato");
+            $contato = $this->dom->createElement("Contato");
 
             $this->dom->addChild(
                 $contato,
-                "tipos:Telefone",
+                "Telefone",
                 $std->Telefone,
                 false,
                 "Telefone Tomador"
@@ -423,7 +423,7 @@ class Make{
 
             $this->dom->addChild(
                 $contato,
-                "tipos:Email",
+                "Email",
                 $std->Email,
                 false,
                 "Email Tomador"
@@ -446,23 +446,23 @@ class Make{
 
         $std = $this->equilizeParameters($std, $possible);
 
-        $intermediarioServico = $this->dom->createElement("tipos:IntermediarioServico");
+        $intermediarioServico = $this->dom->createElement("IntermediarioServico");
 
         $this->dom->addChild(
             $intermediarioServico,
-            "tipos:RazaoSocial",
+            "RazaoSocial",
             $std->RazaoSocial,
             true,
             "RazaoSocial IntermediarioServico"
         );
 
-        $CpfCnpj = $this->dom->createElement("tipos:CpfCnpj");
+        $CpfCnpj = $this->dom->createElement("CpfCnpj");
 
         if (strlen($std->CpfCnpj) > 11){
            
             $this->dom->addChild(
                 $CpfCnpj,
-                "tipos:Cnpj",
+                "Cnpj",
                 $std->CpfCnpj,
                 false,
                 "Cnpj Tomador"
@@ -472,7 +472,7 @@ class Make{
 
             $this->dom->addChild(
                 $CpfCnpj,
-                "tipos:Cpf",
+                "Cpf",
                 $std->CpfCnpj,
                 false,
                 "Cpf Tomador"
@@ -484,7 +484,7 @@ class Make{
 
         $this->dom->addChild(
             $intermediarioServico,
-            "tipos:InscricaoMunicipal",
+            "InscricaoMunicipal",
             $std->InscricaoMunicipal,
             false,
             "InscricaoMunicipal IntermediarioServico"
@@ -502,11 +502,11 @@ class Make{
 
         $std = $this->equilizeParameters($std, $possible);
 
-        $construcaoCivil = $this->dom->createElement("tipos:ConstrucaoCivil");
+        $construcaoCivil = $this->dom->createElement("ConstrucaoCivil");
 
         $this->dom->addChild(
             $construcaoCivil,
-            "tipos:CodigoObra",
+            "CodigoObra",
             $std->CodigoObra,
             true,
             "CodigoObra de ConstrucaoCivil"
@@ -514,7 +514,7 @@ class Make{
 
         $this->dom->addChild(
             $construcaoCivil,
-            "tipos:Art",
+            "Art",
             $std->Art,
             true,
             "Art de ConstrucaoCivil"
@@ -533,11 +533,11 @@ class Make{
 
         $std = $this->equilizeParameters($std, $possible);
 
-        $rpsSubstituido = $this->dom->createElement("tipos:RpsSubstituido");
+        $rpsSubstituido = $this->dom->createElement("RpsSubstituido");
 
         $this->dom->addChild(
             $rpsSubstituido,
-            "tipos:Numero",
+            "Numero",
             $std->Numero,
             true,
             "Numero do Lote RPS"
@@ -545,7 +545,7 @@ class Make{
 
         $this->dom->addChild(
             $rpsSubstituido,
-            "tipos:Serie",
+            "Serie",
             $std->Serie,
             true,
             "Serie do Lote RPS"
@@ -553,7 +553,7 @@ class Make{
 
         $this->dom->addChild(
             $rpsSubstituido,
-            "tipos:Tipo",
+            "Tipo",
             $std->Tipo,
             true,
             "Tipo do Lote RPS"
@@ -591,13 +591,13 @@ class Make{
 
         $std = $this->equilizeParameters($std, $possible);
 
-        $servico = $this->dom->createElement("tipos:Servico");
+        $servico = $this->dom->createElement("Servico");
         
-        $valores = $this->dom->createElement("tipos:Valores");
+        $valores = $this->dom->createElement("Valores");
 
         $this->dom->addChild(
             $valores,
-            "tipos:ValorServicos",
+            "ValorServicos",
             $std->ValorServicos,
             true,
             "ValorServicos RPS"
@@ -605,7 +605,7 @@ class Make{
 
         $this->dom->addChild(
             $valores,
-            "tipos:ValorDeducoes",
+            "ValorDeducoes",
             $std->ValorDeducoes,
             true,
             "ValorDeducoes RPS"
@@ -613,7 +613,7 @@ class Make{
 
         $this->dom->addChild(
             $valores,
-            "tipos:ValorPis",
+            "ValorPis",
             $std->ValorPis,
             false,
             "ValorPis RPS"
@@ -621,7 +621,7 @@ class Make{
 
         $this->dom->addChild(
             $valores,
-            "tipos:ValorCofins",
+            "ValorCofins",
             $std->ValorCofins,
             false,
             "ValorCofins RPS"
@@ -629,7 +629,7 @@ class Make{
 
         $this->dom->addChild(
             $valores,
-            "tipos:ValorInss",
+            "ValorInss",
             $std->ValorInss,
             false,
             "ValorInss RPS"
@@ -637,7 +637,7 @@ class Make{
 
         $this->dom->addChild(
             $valores,
-            "tipos:ValorIr",
+            "ValorIr",
             $std->ValorIr,
             false,
             "ValorIr RPS"
@@ -645,7 +645,7 @@ class Make{
 
         $this->dom->addChild(
             $valores,
-            "tipos:ValorCsll",
+            "ValorCsll",
             $std->ValorCsll,
             false,
             "ValorCsll RPS"
@@ -653,7 +653,7 @@ class Make{
 
         $this->dom->addChild(
             $valores,
-            "tipos:IssRetido",
+            "IssRetido",
             $std->IssRetido,
             true,
             "IssRetido RPS"
@@ -661,7 +661,7 @@ class Make{
 
         $this->dom->addChild(
             $valores,
-            "tipos:ValorIssRetido",
+            "ValorIssRetido",
             $std->ValorIssRetido,
             false,
             "ValorIssRetido RPS"
@@ -669,7 +669,7 @@ class Make{
 
         $this->dom->addChild(
             $valores,
-            "tipos:OutrasRetencoes",
+            "OutrasRetencoes",
             $std->OutrasRetencoes,
             false,
             "OutrasRetencoes RPS"
@@ -677,7 +677,7 @@ class Make{
 
         $this->dom->addChild(
             $valores,
-            "tipos:BaseCalculo",
+            "BaseCalculo",
             $std->BaseCalculo,
             false,
             "BaseCalculo RPS"
@@ -685,7 +685,7 @@ class Make{
 
         $this->dom->addChild(
             $valores,
-            "tipos:Aliquota",
+            "Aliquota",
             $std->Aliquota,
             false,
             "Aliquota RPS"
@@ -693,7 +693,7 @@ class Make{
 
         $this->dom->addChild(
             $valores,
-            "tipos:ValorLiquidoNfse",
+            "ValorLiquidoNfse",
             $std->ValorLiquidoNfse,
             false,
             "ValorLiquidoNfse RPS"
@@ -701,7 +701,7 @@ class Make{
 
         $this->dom->addChild(
             $valores,
-            "tipos:DescontoIncondicionado",
+            "DescontoIncondicionado",
             $std->DescontoIncondicionado,
             false,
             "DescontoIncondicionado RPS"
@@ -709,7 +709,7 @@ class Make{
 
         $this->dom->addChild(
             $valores,
-            "tipos:DescontoCondicionado",
+            "DescontoCondicionado",
             $std->DescontoCondicionado,
             false,
             "DescontoCondicionado RPS"
@@ -719,7 +719,7 @@ class Make{
 
         $this->dom->addChild(
             $servico,
-            "tipos:ItemListaServico",
+            "ItemListaServico",
             $std->ItemListaServico,
             false,
             "ItemListaServico RPS"
@@ -727,7 +727,7 @@ class Make{
 
         $this->dom->addChild(
             $servico,
-            "tipos:CodigoCnae",
+            "CodigoCnae",
             $std->CodigoCnae,
             false,
             "CodigoCnae RPS"
@@ -735,7 +735,7 @@ class Make{
 
         $this->dom->addChild(
             $servico,
-            "tipos:CodigoTributacaoMunicipio",
+            "CodigoTributacaoMunicipio",
             $std->CodigoTributacaoMunicipio,
             false,
             "CodigoTributacaoMunicipio RPS"
@@ -743,7 +743,7 @@ class Make{
 
         $this->dom->addChild(
             $servico,
-            "tipos:Discriminacao",
+            "Discriminacao",
             $std->Discriminacao,
             false,
             "Discriminacao RPS"
@@ -751,7 +751,7 @@ class Make{
 
         $this->dom->addChild(
             $servico,
-            "tipos:CodigoMunicipio",
+            "CodigoMunicipio",
             $std->CodigoMunicipio,
             false,
             "CodigoMunicipio RPS"
@@ -774,7 +774,7 @@ class Make{
 
         $std = $this->equilizeParameters($std, $possible);
 
-        $infRps = $this->dom->createElement("tipos:InfRps");
+        $infRps = $this->dom->createElement("InfRps");
 
         $infRps->setAttribute('Id', $this->NumeroLote);
         
@@ -782,7 +782,7 @@ class Make{
 
         $this->dom->addChild(
             $infRps,
-            "tipos:DataEmissao",
+            "DataEmissao",
             $std->DataEmissao,
             true,
             "DataEmissao RPS"
@@ -790,7 +790,7 @@ class Make{
 
         $this->dom->addChild(
             $infRps,
-            "tipos:NaturezaOperacao",
+            "NaturezaOperacao",
             $std->NaturezaOperacao,
             true,
             "NaturezaOperacao RPS"
@@ -798,7 +798,7 @@ class Make{
 
         $this->dom->addChild(
             $infRps,
-            "tipos:RegimeEspecialTributacao",
+            "RegimeEspecialTributacao",
             $std->RegimeEspecialTributacao,
             true,
             "RegimeEspecialTributacao RPS"
@@ -806,7 +806,7 @@ class Make{
 
         $this->dom->addChild(
             $infRps,
-            "tipos:OptanteSimplesNacional",
+            "OptanteSimplesNacional",
             $std->OptanteSimplesNacional,
             true,
             "OptanteSimplesNacional RPS"
@@ -814,7 +814,7 @@ class Make{
 
         $this->dom->addChild(
             $infRps,
-            "tipos:IncentivadorCultural",
+            "IncentivadorCultural",
             $std->IncentivadorCultural,
             true,
             "IncentivadorCultural RPS"
@@ -822,7 +822,7 @@ class Make{
 
         $this->dom->addChild(
             $infRps,
-            "tipos:Status",
+            "Status",
             $std->Status,
             true,
             "Status RPS"

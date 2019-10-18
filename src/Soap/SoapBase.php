@@ -1,6 +1,6 @@
 <?php
 
-namespace NFePHP\NFSe\GINFE\Soap;
+namespace NFePHP\NFSe\WebISS\Soap;
 
 use NFePHP\Common\Certificate;
 use NFePHP\Common\Exception\RuntimeException;
@@ -13,7 +13,7 @@ use NFePHP\Common\Exception\SoapException;
 
 /**
  * @category   NFePHP
- * @package    NFePHP\NFSe\GINFE\Soap
+ * @package    NFePHP\NFSe\WebISS\Soap
  * @copyright  Copyright (c) 2008-2019
  * @license    http://www.gnu.org/licenses/lesser.html LGPL v3
  * @author     Marlon O. Barbosa <lmarlon.academi at gmail dot com>
@@ -431,11 +431,10 @@ abstract class SoapBase implements SoapInterface
     ) {
 
         return sprintf(
-            '<%s:Envelope %s><%s:Header>' . $header . '</%s:Header><%s:Body>%s</%s:Body></%s:Envelope>',
+            '<%s:Envelope %s><%s:Body>%s</%s:Body></%s:Envelope>',
             $envelopPrefix,
             $envelopAttributes,
-            $envelopPrefix,
-            $envelopPrefix,
+
             $envelopPrefix,
             $bodyContent,
             $envelopPrefix,

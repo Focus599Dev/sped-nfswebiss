@@ -1,10 +1,10 @@
 <?php
 
-namespace NFePHP\NFSe\GINFE\Factories;
+namespace NFePHP\NFSe\WebISS\Factories;
 
 /**
  * @category   NFePHP
- * @package    NFePHP\NFSe\GINFE\Factories\
+ * @package    NFePHP\NFSe\WebISS\Factories\
  * @copyright  Copyright (c) 2008-2019
  * @license    http://www.gnu.org/licenses/lesser.html LGPL v3
  * @author     Marlon O. Barbosa <marlon.academi at gmail dot com>
@@ -23,9 +23,9 @@ class Header
      */
     public static function get($version)
     {
-        return "<ns2:cabecalho "
-            . "versao=\"$version\" xmlns:ns2=\"http://www.ginfes.com.br/cabecalho_v03.xsd\">"
+        return "<cabecalho "
+            . "versao=\"$version\" xmlns=\"http://www.abrasf.org.br/nfse.xsd\">"
             . "<versaoDados>$version</versaoDados>"
-            . "</ns2:cabecalho>";
+            . "</cabecalho>";
     }
 }

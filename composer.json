@@ -1,5 +1,5 @@
 {
-    "name": "sped-nfsginfe",
+    "name": "ssped-nfswebiss",
     "type": "library",
     "description": "Api para comunicação com prefeituras que usando o sistema WebISS",
     "keywords": ["nfs","sped","nfephp"],
@@ -11,7 +11,7 @@
             "email": "marlon.academi@gmail.com",
             "homepage": "https://github.com/Focus599Dev/sped-nfswebiss",
             "role": "Developer"
-        },
+        }
     ],
     "require": {
         "php" : ">= 7.0",

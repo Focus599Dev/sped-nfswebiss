@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WS xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <municipio>
+        <code>7015401</code>
+        <homologacao>
+            <CancelarNfse method="CancelarNfse" operation="CancelarNfse" version="3.0.1">https://www1.webiss.com.br/Uberaba_wsNFSe_homolog/NfseServices.svc</CancelarNfse>
+            <ConsultarLoteRps method="ConsultarLoteRps" operation="ConsultarLoteRps" version="3.0.1">https://www1.webiss.com.br/Uberaba_wsNFSe_homolog/NfseServices.svc</ConsultarLoteRps>
+            <ConsultarNfse method="ConsultarNfse" operation="ConsultarNfse" version="3.0.1">https://www1.webiss.com.br/Uberaba_wsNFSe_homolog/NfseServices.svc</ConsultarNfse>
+            <ConsultarNfsePorRps method="ConsultarNfsePorRps" operation="ConsultarNfsePorRps" version="3.0.1">https://www1.webiss.com.br/Uberaba_wsNFSe_homolog/NfseServices.svc</ConsultarNfsePorRps>
+            <ConsultarSituacaoLoteRps method="ConsultarSituacaoLoteRps" operation="ConsultarSituacaoLoteRps" version="3.0.1">https://www1.webiss.com.br/Uberaba_wsNFSe_homolog/NfseServices.svc</ConsultarSituacaoLoteRps>
+            <RecepcionarLoteRps method="RecepcionarLoteRps" operation="RecepcionarLoteRps" version="3.0.1">https://www1.webiss.com.br/Uberaba_wsNFSe_homolog/NfseServices.svc</RecepcionarLoteRps>
+        </homologacao>
+        <producao>
+            <CancelarNfse method="CancelarNfse" operation="CancelarNfse" version="3.0.1">https://www1.webiss.com.br/Uberaba_wsNFSe/NfseServices.svc</CancelarNfse>
+            <ConsultarLoteRps method="ConsultarLoteRps" operation="ConsultarLoteRps" version="3.0.1">https://www1.webiss.com.br/Uberaba_wsNFSe/NfseServices.svc</ConsultarLoteRps>
+            <ConsultarNfse method="ConsultarNfse" operation="ConsultarNfse" version="3.0.1">https://www1.webiss.com.br/Uberaba_wsNFSe/NfseServices.svc</ConsultarNfse>
+            <ConsultarNfsePorRps method="ConsultarNfsePorRps" operation="ConsultarNfsePorRps" version="3.0.1">https://www1.webiss.com.br/Uberaba_wsNFSe/NfseServices.svc</ConsultarNfsePorRps>
+            <ConsultarSituacaoLoteRps method="ConsultarSituacaoLoteRps" operation="ConsultarSituacaoLoteRps" version="3.0.1">https://www1.webiss.com.br/Uberaba_wsNFSe/NfseServices.svc</ConsultarSituacaoLoteRps>
+            <RecepcionarLoteRps method="RecepcionarLoteRps" operation="RecepcionarLoteRps" version="3.0.1">https://www1.webiss.com.br/Uberaba_wsNFSe/NfseServices.svc</RecepcionarLoteRps>
+        </producao>
+    </municipio>
+</WS>

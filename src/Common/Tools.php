@@ -1,10 +1,10 @@
 <?php 
 
-namespace NFePHP\NFSe\GINFE\Common;
+namespace NFePHP\NFSe\WebISS\Common;
 
 /**
  * @category   NFePHP
- * @package    NFePHP\NFSe\GINFE\Common
+ * @package    NFePHP\NFSe\WebISS\Common
  * @copyright  Copyright (c) 2008-2019
  * @license    http://www.gnu.org/licenses/lesser.html LGPL v3
  * @author     Marlon O. Barbosa <marlon.academi at gmail dot com>
@@ -16,13 +16,14 @@ use DOMDocument;
 use InvalidArgumentException;
 use NFePHP\Common\TimeZoneByUF;
 use NFePHP\Common\Certificate;
-use NFePHP\NFSe\GINFE\Common\Signer;
-use NFePHP\NFSe\GINFE\Soap\SoapCurl;
+use NFePHP\NFSe\WebISS\Common\Signer;
+use NFePHP\NFSe\WebISS\Soap\SoapCurl;
 use NFePHP\Common\Strings;
-use NFePHP\NFSe\GINFE\Common\Webservices;
+use NFePHP\NFSe\WebISS\Common\Webservices;
 use SoapHeader;
-use NFePHP\NFSe\GINFE\Factories\Header;
+use NFePHP\NFSe\WebISS\Factories\Header;
 use NFePHP\Common\Validator;
+use NFePHP\NFSe\WebISS\Common\EntitiesCharacters;
 
 class Tools {
 	
@@ -96,7 +97,7 @@ class Tools {
      * Version of layout
      * @var string
      */
-    protected $versao = '3.0.1';
+    protected $versao = '1.0.7';
     /**
      * urlPortal
      * Instância do WebService
@@ -148,16 +149,17 @@ class Tools {
      */
 
     protected $soapnamespacesEnv = [
-        'xmlns:xsi'   => "http://www.w3.org/2001/XMLSchema-instance",
+        'xmlns:soapenv'  => "http://schemas.xmlsoap.org/soap/envelope/",
         'xmlns:xsd'   => "http://www.w3.org/2001/XMLSchema",
-        'xmlns:soap12'  => "http://www.w3.org/2003/05/soap-envelope",
+        'xmlns:xsi'   => "http://www.w3.org/2001/XMLSchema-instance",
+        "xmlns" => "http://tempuri.org/"
     ];
 
     /**
      * @var array
      */
     protected $availableVersions = [
-        '3.0.1' => 'GINFEV301',
+        '1.0.7' => 'WEBISS107',
     ];
     
     /**
@@ -193,7 +195,7 @@ class Tools {
 
         }
 
-        $this->urlPortal = 'http://' . $this->ambiente . '.ginfes.com.br';
+        $this->urlPortal = 'http://tempuri.org/';
 
     }
 
@@ -203,7 +205,7 @@ class Tools {
      * @return string
      * @throws InvalidArgumentException
      */
-    public function version($version = null){
+    public function version($version = '1.0.7'){
         if (null === $version) {
             return $this->versao;
         }
@@ -248,7 +250,7 @@ class Tools {
         }
     }
 
-     /**
+    /**
      * Performs xml validation with its respective
      * XSD structure definition document
      * NOTE: if dont exists the XSD file will return true
@@ -256,7 +258,7 @@ class Tools {
      * @param string $body
      * @param string $method
      * @return boolean
-     */
+    */
     protected function isValid($version, $body, $method){
 
         $schema = $this->pathschemes.$method."_v$version.xsd";
@@ -322,7 +324,7 @@ class Tools {
         $this->urlOperation = $stdServ->$service->operation;
         //montagem do namespace do serviço
         $this->urlNamespace = sprintf(
-            "%s",
+            "%sINfseServices",
             $this->urlPortal
         );
 
@@ -331,11 +333,10 @@ class Tools {
             substr($this->versao, 0, 1)
         );
 
-        $this->urlAction = "\""
-            . $this->urlNamespace
+        $this->urlAction = 
+            $this->urlNamespace
             . "/"
-            . $this->urlMethod
-            . "\"";
+            . $this->urlMethod;
        
         $this->objHeader = new SoapHeader(
             $this->urlNamespace,
@@ -358,11 +359,11 @@ class Tools {
             $this->urlService,
             $this->urlMethod,
             $this->urlAction,
-            3,
+            1,
             $parameters,
             $this->soapnamespacesEnv,
             $request,
-            Header::get(substr($this->versao, 0, 1))
+            null
         );
     }
 
@@ -380,21 +381,18 @@ class Tools {
      */
     protected function MakeEnvelope($servico, $request){
         
-        $xml = '<tns:'.$servico.' xmlns:tns="' . $this->urlPortal . '">';
+        // $request = $this->clear($request);        
+        
+        // $request = $this->stringTransform($request);
 
-            if ($servico != 'CancelarNfse') {
-               
-                $xml .= '<arg0>'.Header::get(substr($this->versao, 0, 1)).'</arg0>';
+        $xml = '<'.$servico.' xmlns="' . $this->urlPortal . '">';
+   
+        // $xml .= '<cabec>' . Header::get(substr($this->versao, 0, 1)) . '</cabec>';
+        $xml .= '<cabec></cabec>';
 
-                $xml .= '<arg1>'.$request.'</arg1>';
+        $xml .= '<msg><![CDATA[' . $request . ']]></msg>';
 
-            } else {
-
-                $xml .= '<arg0>'.$request.'</arg0>';
-
-            }
-
-        $xml .= '</tns:'.$servico.'>';
+        $xml .= '</'.$servico.'>';
 
         return $xml;
     }
@@ -462,6 +460,16 @@ class Tools {
 
             $xml = substr( $xml, 0 , strpos($xml, $tag) );
 
+        } else if (preg_match('/<s:Body>/', $xml)){
+
+            $tag = '<s:Body>';
+
+            $xml = substr( $xml, ( strpos($xml, $tag) + strlen($tag) ), strlen($xml)  );
+            
+            $tag = '</s:Body>';
+
+            $xml = substr( $xml, 0 , strpos($xml, $tag) );
+
         } 
 
         if (preg_match('/ns3:/', $xml)){
@@ -479,6 +487,14 @@ class Tools {
 
            $xml = preg_replace('/ns4:/', '', $xml);
         }
+
+        $xml = htmlspecialchars_decode($xml);
+
+        $xml = preg_replace('/&#xD;/', '', $xml);
+
+        $xml = trim(preg_replace("/<\?xml.*?\?>/", "", $xml));
+        
+        var_dump($xml);
 
         return $xml;
     }
@@ -504,6 +520,30 @@ class Tools {
 
     public function getLastResponse(){
         return $this->lastResponse;
+    }
+
+    /**
+     * Convert string xml message to cdata string
+     * @param string $message
+     * @return string
+     */
+    protected function stringTransform($message){
+
+        return EntitiesCharacters::unconvert(htmlentities($message, ENT_NOQUOTES));
+        
+    }
+
+    /**
+     * Remove os marcadores de XML
+     * @param string $body
+     * @return string
+     */
+    public function clear($body)
+    {
+        $body = str_replace('<?xml version="1.0"?>', '', $body);
+        $body = str_replace('<?xml version="1.0" encoding="utf-8"?>', '', $body);
+        $body = str_replace('<?xml version="1.0" encoding="UTF-8"?>', '', $body);
+        return $body;
     }
 
 }                                                                                                                            

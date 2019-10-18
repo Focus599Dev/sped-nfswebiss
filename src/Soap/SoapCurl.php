@@ -1,19 +1,19 @@
 <?php
 
-namespace NFePHP\NFSe\GINFE\Soap;
+namespace NFePHP\NFSe\WebISS\Soap;
 
 /**
  * @category   NFePHP
- * @package    NFePHP\NFSe\GINFE\Soap
+ * @package    NFePHP\NFSe\WebISS\Soap
  * @copyright  Copyright (c) 2008-2019
  * @license    http://www.gnu.org/licenses/lesser.html LGPL v3
  * @author     Marlon O. Barbosa <marlon.academi at gmail dot com>
  * @link       https://github.com/Focus599Dev/sped-nfsginfe for the canonical source repository
  */
 
-use NFePHP\NFSe\GINFE\Soap\SoapBase;
-use NFePHP\NFSe\GINFE\Soap\SoapInterface;
-use NFePHP\NFSe\GINFE\Exception\SoapException;
+use NFePHP\NFSe\WebISS\Soap\SoapBase;
+use NFePHP\NFSe\WebISS\Soap\SoapInterface;
+use NFePHP\NFSe\WebISS\Exception\SoapException;
 use NFePHP\Common\Certificate;
 use Psr\Log\LoggerInterface;
 
@@ -69,14 +69,10 @@ class SoapCurl extends SoapBase implements SoapInterface
         $msgSize = strlen($envelope);
         
         $parameters = [
-            "Content-Type: application/soap+xml;charset=utf-8;"
+            "Content-Type: text/xml;charset=utf-8;"
         ];
 
-        if (!empty($action)) {
-            $parameters[0] .= "action=$action";
-        }
-
-        $parameters[] = "SOAPAction: \"$operation\"";
+        $parameters[] = "SOAPAction: $action";
         
         $parameters[] = "Content-length: $msgSize";
 
@@ -91,8 +87,6 @@ class SoapCurl extends SoapBase implements SoapInterface
             $this->setCurlProxy($oCurl);
 
             curl_setopt($oCurl, CURLOPT_URL, $url);
-            
-            curl_setopt($oCurl, CURLOPT_PORT , 443);
 
             curl_setopt($oCurl, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
 
@@ -147,12 +141,14 @@ class SoapCurl extends SoapBase implements SoapInterface
 
             }
 
+            var_dump($envelope);
+
             $response = curl_exec($oCurl);
 
             $this->soaperror = curl_error($oCurl);
             
             $ainfo = curl_getinfo($oCurl);
-            
+
             if (is_array($ainfo)) {
                 $this->soapinfo = $ainfo;
             }

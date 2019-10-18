@@ -1,10 +1,10 @@
 <?php 
 
-namespace NFePHP\NFSe\GINFE;
+namespace NFePHP\NFSe\WebISS;
 
 /**
  * @category   NFePHP
- * @package    NFePHP\NFSe\GINFE
+ * @package    NFePHP\NFSe\WebISS
  * @copyright  Copyright (c) 2008-2019
  * @license    http://www.gnu.org/licenses/lesser.html LGPL v3
  * @author     Marlon O. Barbosa <marlon.academi at gmail dot com>
@@ -12,8 +12,8 @@ namespace NFePHP\NFSe\GINFE;
  */
 
 use NFePHP\Common\Strings;
-use NFePHP\NFSe\GINFE\Exception\DocumentsException;
-use  NFePHP\NFSe\GINFE\Factories\Parser;
+use NFePHP\NFSe\WebISS\Exception\DocumentsException;
+use NFePHP\NFSe\WebISS\Factories\Parser;
 
 class Convert {
 

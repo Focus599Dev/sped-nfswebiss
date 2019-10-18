@@ -1,19 +1,19 @@
 <?php 
 
-namespace NFePHP\NFSe\GINFE;
+namespace NFePHP\NFSe\WebISS;
 
 /**
  * @category   NFePHP
- * @package    NFePHP\NFSe\GINFE
+ * @package    NFePHP\NFSe\WebISS
  * @copyright  Copyright (c) 2008-2019
  * @license    http://www.gnu.org/licenses/lesser.html LGPL v3
  * @author     Marlon O. Barbosa <marlon.academi at gmail dot com>
  * @link       https://github.com/Focus599Dev/sped-nfsginfe for the canonical source repository
  */
 
-use NFePHP\NFSe\GINFE\Common\Tools as ToolsBase;
+use NFePHP\NFSe\WebISS\Common\Tools as ToolsBase;
 use NFePHP\Common\Strings;
-use NFePHP\NFSe\GINFE\Common\Signer;
+use NFePHP\NFSe\WebISS\Common\Signer;
 use DOMDocument;
 use NFePHP\Common\DOMImproved as Dom;
 
@@ -28,7 +28,7 @@ class Tools extends ToolsBase {
         //remove all invalid strings
         $xml = Strings::clearXmlString($xml);
 
-        $servico = 'RecepcionarLoteRpsV3';
+        $servico = 'RecepcionarLoteRps';
 
         $this->servico(
             $servico,
@@ -39,14 +39,14 @@ class Tools extends ToolsBase {
         $request = Signer::sign(
             $this->certificate,
             $xml,
-            'EnviarLoteRpsEnvio',
+            'LoteRps',
             'Id',
             $this->algorithm,
             $this->canonical
         );
 
         $this->lastRequest = $request;
-        
+
         $this->isValid($this->versao, $request, 'servico_enviar_lote_rps_envio');
 
         $parameters = ['RecepcionarLoteRps' => $request];
@@ -57,15 +57,20 @@ class Tools extends ToolsBase {
         
         $this->lastResponse = $this->removeStuffs($this->lastResponse);
 
-        $auxResp = simplexml_load_string($this->lastResponse);
+        $this->lastResponse = simplexml_load_string($this->lastResponse);
 
-        return (String) $auxResp->return[0];
+        if (isset($this->lastResponse->RecepcionarLoteRpsResult->EnviarLoteRpsResposta)){
+
+            return $this->lastResponse->RecepcionarLoteRpsResult->EnviarLoteRpsResposta->asXML();
+        }
+
+        return $this->lastResponse->asXML();
 
 	}
 
     public function consultaLoteRPS($prot, \stdClass $prestador){
 
-        $servico = 'ConsultarLoteRpsV3';
+        $servico = 'ConsultarLoteRps';
 
         $this->servico(
             $servico,
@@ -74,35 +79,28 @@ class Tools extends ToolsBase {
         );
 
         $namespaces = array(
-            'xmlns:p="http://www.ginfes.com.br/servico_consultar_lote_rps_envio_v03.xsd"',
-            'xmlns:tipos="http://www.ginfes.com.br/tipos_v03.xsd"',
-            'xmlns="http://www.w3.org/2000/09/xmldsig#"'
+            'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"',
+            'xmlns:xsd="http://www.w3.org/2001/XMLSchema"',
+            'xmlns="http://www.abrasf.org.br/nfse"'
         );
 
-        $xml = '<p:ConsultarLoteRpsEnvio Id="' . str_pad(rand(0, pow(10, 5)-1), 5, '0', STR_PAD_LEFT) . '" ';
+        $xml = '<ConsultarLoteRpsEnvio ';
 
             $xml .= implode(' ', $namespaces) . '>';
 
-            $xml .= '<p:Prestador>';
+            $xml .= '<Prestador>';
 
-                $xml .= '<tipos:Cnpj>' . $prestador->cnpj . '</tipos:Cnpj>';
+                $xml .= '<Cnpj>' . $prestador->cnpj . '</Cnpj>';
                 
-                $xml .= '<tipos:InscricaoMunicipal>' . $prestador->inscricaoMunicipal . '</tipos:InscricaoMunicipal>';
+                $xml .= '<InscricaoMunicipal>' . $prestador->inscricaoMunicipal . '</InscricaoMunicipal>';
                 
-            $xml .= '</p:Prestador>';
+            $xml .= '</Prestador>';
 
-            $xml .= '<p:Protocolo>' . $prot . '</p:Protocolo>';
+            $xml .= '<Protocolo>' . $prot . '</Protocolo>';
 
-        $xml .= '</p:ConsultarLoteRpsEnvio>';
+        $xml .= '</ConsultarLoteRpsEnvio>';
 
-        $request = Signer::sign(
-            $this->certificate,
-            $xml,
-            'ConsultarLoteRpsEnvio',
-            'Id',
-            $this->algorithm,
-            $this->canonical
-        );
+        $request = $xml;
 
         $this->lastRequest = $request;
 
@@ -111,20 +109,25 @@ class Tools extends ToolsBase {
         $parameters = ['ConsultarLoteRpsEnvio' => $request];
 
         $request = $this->MakeEnvelope($servico, $request);
-
+        
         $this->lastResponse = $this->sendRequest($request, $parameters);
 
         $this->lastResponse = $this->removeStuffs($this->lastResponse);
 
-        $auxResp = simplexml_load_string($this->lastResponse);
+        $this->lastResponse = simplexml_load_string($this->lastResponse);
 
-        return (String) $auxResp->return[0];
+        if (isset($this->lastResponse->ConsultarLoteRpsResult->ConsultarLoteRpsResposta)){
+
+            return $this->lastResponse->ConsultarLoteRpsResult->ConsultarLoteRpsResposta->asXML();
+        }
+
+        return $this->lastResponse->asXML();
 
     }
 
     public function consultaSituacaoLoteRPS($prot, \stdClass $prestador){
 
-        $servico = 'ConsultarSituacaoLoteRpsV3';
+        $servico = 'ConsultarSituacaoLoteRps';
 
         $this->servico(
             $servico,
@@ -133,35 +136,28 @@ class Tools extends ToolsBase {
         );
 
         $namespaces = array(
-            'xmlns:p="http://www.ginfes.com.br/servico_consultar_situacao_lote_rps_envio_v03.xsd"',
-            'xmlns:tipos="http://www.ginfes.com.br/tipos_v03.xsd"',
-            'xmlns="http://www.w3.org/2000/09/xmldsig#"'
+            'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"',
+            'xmlns:xsd="http://www.w3.org/2001/XMLSchema"',
+            'xmlns="http://www.abrasf.org.br/nfse"'
         );
 
-        $xml = '<p:ConsultarSituacaoLoteRpsEnvio Id="' . str_pad(rand(0, pow(10, 5)-1), 5, '0', STR_PAD_LEFT) . '" ';
+        $xml = '<ConsultarSituacaoLoteRpsEnvio ';
 
             $xml .= implode(' ', $namespaces) . '>';
 
-            $xml .= '<p:Prestador>';
+            $xml .= '<Prestador>';
 
-                $xml .= '<tipos:Cnpj>' . $prestador->cnpj . '</tipos:Cnpj>';
+                $xml .= '<Cnpj>' . $prestador->cnpj . '</Cnpj>';
                 
-                $xml .= '<tipos:InscricaoMunicipal>' . $prestador->inscricaoMunicipal . '</tipos:InscricaoMunicipal>';
+                $xml .= '<InscricaoMunicipal>' . $prestador->inscricaoMunicipal . '</InscricaoMunicipal>';
                 
-            $xml .= '</p:Prestador>';
+            $xml .= '</Prestador>';
 
-            $xml .= '<p:Protocolo>' . $prot . '</p:Protocolo>';
+            $xml .= '<Protocolo>' . $prot . '</Protocolo>';
 
-        $xml .= '</p:ConsultarSituacaoLoteRpsEnvio>';
+        $xml .= '</ConsultarSituacaoLoteRpsEnvio>';
 
-        $request = Signer::sign(
-            $this->certificate,
-            $xml,
-            'ConsultarSituacaoLoteRpsEnvio',
-            'Id',
-            $this->algorithm,
-            $this->canonical
-        );
+        $request = $xml;
 
         $this->lastRequest = $request;
 
@@ -170,20 +166,25 @@ class Tools extends ToolsBase {
         $parameters = ['ConsultarSituacaoLoteRpsEnvio' => $request];
 
         $request = $this->MakeEnvelope($servico, $request);
-
+        
         $this->lastResponse = $this->sendRequest($request, $parameters);
 
         $this->lastResponse = $this->removeStuffs($this->lastResponse);
 
-        $auxResp = simplexml_load_string($this->lastResponse);
+        $this->lastResponse = simplexml_load_string($this->lastResponse);
 
-        return (String) $auxResp->return[0];
+        if (isset($this->lastResponse->ConsultarSituacaoLoteRpsResult->ConsultarSituacaoLoteRpsResposta)){
+
+            return $this->lastResponse->ConsultarSituacaoLoteRpsResult->ConsultarSituacaoLoteRpsResposta->asXML();
+        }
+
+        return $this->lastResponse->asXML();
 
     }
     
     public function ConsultarNfsePorRps(\stdClass $indenRPS , \stdClass $prestador){
 
-        $servico = 'ConsultarNfsePorRpsV3';
+        $servico = 'ConsultarNfsePorRps';
 
         $this->servico(
             $servico,
@@ -192,43 +193,36 @@ class Tools extends ToolsBase {
         );
 
         $namespaces = array(
-            'xmlns:p="http://www.ginfes.com.br/servico_consultar_nfse_rps_envio_v03.xsd"',
-            'xmlns:tipos="http://www.ginfes.com.br/tipos_v03.xsd"',
-            'xmlns="http://www.w3.org/2000/09/xmldsig#"'
+            'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"',
+            'xmlns:xsd="http://www.w3.org/2001/XMLSchema"',
+            'xmlns="http://www.abrasf.org.br/nfse"'
         );
 
-        $xml = '<p:ConsultarNfseRpsEnvio ';
+        $xml = '<ConsultarNfseRpsEnvio ';
 
             $xml .= implode(' ', $namespaces) . '>';
 
-            $xml .= '<p:IdentificacaoRps>';
+            $xml .= '<IdentificacaoRps>';
 
-                $xml .= '<tipos:Numero>' . $indenRPS->Numero . '</tipos:Numero>';
+                $xml .= '<Numero>' . $indenRPS->Numero . '</Numero>';
                 
-                $xml .= '<tipos:Serie>' . $indenRPS->Serie . '</tipos:Serie>';
+                $xml .= '<Serie>' . $indenRPS->Serie . '</Serie>';
                 
-                $xml .= '<tipos:Tipo>' . $indenRPS->Tipo . '</tipos:Tipo>';
+                $xml .= '<Tipo>' . $indenRPS->Tipo . '</Tipo>';
 
-            $xml .= '</p:IdentificacaoRps>';
+            $xml .= '</IdentificacaoRps>';
 
-            $xml .= '<p:Prestador>';
+            $xml .= '<Prestador>';
 
-                $xml .= '<tipos:Cnpj>' . $prestador->cnpj . '</tipos:Cnpj>';
+                $xml .= '<Cnpj>' . $prestador->cnpj . '</Cnpj>';
                 
-                $xml .= '<tipos:InscricaoMunicipal>' . $prestador->inscricaoMunicipal . '</tipos:InscricaoMunicipal>';
+                $xml .= '<InscricaoMunicipal>' . $prestador->inscricaoMunicipal . '</InscricaoMunicipal>';
                 
-            $xml .= '</p:Prestador>';
+            $xml .= '</Prestador>';
 
-        $xml .= '</p:ConsultarNfseRpsEnvio>';
+        $xml .= '</ConsultarNfseRpsEnvio>';
 
-        $request = Signer::sign(
-            $this->certificate,
-            $xml,
-            'ConsultarNfseRpsEnvio',
-            'Id',
-            $this->algorithm,
-            $this->canonical
-        );
+        $request = $xml;
 
         $this->lastRequest = $request;
 
@@ -237,14 +231,19 @@ class Tools extends ToolsBase {
         $parameters = ['ConsultarNfseRpsEnvio' => $request];
 
         $request = $this->MakeEnvelope($servico, $request);
-
+        
         $this->lastResponse = $this->sendRequest($request, $parameters);
 
         $this->lastResponse = $this->removeStuffs($this->lastResponse);
 
-        $auxResp = simplexml_load_string($this->lastResponse);
+        $this->lastResponse = simplexml_load_string($this->lastResponse);
 
-        return (String) $auxResp->return[0];
+        if (isset($this->lastResponse->ConsultarNfsePorRpsResult->ConsultarNfseResposta)){
+
+            return $this->lastResponse->ConsultarNfsePorRpsResult->ConsultarNfseResposta->asXML();
+        }
+
+        return $this->lastResponse->asXML();
 
     }
 }                                                                                                                            

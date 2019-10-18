@@ -1,10 +1,10 @@
 <?php
 
-namespace NFePHP\NFSe\GINFE\Soap;
+namespace NFePHP\NFSe\WebISS\Soap;
 
 /**
  * @category   NFePHP
- * @package    NFePHP\NFSe\GINFE\Soap
+ * @package    NFePHP\NFSe\WebISS\Soap
  * @copyright  Copyright (c) 2008-2019
  * @license    http://www.gnu.org/licenses/lesser.html LGPL v3
  * @author     Marlon O. Barbosa <lmarlon.academi at gmail dot com>

@@ -1,10 +1,10 @@
 <?php
 
-namespace NFePHP\NFSe\GINFE\Exception;
+namespace NFePHP\NFSe\WebISS\Exception;
 
 /**
  * @category   NFePHP
- * @package    NFePHP\NFSe\GINFE\Exception
+ * @package    NFePHP\NFSe\WebISS\Exception
  * @copyright  Copyright (c) 2008-2019
  * @license    http://www.gnu.org/licenses/lesser.html LGPL v3
  * @author     Marlon O. Barbosa <lmarlon.academi at gmail dot com>
