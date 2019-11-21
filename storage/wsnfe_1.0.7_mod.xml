@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <WS xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <municipio>
-        <code>7015401</code>
+        <code>3543402</code>
         <homologacao>
             <CancelarNfse method="CancelarNfse" operation="CancelarNfse" version="3.0.1">https://www1.webiss.com.br/Uberaba_wsNFSe_homolog/NfseServices.svc</CancelarNfse>
             <ConsultarLoteRps method="ConsultarLoteRps" operation="ConsultarLoteRps" version="3.0.1">https://www1.webiss.com.br/Uberaba_wsNFSe_homolog/NfseServices.svc</ConsultarLoteRps>
