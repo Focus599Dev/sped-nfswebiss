@@ -17,7 +17,6 @@ use NFePHP\NFSe\WebISS\Common\Signer;
 use DOMDocument;
 use NFePHP\Common\DOMImproved as Dom;
 
-
 class Tools extends ToolsBase {
 
 	public function enviaRPS($xml){
@@ -246,6 +245,85 @@ class Tools extends ToolsBase {
         return $this->lastResponse->asXML();
 
     }
+
+    public function CancelaNfse($pedCan){
+
+        $servico = 'CancelarNfse';
+
+        $this->servico(
+            $servico,
+            $this->config->municipio,
+            $this->tpAmb
+        );
+
+        $namespaces = array(
+            'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"',
+            'xmlns:xsd="http://www.w3.org/2001/XMLSchema"',
+            'xmlns="http://www.abrasf.org.br/nfse"'
+        );
+
+        $xml = '<CancelarNfseEnvio ';
+
+            $xml .= implode(' ', $namespaces) . '>';
+
+            $xml .= '<Pedido>';
+
+                $xml .= '<InfPedidoCancelamento Id="' . $pedCan->Numero . '">';
+
+                    $xml .= '<IdentificacaoNfse>';
+
+                        $xml .= '<Numero>' . $pedCan->Numero . '</Numero>';
+                        
+                        $xml .= '<Cnpj>' . $pedCan->cnpj . '</Cnpj>';
+
+                        $xml .= '<InscricaoMunicipal>' . $pedCan->InscricaoMunicipal . '</InscricaoMunicipal>';
+
+                        $xml .= '<CodigoMunicipio>' . $pedCan->CodigoMunicipio . '</CodigoMunicipio>';
+
+                    $xml .= '</IdentificacaoNfse>';
+
+                    $xml .= '<CodigoCancelamento>' . $pedCan->CodigoCancelamento . '</CodigoCancelamento>';
+
+                $xml .= '</InfPedidoCancelamento>';
+
+            $xml .= '</Pedido>';
+
+        $xml .= '</CancelarNfseEnvio>';
+
+        $request = $xml;
+
+        $this->lastRequest = $request;
+
+        $this->isValid($this->versao, $request, 'servico_cancelar_nfse_envio');
+
+        $parameters = ['CancelarNfseEnvio' => $request];
+
+        $request = $this->MakeEnvelope($servico, $request);
+        
+        $this->lastResponse = $this->sendRequest($request, $parameters);
+
+        $this->lastResponse = $this->removeStuffs($this->lastResponse);
+
+        $this->lastResponse = simplexml_load_string($this->lastResponse);
+
+        var_dump($this->lastResponse);
+        
+        if (isset($this->lastResponse->CancelarNfseResult->CancelarNfseResposta)){
+
+            return $this->lastResponse->CancelarNfseResult->CancelarNfseResposta->asXML();
+        }
+
+        return $this->lastResponse->asXML();
+
+    }
+
+    public function generateUrlPDFNfse($code_municipio, $CodigoVerificacao, $nnf, $cnpj_emit ){
+
+        throw new \Exception("Não foi possivel gerar o PDF");
+        
+
+    }
+
 }                                                                                                                            
 
 ?>

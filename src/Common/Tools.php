@@ -24,6 +24,7 @@ use SoapHeader;
 use NFePHP\NFSe\WebISS\Factories\Header;
 use NFePHP\Common\Validator;
 use NFePHP\NFSe\WebISS\Common\EntitiesCharacters;
+use DomXpath;
 
 class Tools {
 	
@@ -538,12 +539,85 @@ class Tools {
      * @param string $body
      * @return string
      */
-    public function clear($body)
-    {
+    public function clear($body){
         $body = str_replace('<?xml version="1.0"?>', '', $body);
         $body = str_replace('<?xml version="1.0" encoding="utf-8"?>', '', $body);
         $body = str_replace('<?xml version="1.0" encoding="UTF-8"?>', '', $body);
         return $body;
+    }
+
+    public function execCurl($url, $method, $data, $fallowLocation = true){
+        
+        $httpcode = null;
+
+        $response = null;
+
+        try{
+
+            $ch = curl_init();
+
+            curl_setopt($ch, CURLOPT_URL, $url);
+
+            if ($method == 'POST')
+                curl_setopt($ch, CURLOPT_POST, true);
+
+            if ($data && is_array($data)){
+                curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+            } else if (is_string($data)){
+                curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+            }
+
+            if ($fallowLocation)
+                curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+            // curl_setopt($ch, CURLOPT_HTTPHEADER, 0);
+
+            // curl_setopt($ch, CURLOPT_COOKIEJAR, $this->cookieName);
+            
+            // curl_setopt($ch, CURLOPT_COOKIEFILE, realpath(__DIR__ . '/../') . $this->cookieName); //saved cookies
+
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+            
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+
+            $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+            $response = curl_exec($ch);
+
+            curl_close($ch);
+
+        } catch (\Exception $e){
+
+            throw $e; 
+            
+        }
+        
+        return $response;
+    }
+
+    public function fillPost ($post, $html){
+        
+        $xpath = new DomXpath($html);
+
+        foreach ($post as $key => $post_value) {
+
+            foreach ($xpath->query('//input[@name="' . $key . '"]') as $rowNode) {
+
+                if($rowNode->getAttribute('value'))
+                    $post[$key] = $rowNode->getAttribute('value');
+            }
+        }
+
+        return $post;
+    }
+
+    public function formatCNPJ($cnpj){
+        if (!$cnpj)
+            return '';
+        
+        return substr($cnpj, 0, 2) . '.' .  substr($cnpj, 2, 3) . '.' . substr($cnpj, 5, 3) . '/' . substr($cnpj, 8, 4) . '-' . substr($cnpj, 12, 2);
     }
 
 }                                                                                                                            

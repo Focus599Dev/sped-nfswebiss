@@ -800,7 +800,7 @@ class Make{
             $infRps,
             "RegimeEspecialTributacao",
             $std->RegimeEspecialTributacao,
-            true,
+            false,
             "RegimeEspecialTributacao RPS"
         );
 
