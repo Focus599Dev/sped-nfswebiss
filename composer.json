@@ -16,7 +16,8 @@
     "require": {
         "php" : ">= 7.0",
         "nfephp-org/sped-common" : "^5.0",
-        "justinrainbow/json-schema": "^5.2"
+        "justinrainbow/json-schema": "^5.2",
+        "mpdf/mpdf": "v8.0.0"
     },
     "require-dev": {
         "squizlabs/php_codesniffer": "^2.8",

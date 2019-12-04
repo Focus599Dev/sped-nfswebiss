@@ -1,0 +1,346 @@
+<style>
+
+	@page {
+        margin: 5mm;
+        margin-header: 0mm;
+        margin-footer: 0mm;
+    }
+
+	.border-full{
+		border: 1px solid #000;
+	}
+
+	.border-left{
+		border-left: 1px solid #000;
+	}
+
+	.border-right{
+		border-right: 1px solid #000;
+	}
+
+	.border-top{
+		border-top: 1px solid #000;
+	}
+
+	.border-bottom{
+		border-bottom: 1px solid #000;
+	}
+
+	.border-bottom-strong{
+		border-bottom: 4px solid #ccc;
+	}
+
+	table{
+		border: 0;
+		border-collapse: collapse;
+	}
+
+	body{
+		padding: 0px;
+		margin: 0px;
+		font-family: Arial, Helvetica, sans-serif;
+	}
+
+	.style-1{
+		font-size: 15px;
+	}
+
+	.style-2{
+		font-size: 14px;
+	}
+
+	.style-3{
+		font-size: 12px;
+	}
+
+	.style-4{
+		font-size: 18px;
+	}
+
+	.style-5{
+		font-size: 10px;
+	}
+
+	.style-6{
+		font-size: 22px;
+	}
+
+	.height-50{
+		height: 50px;
+	}
+
+	.height-40{
+		height: 40px;
+	}
+
+	.height-30{
+		height: 30px;
+	}
+
+	.height-60{
+		height: 60px;
+	}
+
+	.background-selo{
+		background-image: url('{{%url-selo}}'); 
+		background-size: cover;
+		background-repeat: no-repeat;
+	}
+</style>
+
+<table style="width: 100%">
+	<tr>
+		<td style="width: 70%; margin-right: 5px;">
+			<table style="width: 100%">
+				<tr>
+					<td class="border-bottom-strong">
+						<table>
+							<tr>
+								<td>
+									<img src="{{%logo}}" width="148px" alt="logo uberaba">
+								</td>
+								<td>
+									<img src="{{%logo-uberaba}}" width="100px" alt="logo uberaba">
+									
+								</td>
+								<td>
+									<table style="width: 100%">
+										<tr>
+											<td class="style-1 height-50">
+												
+												<b>
+													Prefeitura Municipal de Uberaba
+												</b>
+
+											</td>
+										</tr>
+										<tr>
+											<td class="style-3">
+											
+												<b>
+													Secretaria Municipal de Fazenda
+												</b>
+
+											</td>
+										</tr>
+										<tr>
+											<td class="style-3 height-50">
+											
+												<b>
+													Central Tributária - ISSQN
+												</b>
+												
+											</td>
+										</tr>
+										<tr>
+											<td class="style-3">
+											
+												<b>
+													R. Dom Luiz Maria de Santana, 141 - Mercês Fone: (34) 3318-2000
+												</b>
+												
+											</td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+
+				<tr>
+					<td class="border-bottom-strong">
+						<table style="width: 100%">
+							<tr>
+								<td class="style-4 height-50" align="center">
+									<b>
+										Nota Fiscal de Servi&ccedil;os Eletr&ocirc;nica - NFS-e
+									</b>
+								</td>
+							</tr>
+							<tr>
+								<td align="center" class="height-30">
+									RPS n&uacute;mero {{%nfenum}} S&eacute;rie {{%serie}} emitido em {{%dhemi}}
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<table style="width: 100%">
+										<tr>
+											<td>
+												<p class="style-5">
+													Emiss&atilde;o (Hor&aacute;rio de Bras&iacute;lia)
+												</p>
+												<p class="style-1">
+													<b>
+														{{%dhEmisec}}
+													</b>
+												</p>
+											</td>
+											<td>
+												<p class="style-5">
+													Per&iacute;odo de Compet&ecirc;ncia
+												</p>
+												<p class="style-1">
+													<b>
+														{{%dhcomp}}
+													</b>
+												</p>
+											</td>
+											<td>
+												<p class="style-5">
+													Munic&iacute;pio de Presta&ccedil;&atilde;o do Servi&ccedil;o
+												</p>
+												<p class="style-1">
+													<b>
+														Uberaba - {{%xMun}}
+													</b>
+												</p>
+											</td>
+										</tr>
+										<tr>
+											<td style="margin-top: 10px">
+												<p class="style-5">
+													Reg. Especial Tributa&ccedil;&atilde;o
+												</p>
+												<p class="style-1">
+													<b>
+														{{%regimeTrib}}
+													</b>
+												</p>
+											</td>
+											<td style="margin-top: 10px">
+												
+											</td>
+											<td style="margin-top: 10px">
+												<p class="style-5">
+													Natureza da Opera&ccedil;&atilde;o
+												</p>
+												<p class="style-1">
+													<b>
+														{{%naturesaop}}
+													</b>
+												</p>
+											</td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+			</table>
+		</td>
+		<td style="width: 30%;" class="background-selo height-50" valign="top" align="center">
+			<table>
+				<tr>
+					<td>
+						<p class="style-4">
+							<b>Nota: {{%nfsserie}}</b>
+						</p>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p class="style-6">
+							<b>{{%nfsnum}}</b>
+						</p>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p class="style-2 height-40">
+							<b>C&oacute;digo Verifica&ccedil;&atilde;o</b>
+						</p>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p class="style-6">
+							<b>{{%codveri}}</b>
+						</p>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="5">
+			PRESTADOR DE SERVI&Ccedil;OS
+		</td>
+	</tr>
+	<tr>
+		<td colspan="5">
+			<table>
+				<tr>
+					<td style="width:15%">
+						Logo
+					</td>
+					<td style="width:85%">
+						<table style="width: 100%">
+							<tr>
+								<td>
+									<p class="style-5">
+										Raz&#227;o Social
+									</p>
+									<p class="style-1">
+										<b>
+											{{%emirazao}}
+										</b>
+									</p>
+								</td>
+								<td>
+									<p class="style-5">
+										CPF/CNPJ
+									</p>
+									<p class="style-1">
+										<b>
+											{{%emicnpj}}
+										</b>
+									</p>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<table style="width: 100%">
+										<tr>
+											<td>
+												<p class="style-5">
+													Inscri&ccedil;&atilde;o Municipal
+												</p>
+											</td>
+											<td align="center">
+												<p class="style-5">
+													Fone/Fax
+												</p>
+											</td>
+											<td align="center">
+												<p class="style-5">
+													Simples Nacional
+												</p>
+											</td>
+											<td align="center">
+												<p class="style-5">
+													Incentivador Cultural
+												</p>
+											</td>
+										</tr>
+									</table>
+								</td>
+								<td align="center">
+									<p class="style-5">
+										E-mail
+									</p>
+									<p class="style-2">
+										{{%email}}
+									</p>
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+			</table>
+		</td>
+		
+	</tr>
+</table>

@@ -494,8 +494,6 @@ class Tools {
         $xml = preg_replace('/&#xD;/', '', $xml);
 
         $xml = trim(preg_replace("/<\?xml.*?\?>/", "", $xml));
-        
-        var_dump($xml);
 
         return $xml;
     }

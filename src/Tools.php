@@ -16,6 +16,7 @@ use NFePHP\Common\Strings;
 use NFePHP\NFSe\WebISS\Common\Signer;
 use DOMDocument;
 use NFePHP\Common\DOMImproved as Dom;
+use Mpdf\Mpdf;
 
 class Tools extends ToolsBase {
 
@@ -306,8 +307,6 @@ class Tools extends ToolsBase {
 
         $this->lastResponse = simplexml_load_string($this->lastResponse);
 
-        var_dump($this->lastResponse);
-        
         if (isset($this->lastResponse->CancelarNfseResult->CancelarNfseResposta)){
 
             return $this->lastResponse->CancelarNfseResult->CancelarNfseResposta->asXML();
@@ -317,12 +316,51 @@ class Tools extends ToolsBase {
 
     }
 
-    public function generateUrlPDFNfse($code_municipio, $CodigoVerificacao, $nnf, $cnpj_emit ){
+   public function generatePDFNfse($xml, $tpAmb, $status){
 
-        throw new \Exception("Não foi possivel gerar o PDF");
-        
+        $template = file_get_contents(realpath(__DIR__ . '/../template') . '/nfse.html');
 
-    }
+        $replace = array(
+           'logo' =>  'data:image/png;base64,' . base64_encode(file_get_contents(realpath(__DIR__ . '/../template') . '/logo.png')),
+           'logo-uberaba' => 'data:image/jpg;base64,' . base64_encode(file_get_contents(realpath(__DIR__ . '/../template') . '/uberaba-200.jpg')),
+           'url-selo' => asset('/../vendor/Focus599Dev/sped-nfswebiss/template/selo-wbiss.jpg'),
+           'nfenum' => $xml->Nfse->InfNfse->IdentificacaoRps->Numero,
+           'serie' => $xml->Nfse->InfNfse->IdentificacaoRps->Serie,
+           'dhemi' => (new \DateTime($xml->Nfse->InfNfse->DataEmissao))->format('d/m/Y'),
+           'dhEmisec' => (new \DateTime($xml->Nfse->InfNfse->DataEmissao))->format('d/m/Y H:i'),
+           'dhcomp' => (new \DateTime($xml->Nfse->InfNfse->DataEmissao))->format('m/Y'),
+           'xMun' => $xml->Nfse->InfNfse->PrestadorServico->Endereco->Uf,
+           'regimeTrib' => $xml->Nfse->InfNfse->RegimeEspecialTributacao ? 'Nenhum' : 'Esp&eacute;cial',
+           'naturesaop' => $xml->Nfse->InfNfse->NaturezaOperacao == 1 ? 'Trib. no munic&#237;pio de Uberaba' : 'Trib. forfor&aacute; munic&#237;pio de Uberaba',
+           'nfsserie' => substr($xml->Nfse->InfNfse->Numero, 0, 7),
+           'nfsnum' => substr($xml->Nfse->InfNfse->Numero, 7),
+           'codveri' => $xml->Nfse->InfNfse->CodigoVerificacao,
+           'emirazao' => $xml->Nfse->InfNfse->PrestadorServico->RazaoSocial,
+           'emicnpj' => $this->formatCNPJ($xml->Nfse->InfNfse->PrestadorServico->IdentificacaoPrestador->Cnpj),
+           'email' => $xml->Nfse->InfNfse->PrestadorServico->Contato->Email,
+        );
+
+        foreach ($replace as $key => $value) {
+            
+            $template = str_replace("{{%$key}}", $value, $template);
+
+        }
+
+        $mpdf = new Mpdf();
+
+        $mpdf->SetDisplayMode(100,'default');
+
+        $mpdf->allow_charset_conversion = true;
+
+        $mpdf->charset_in='iso-8859-4';
+
+        $mpdf->SetMargins(0,0,0);    
+
+        $mpdf->WriteHTML(utf8_decode($template));
+
+        $mpdf->Output();
+
+   }
 
 }                                                                                                                            
 
