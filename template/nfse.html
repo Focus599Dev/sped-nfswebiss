@@ -86,6 +86,11 @@
 		background-size: cover;
 		background-repeat: no-repeat;
 	}
+
+	.descNFS{
+		min-height: 100px;
+		padding: 15px 0px;
+	}
 </style>
 
 <table style="width: 100%">
@@ -265,16 +270,18 @@
 		</td>
 	</tr>
 	<tr>
-		<td colspan="5">
+		<td colspan="5" class="height-40">
 			PRESTADOR DE SERVI&Ccedil;OS
 		</td>
 	</tr>
 	<tr>
-		<td colspan="5">
+		<td colspan="5" class="border-bottom-strong">
 			<table>
 				<tr>
 					<td style="width:15%">
-						Logo
+						
+						<img src="{{%logoPres}}" width="148px" alt="logo"/>
+						
 					</td>
 					<td style="width:85%">
 						<table style="width: 100%">
@@ -325,6 +332,30 @@
 												</p>
 											</td>
 										</tr>
+										<tr>
+											<td>
+												<p class="style-1">
+													<b>
+														{{%inscMuniEmi}}
+													</b>
+												</p>
+											</td>
+											<td align="center">
+												<p class="style-1">
+													{{%FoneEmi}}
+												</p>
+											</td>
+											<td align="center">
+												<p class="style-1">
+													{{%OpSimpleNaciEmi}}
+												</p>
+											</td>
+											<td align="center">
+												<p class="style-1">
+													{{%IncetCultEmi}}
+												</p>
+											</td>
+										</tr>
 									</table>
 								</td>
 								<td align="center">
@@ -336,11 +367,326 @@
 									</p>
 								</td>
 							</tr>
+							<tr>
+								<td colspan="2">
+									<p class="style-5">
+										Endere&ccedil;o
+									</p>
+									<p class="style-1">
+										{{%EnderecoEmi}}
+									</p>
+								</td>
+							</tr>
 						</table>
 					</td>
 				</tr>
 			</table>
 		</td>
-		
+	</tr>
+	<tr>
+		<td colspan="5" class="height-40">
+			TOMADOR DE SERVI&Ccedil;OS
+		</td>
+	</tr>
+	<tr>
+		<td colspan="5">
+			<table style="width: 100%">
+				<tr>
+					<td style="width: 70%">
+						<p class="style-5">
+							Raz&#227;o Social
+						</p>
+						<p class="style-1">
+							<b>{{%destrazao}}</b>
+						</p>
+					</td>
+					<td style="width: 30%">
+						<p class="style-5">
+							CPF/CNPJ
+						</p>
+						<p class="style-1">
+							<b>{{%destCNPJ}}</b>
+						</p>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<table style="width: 100%">
+				<tr>
+					<td>
+						<p class="style-5">
+							Inscri&ccedil;&atilde;o Municipal
+						</p>
+					</td>
+					<td align="center">
+						<p class="style-5">
+							Fone/Fax
+						</p>
+					</td>
+					<td align="center">
+						<p class="style-5">
+							Email
+						</p>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p class="style-1">
+							<b>
+								{{%inscMuniDest}}
+							</b>
+						</p>
+					</td>
+					<td align="center">
+						<p class="style-1">
+							{{%FoneDest}}
+						</p>
+					</td>
+					<td align="center">
+						<p class="style-1">
+							{{%EmailDest}}
+						</p>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="5" class="border-bottom-strong">
+			<p class="style-5">
+				Endere&ccedil;o
+			</p>
+			<p class="style-1">
+				{{%EnderecoDest}}
+			</p>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="5" class="descNFS border-bottom-strong style-5">
+			<div class="descNFS">
+				C&oacute;digo Tributa&ccedil;&atilde;o Munic&iacute;pio: {{%codTrib}} - {{%textCodeTrib}}
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="5">
+			DESCRI&Ccedil;&Atilde;O DOS SERVI&Ccedil;OS
+		</td>
+	</tr>
+	<tr>
+		<td colspan="5" class="descNFS border-bottom-strong style-5">
+			<div class="descNFS">{{%Discriminacao}}</div>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="5">
+			RETEN&Ccedil;&Otilde;ES FEDERAIS
+		</td>
+	</tr>
+	<tr>
+		<td colspan="5" class="border-bottom-strong">
+			<table style="width: 100%">
+				<tr>
+					<td style="text-align: right;">
+						<p class="style-5">
+							PIS (R$)
+						</p>
+					</td>
+					<td style="text-align: right;">
+						<p class="style-5">
+							COFINS (R$)
+						</p>
+					</td>
+					<td style="text-align: right;">
+						<p class="style-5">
+							INSS (R$)
+						</p>
+					</td>
+					<td style="text-align: right;">
+						<p class="style-5">
+							IR (R$)
+						</p>
+					</td>
+					<td style="text-align: right;">
+						<p class="style-5">
+							CSLL (R$)
+						</p>
+					</td>
+					<td style="text-align: right;">
+						<p class="style-5">
+							Outras Reten&ccedil;&otilde;es (R$)
+						</p>
+					</td>
+				</tr>
+				<tr>
+					<td style="text-align: right;">
+						<p class="style-1">
+							{{%vPIS}}
+						</p>
+					</td>
+					<td style="text-align: right;">
+						<p class="style-1">
+							{{%vCOFINS}}
+						</p>
+					</td>
+					<td style="text-align: right;">
+						<p class="style-1">
+							{{%vINSS}}
+						</p>
+					</td>
+					<td style="text-align: right;">
+						<p class="style-1">
+							{{%vIR}}
+						</p>
+					</td>
+					<td style="text-align: right;">
+						<p class="style-1">
+							{{%vCSLL}}
+						</p>
+					</td>
+					<td style="text-align: right;">
+						<p class="style-1">
+							{{%vOthers}}
+						</p>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="5">
+			VALORES
+		</td>
+	</tr>
+	<tr>
+		<td colspan="5" class="border-bottom-strong">
+			<table style="width: 100%">
+				<tr>
+					<td style="text-align: right;">
+						<p class="style-5">
+							Valor dos Servi&ccedil;os (R$)
+						</p>
+					</td>
+					<td style="text-align: right;">
+						<p class="style-5">
+							Dedu&ccedil;&otilde;es (R$)
+						</p>
+					</td>
+					<td style="text-align: right;">
+						<p class="style-5">
+							Desconto Incondicionado (R$)
+						</p>
+					</td>
+					<td style="text-align: right;">
+						<p class="style-5">
+							Base de C&aacute;lculo (R$)
+						</p>
+					</td>
+					<td style="text-align: right;">
+						<p class="style-5">
+							Al&iacute;quota (%)
+						</p>
+					</td>
+				</tr>
+				<tr>
+					<td style="text-align: right;">
+						<p class="style-1">
+							{{%valorServ}}
+						</p>
+					</td>
+					<td style="text-align: right;">
+						<p class="style-1">
+							{{%valorDedu}}
+						</p>
+					</td>
+					<td style="text-align: right;">
+						<p class="style-1">
+							{{%valorIncod}}
+						</p>
+					</td>
+					<td style="text-align: right;">
+						<p class="style-1">
+							{{%valorBasecalc}}
+						</p>
+					</td>
+					<td style="text-align: right;">
+						<p class="style-1">
+							{{%Aliquota}}
+						</p>
+					</td>
+				</tr>
+				<tr>
+					<td style="text-align: right;">
+						<p class="style-5">
+							ISS (R$)
+						</p>
+					</td>
+					<td style="text-align: right;">
+						<p class="style-5">
+							ISS Retido (R$)
+						</p>
+					</td>
+					<td style="text-align: right;">
+						<p class="style-5">
+							Desconto Condicionado (R$)
+						</p>
+					</td>
+					<td style="text-align: right;">
+						<p class="style-5">
+							Valor L&iacute;quido (R$)
+						</p>
+					</td>
+					<td style="text-align: right;">
+						<p class="style-5">
+							<b>
+								Valor Total da Nota (R$)
+							</b>
+						</p>
+					</td>
+				</tr>
+				<tr>
+					<td style="text-align: right;">
+						<p class="style-1">
+							{{%valorISS}}
+						</p>
+					</td>
+					<td style="text-align: right;">
+						<p class="style-1">
+							{{%valorISSR}}
+						</p>
+					</td>
+					<td style="text-align: right;">
+						<p class="style-1">
+							{{%valorCond}}
+						</p>
+					</td>
+					<td style="text-align: right;">
+						<p class="style-1">
+							{{%valorLiquido}}
+						</p>
+					</td>
+					<td style="text-align: right;">
+						<p class="style-1">
+							<b>
+								{{%valorServ}}
+							</b>
+						</p>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="5">
+			OUTRAS INFORMA&Ccedil;&Otilde;ES
+		</td>
+	</tr>
+	<tr>
+		<td colspan="5" class="descNFS border-bottom-strong style-1">
+			<div class="descNFS"><b>{{%OutrasInformacoes}}</b></div>
+		</td>
 	</tr>
 </table>
