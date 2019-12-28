@@ -95,16 +95,14 @@ class Parser {
 
             $metodo = strtolower(str_replace(' ', '', $fields[0])).'Entity';
 
-            if (!method_exists(__CLASS__, $metodo)) {
-                //campo não definido
-                throw DocumentsException::wrongDocument(16, $lin);
-            }
+            if (method_exists(__CLASS__, $metodo)) {
 
-            $struct = $this->structure[strtoupper($fields[0])];
+		    $struct = $this->structure[strtoupper($fields[0])];
 
-            $std = $this->fieldsToStd($fields, $struct);
+		    $std = $this->fieldsToStd($fields, $struct);
 
-            $this->$metodo($std);
+		    $this->$metodo($std);
+	    }
         }
     }
 
