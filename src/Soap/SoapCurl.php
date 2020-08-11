@@ -11,9 +11,9 @@ namespace NFePHP\NFSe\WebISS\Soap;
  * @link       https://github.com/Focus599Dev/sped-nfsginfe for the canonical source repository
  */
 
-use NFePHP\NFSe\WebISS\Soap\SoapBase;
-use NFePHP\NFSe\WebISS\Soap\SoapInterface;
-use NFePHP\NFSe\WebISS\Exception\SoapException;
+use NFePHP\NFSe\GINFE\Soap\SoapBase;
+use NFePHP\NFSe\GINFE\Soap\SoapInterface;
+use NFePHP\NFSe\GINFE\Exception\SoapException;
 use NFePHP\Common\Certificate;
 use Psr\Log\LoggerInterface;
 
