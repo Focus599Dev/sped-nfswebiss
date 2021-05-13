@@ -624,6 +624,41 @@ class Tools {
 
         return substr($cpf, 0, 3) . '.' . substr($cpf, 3, 3) . '.' . substr($cpf, 6, 3) . '-' . substr($cpf, 9, 2);
     }
+    
+    public function getPdfPath($xml){
+
+        $oldEfit = config('envs.OLD_EFIT_ABSOLUTE');
+
+        $dtFolder = substr(str_replace("-", "", (new \DateTime($xml->Nfse->InfNfse->DataEmissao))->format('d/m/Y')), 0, 6);
+
+        $dtFolder2 = substr(str_replace("-", "", (new \DateTime($xml->Nfse->InfNfse->DataEmissao))->format('d/m/Y')), 6, 2);
+
+        if (trim($dtFolder) === "") {
+            $dtFolder = "UNKNOW";
+        }
+
+        $path = $oldEfit . "files/nfs/pdf/{$dtFolder}{$dtFolder2}/";
+
+        if (!file_exists($path)) {
+            mkdir($path, 0777, true);
+        }
+
+        return $path;
+    }
+    
+
+    public function getPdfFileName($xml){
+
+        $num = $xml->Nfse->InfNfse->IdentificacaoRps->Numero;
+
+        $rps = $xml->Nfse->InfNfse->Numero;
+
+        $type = $xml->Nfse->InfNfse->IdentificacaoRps->Tipo;
+
+        $fileName = "{$num}" . "-{$rps}" . "-{$type}" . ".pdf";
+
+        return $fileName;
+    }
 }                                                                                                                            
 
 ?>

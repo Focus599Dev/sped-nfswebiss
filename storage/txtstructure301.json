@@ -1,0 +1,17 @@
+{
+    "NOTAFISCAL": "NOTAFISCAL|1|",
+    "A": "A|NumeroLote|3.0.1||MesCompetencia|AnoCompetencia|",
+    "B": "B|Cnpj|InscricaoMunicipal|QuantidadeRps|",
+    "C": "C|Cnpj|InscricaoMunicipal|",
+    "E": "E|RazaoSocial|Endereco|Contato|Telefone|Email|Numero|Complemento|Bairro|CodigoMunicipio|Uf|Cep|Prefixo|",
+    "E02": "E02|Cnpj|InscricaoMunicipal|RgIe|NomeFantasia|DentroPais|Local|UfFora|MunicipioFora|PaisFora|Situacao|",
+    "E03": "E03|RazaoSocial|CpfCnpj|InscricaoMunicipal|",
+    "F": "F|CodigoObra|Art|Obra|",
+    "H": "H|RPSNum|",
+    "H01": "H01|Numero|Serie|Tipo|",
+    "I02": "I02|Numero|Serie|Tipo|",
+    "M": "M|ValorServicos|ValorDeducoes|ValorPis|ValorCofins|ValorInss|ValorIr|ValorCsll|IssRetido|ValorIss|ValorIssRetido|ValorOutrasRetencoes|BaseCalculo|Aliquota|ValorLiquidoNfse|DescontoIncondicionado|AliquotaAtributos|DescontoCondicionado|Deducao|Imposto|Observacao|DataVencimento|ContraApresentacao|",
+    "N": "N|ItemListaServico|CodigoCnae|CodigoTributacaoMunicipio|Discriminacao|CodigoMunicipio|ValorIcms|ValorIpi|ValorIof|ValorCide|ValorOutrosTributos|Codigo|ValorUnit|Quantidade|Desconto|",
+    "N01": "N01|MatDescricao|MatValorUnit|MatQuantidade|MatNota|MatCpfCnpj|DeduMateriais|",
+    "W": "W|DataEmissao|NaturezaOperacao|RegimeEspecialTributacao|OptanteSimplesNacional|IncentivadorCultural|Status|"
+}

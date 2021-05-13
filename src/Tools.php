@@ -52,9 +52,9 @@ class Tools extends ToolsBase {
         $parameters = ['RecepcionarLoteRps' => $request];
 
         $request = $this->MakeEnvelope($servico, $request);
-        
+
         $this->lastResponse = $this->sendRequest($request, $parameters);
-        
+
         $this->lastResponse = $this->removeStuffs($this->lastResponse);
 
         $this->lastResponse = simplexml_load_string($this->lastResponse);
@@ -109,7 +109,7 @@ class Tools extends ToolsBase {
         $parameters = ['ConsultarLoteRpsEnvio' => $request];
 
         $request = $this->MakeEnvelope($servico, $request);
-        
+
         $this->lastResponse = $this->sendRequest($request, $parameters);
 
         $this->lastResponse = $this->removeStuffs($this->lastResponse);
@@ -402,7 +402,19 @@ class Tools extends ToolsBase {
 
         $mpdf->WriteHTML(utf8_decode($template));
 
-        $mpdf->Output();
+        if (isset($status)) {
+
+            $mpdf->Output();
+        } else {
+
+            $fileName = $this->getPdfFileName($xml);
+    
+            $path = $this->getPdfPath($xml) . $fileName;
+
+            $mpdf->Output($path, 'F');
+
+            return $path;
+        }
 
    }
 

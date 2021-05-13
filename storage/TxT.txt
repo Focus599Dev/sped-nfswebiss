@@ -1,0 +1,15 @@
+NOTAFISCAL|1
+A|NumeroLote|3.0.1||MesCompetencia|AnoCompetencia
+B|Cnpj|InscricaoMunicipal|QuantidadeRps
+C|Cnpj|InscricaoMunicipal
+E|RazaoSocial|Endereco|Contato|Telefone|Email|Numero|Complemento|Bairro|CodigoMunicipio|Uf|Cep|Prefixo
+E02|Cnpj|InscricaoMunicipal|RgIe|NomeFantasia|DentroPais|Local|UfFora|MunicipioFora|PaisFora|Situacao
+E03|RazaoSocial|CpfCnpj|InscricaoMunicipal
+F|CodigoObra|Art|Obra
+H|RPSNum
+H01|Numero|Serie|Tipo
+I02|Numero|Serie|Tipo
+M|ValorServicos|AliquotaAtributos|ValorDeducoes|ValorPis|ValorCofins|ValorInss|ValorIr|ValorCsll|IssRetido|ValorIss|ValorIssRetido|OutrasRetencoes|BaseCalculo|Aliquota|ValorLiquidoNfse|DescontoIncondicionado|DescontoCondicionado|Desconto|ValorUnit|Quantidade|Deducao|Imposto|Observacao|DataVencimento|ContraApresentacao
+N|ItemListaServico|CodigoCnae|CodigoTributacaoMunicipio|Discriminacao|CodigoMunicipio|Icms|Ipi|Iof|Cide|OutrosTributos
+N01|MatDescricao|MatValorUnit|MatQuantidade|MatNota|MatCpfCnpj|DeduMateriais
+W|DataEmissao|NaturezaOperacao|RegimeEspecialTributacao|OptanteSimplesNacional|IncentivadorCultural|Status
