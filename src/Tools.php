@@ -17,6 +17,7 @@ use NFePHP\NFSe\WebISS\Common\Signer;
 use DOMDocument;
 use NFePHP\Common\DOMImproved as Dom;
 use Mpdf\Mpdf;
+use chillerlan\QRCode\{QRCode, QROptions};
 
 class Tools extends ToolsBase {
 
@@ -52,9 +53,9 @@ class Tools extends ToolsBase {
         $parameters = ['RecepcionarLoteRps' => $request];
 
         $request = $this->MakeEnvelope($servico, $request);
-
+        
         $this->lastResponse = $this->sendRequest($request, $parameters);
-
+        
         $this->lastResponse = $this->removeStuffs($this->lastResponse);
 
         $this->lastResponse = simplexml_load_string($this->lastResponse);
@@ -109,7 +110,7 @@ class Tools extends ToolsBase {
         $parameters = ['ConsultarLoteRpsEnvio' => $request];
 
         $request = $this->MakeEnvelope($servico, $request);
-
+        
         $this->lastResponse = $this->sendRequest($request, $parameters);
 
         $this->lastResponse = $this->removeStuffs($this->lastResponse);
@@ -316,6 +317,10 @@ class Tools extends ToolsBase {
 
     }
 
+    public function formatPhone($phone){
+        return '('. substr($phone,0,2) . ') ' . substr($phone,2,4) . '-' . substr($phone,6,9);
+    }
+
    public function generatePDFNfse($xml, $tpAmb, $status, $logoPath){
 
         $template = file_get_contents(realpath(__DIR__ . '/../template') . '/nfse.html');
@@ -330,6 +335,20 @@ class Tools extends ToolsBase {
         $codeTrib = array(
             '1401' => 'Lubrifica&ccedil;&atilde;o, limpeza, lustra&ccedil;&atilde;o, revis&atilde;o, carga e recarga, conserto, restaura&ccedil;&atilde;o, blindagem, manuten&ccedil;&atilde;o e conserva&ccedil;&atilde;o de m&aacute;quinas, ve&iacute;culos, aparelhos, equipamentos, motores, elevadores ou de qualquer objeto (exceto pe&ccedil;as e partes empregadas, que ficam sujeitas ao ICMS)'
         );
+
+        $url = 'https://www1.webiss.com.br/uberaba/FormVerificarNFE.aspx?Login=ANONIMO&idRec=verificarnfse&tipo';
+
+        $options = new QROptions([
+            'version'    => 5,
+            'outputType' => QRCode::OUTPUT_MARKUP_SVG,
+            'eccLevel'   => QRCode::ECC_L,
+        ]);
+
+        $qrcode = new QRCode($options);
+        $qrcode->render($url, realpath(__DIR__ . '/../template') . '/qr.svg');
+
+
+        $img = realpath(__DIR__ . '/../template' ) . '/qr.svg';
 
         $replace = array(
            'logo' =>  'data:image/png;base64,' . base64_encode(file_get_contents(realpath(__DIR__ . '/../template') . '/logo.png')),
@@ -351,14 +370,14 @@ class Tools extends ToolsBase {
            'email' => $xml->Nfse->InfNfse->PrestadorServico->Contato->Email,
            'logoPres' => $contentlogoPres,
            'inscMuniEmi' => $xml->Nfse->InfNfse->PrestadorServico->IdentificacaoPrestador->InscricaoMunicipal,
-           'FoneEmi' => isset($xml->Nfse->InfNfse->PrestadorServico->Contato->Telefone) ? $xml->Nfse->InfNfse->PrestadorServico->Contato->Telefone : '',
+           'FoneEmi' => $this->formatPhone($xml->Nfse->InfNfse->PrestadorServico->Contato->Telefone),
            'OpSimpleNaciEmi' => $xml->Nfse->InfNfse->OptanteSimplesNacional == 1 ? 'Sim' : 'Não',
            'IncetCultEmi' => $xml->Nfse->InfNfse->IncentivadorCultural == 1 ? 'Sim' : 'Não',
            'EnderecoEmi' => $xml->Nfse->InfNfse->PrestadorServico->Endereco->Endereco . ', ' . $xml->Nfse->InfNfse->PrestadorServico->Endereco->Numero . ' Bairro ' . $xml->Nfse->InfNfse->PrestadorServico->Endereco->Bairro . ' CEP ' . $xml->Nfse->InfNfse->PrestadorServico->Endereco->Cep . ' Uberaba - MG',
            'destrazao' => $xml->Nfse->InfNfse->TomadorServico->RazaoSocial,
            'destCNPJ' => isset($xml->Nfse->InfNfse->TomadorServico->IdentificacaoTomador->CpfCnpj->Cnpj) ? $this->formatCNPJ($xml->Nfse->InfNfse->TomadorServico->IdentificacaoTomador->CpfCnpj->Cnpj) : $this->formatCPF($xml->Nfse->InfNfse->TomadorServico->IdentificacaoTomador->CpfCnpj->Cpf),
            'inscMuniDest' => isset($xml->Nfse->InfNfse->TomadorServico->IdentificacaoTomador->InscricaoMunicipal) ? $xml->Nfse->InfNfse->TomadorServico->IdentificacaoTomador->InscricaoMunicipal : '',
-           'FoneDest' => $xml->Nfse->InfNfse->TomadorServico->Contato->Telefone,
+           'FoneDest' =>  $this->formatPhone($xml->Nfse->InfNfse->TomadorServico->Contato->Telefone),
            'EmailDest' => $xml->Nfse->InfNfse->TomadorServico->Contato->Email,
            'EnderecoDest' => $xml->Nfse->InfNfse->TomadorServico->Endereco->Endereco . ', ' . $xml->Nfse->InfNfse->TomadorServico->Endereco->Numero . ' Bairro ' . $xml->Nfse->InfNfse->TomadorServico->Endereco->Bairro . ' CEP ' . $xml->Nfse->InfNfse->TomadorServico->Endereco->Cep,
            'OutrasInformacoes' => $xml->Nfse->InfNfse->OutrasInformacoes,
@@ -381,6 +400,7 @@ class Tools extends ToolsBase {
            'valorCond' => '0,00',
            'valorLiquido' => number_format((String)$xml->Nfse->InfNfse->Servico->Valores->ValorLiquidoNfse, 2 ,',', '.'),
            'valorTotal' => number_format((String)$xml->Nfse->InfNfse->Servico->Valores->ValorLiquidoNfse, 2 ,',', '.'),
+           'img' => $img,
         );
 
 
@@ -402,19 +422,7 @@ class Tools extends ToolsBase {
 
         $mpdf->WriteHTML(utf8_decode($template));
 
-        if (isset($status)) {
-
-            $mpdf->Output();
-        } else {
-
-            $fileName = $this->getPdfFileName($xml);
-    
-            $path = $this->getPdfPath($xml) . $fileName;
-
-            $mpdf->Output($path, 'F');
-
-            return $path;
-        }
+        $mpdf->Output();
 
    }
 
