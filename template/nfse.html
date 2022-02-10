@@ -1,692 +1,567 @@
 <style>
+  @page {
+    margin: 5mm;
+    margin-header: 0mm;
+    margin-footer: 0mm;
+  }
 
-	@page {
-        margin: 5mm;
-        margin-header: 0mm;
-        margin-footer: 0mm;
-    }
+  .border-full {
+    border: 1px solid #000;
+  }
 
-	.border-full{
-		border: 1px solid #000;
-	}
+  .border-left {
+    border-left: 1px solid #000;
+  }
 
-	.border-left{
-		border-left: 1px solid #000;
-	}
+  .border-right {
+    border-right: 1px solid #000;
+  }
 
-	.border-right{
-		border-right: 1px solid #000;
-	}
+  .border-top {
+    border-top: 1px solid #000;
+  }
 
-	.border-top{
-		border-top: 1px solid #000;
-	}
+  .border-bottom {
+    border-bottom: 1px solid #000;
+  }
 
-	.border-bottom{
-		border-bottom: 1px solid #000;
-	}
+  .border-bottom-strong {
+    border-bottom: 4px solid #ccc;
+  }
 
-	.border-bottom-strong{
-		border-bottom: 4px solid #ccc;
-	}
+  table {
+    border: 0;
+    border-collapse: collapse;
+  }
 
-	table{
-		border: 0;
-		border-collapse: collapse;
-	}
+  body {
+    padding: 0px;
+    margin: 0px;
+    font-family: Arial, Helvetica, sans-serif;
+  }
 
-	body{
-		padding: 0px;
-		margin: 0px;
-		font-family: Arial, Helvetica, sans-serif;
-	}
+  .style-1 {
+    font-size: 10px;
+  }
 
-	.style-1{
-		font-size: 15px;
-	}
+  .style-2 {
+    font-size: 12px;
+  }
 
-	.style-2{
-		font-size: 14px;
-	}
+  .style-3 {
+    font-size: 13px;
+  }
 
-	.style-3{
-		font-size: 12px;
-	}
+  .style-4 {
+    font-size: 18px;
+  }
 
-	.style-4{
-		font-size: 18px;
-	}
+  .style-5 {
+    font-size: 9px;
+  }
 
-	.style-5{
-		font-size: 10px;
-	}
+  .style-6 {
+    font-size: 22px;
+  }
 
-	.style-6{
-		font-size: 22px;
-	}
+  .height-50 {
+    height: 50px;
+  }
 
-	.height-50{
-		height: 50px;
-	}
+  .height-40 {
+    height: 40px;
+  }
 
-	.height-40{
-		height: 40px;
-	}
+  .height-30 {
+    height: 30px;
+  }
 
-	.height-30{
-		height: 30px;
-	}
+  .height-20 {
+    height: 20px;
+  }
+  .height-60 {
+    height: 60px;
+  }
 
-	.height-60{
-		height: 60px;
-	}
+  .background-selo {
+    background-image: url("{{%url-selo}}");
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
 
-	.background-selo{
-		background-image: url('{{%url-selo}}'); 
-		background-size: cover;
-		background-repeat: no-repeat;
-	}
-
-	.descNFS{
-		min-height: 100px;
-		padding: 15px 0px;
-	}
+  .descNFS {
+    padding: 15px 0px;
+  }
 </style>
 
 <table style="width: 100%">
-	<tr>
-		<td style="width: 70%; margin-right: 5px;">
-			<table style="width: 100%">
-				<tr>
-					<td class="border-bottom-strong">
-						<table>
-							<tr>
-								<td>
-									<img src="{{%logo}}" width="148px" alt="logo uberaba">
-								</td>
-								<td>
-									<img src="{{%logo-uberaba}}" width="100px" alt="logo uberaba">
-									
-								</td>
-								<td>
-									<table style="width: 100%">
-										<tr>
-											<td class="style-1 height-50">
-												
-												<b>
-													Prefeitura Municipal de Uberaba
-												</b>
+  <tr>
+    <td style="width: 75%; margin-right: 30px">
+      <table style="width: 100%">
+        <tr>
+          <td class="border-bottom-strong">
+            <table>
+              <tr>
+                <td>
+                  <img src="{{%logo}}" width="80px" alt="logo uberaba" />
+                </td>
+                <td>
+                  <table style="width: 100%">
+                    <tr>
+                      <td class="style-1 height-20">
+                        <b> Prefeitura Municipal de Uberaba </b>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="style-3">
+                        <p>Secretaria Municipal de Fazenda</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="style-3 height-30">
+                        <p>Central Tributária - ISSQN</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="style-3">
+                        <p>
+                          R. Dom Luiz Maria de Santana, 141 - Mercês Fone: (34)
+                          3318-2000
+                        </p>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
 
-											</td>
-										</tr>
-										<tr>
-											<td class="style-3">
-											
-												<b>
-													Secretaria Municipal de Fazenda
-												</b>
-
-											</td>
-										</tr>
-										<tr>
-											<td class="style-3 height-50">
-											
-												<b>
-													Central Tributária - ISSQN
-												</b>
-												
-											</td>
-										</tr>
-										<tr>
-											<td class="style-3">
-											
-												<b>
-													R. Dom Luiz Maria de Santana, 141 - Mercês Fone: (34) 3318-2000
-												</b>
-												
-											</td>
-										</tr>
-									</table>
-								</td>
-							</tr>
-						</table>
-					</td>
-				</tr>
-
-				<tr>
-					<td class="border-bottom-strong">
-						<table style="width: 100%">
-							<tr>
-								<td class="style-4 height-50" align="center">
-									<b>
-										Nota Fiscal de Servi&ccedil;os Eletr&ocirc;nica - NFS-e
-									</b>
-								</td>
-							</tr>
-							<tr>
-								<td align="center" class="height-30">
-									RPS n&uacute;mero {{%nfenum}} S&eacute;rie {{%serie}} emitido em {{%dhemi}}
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<table style="width: 100%">
-										<tr>
-											<td>
-												<p class="style-5">
-													Emiss&atilde;o (Hor&aacute;rio de Bras&iacute;lia)
-												</p>
-												<p class="style-1">
-													<b>
-														{{%dhEmisec}}
-													</b>
-												</p>
-											</td>
-											<td>
-												<p class="style-5">
-													Per&iacute;odo de Compet&ecirc;ncia
-												</p>
-												<p class="style-1">
-													<b>
-														{{%dhcomp}}
-													</b>
-												</p>
-											</td>
-											<td>
-												<p class="style-5">
-													Munic&iacute;pio de Presta&ccedil;&atilde;o do Servi&ccedil;o
-												</p>
-												<p class="style-1">
-													<b>
-														Uberaba - {{%xMun}}
-													</b>
-												</p>
-											</td>
-										</tr>
-										<tr>
-											<td style="margin-top: 10px">
-												<p class="style-5">
-													Reg. Especial Tributa&ccedil;&atilde;o
-												</p>
-												<p class="style-1">
-													<b>
-														{{%regimeTrib}}
-													</b>
-												</p>
-											</td>
-											<td style="margin-top: 10px">
-												
-											</td>
-											<td style="margin-top: 10px">
-												<p class="style-5">
-													Natureza da Opera&ccedil;&atilde;o
-												</p>
-												<p class="style-1">
-													<b>
-														{{%naturesaop}}
-													</b>
-												</p>
-											</td>
-										</tr>
-									</table>
-								</td>
-							</tr>
-						</table>
-					</td>
-				</tr>
-			</table>
-		</td>
-		<td style="width: 30%;" class="background-selo height-50" valign="top" align="center">
-			<table>
-				<tr>
-					<td>
-						<p class="style-4">
-							<b>Nota: {{%nfsserie}}</b>
-						</p>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<p class="style-6">
-							<b>{{%nfsnum}}</b>
-						</p>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<p class="style-2 height-40">
-							<b>C&oacute;digo Verifica&ccedil;&atilde;o</b>
-						</p>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<p class="style-6">
-							<b>{{%codveri}}</b>
-						</p>
-					</td>
-				</tr>
-			</table>
-		</td>
-	</tr>
-	<tr>
-		<td colspan="5" class="height-40">
-			PRESTADOR DE SERVI&Ccedil;OS
-		</td>
-	</tr>
-	<tr>
-		<td colspan="5" class="border-bottom-strong">
-			<table>
-				<tr>
-					<td style="width:15%">
-						
-						<img src="{{%logoPres}}" width="148px" alt="logo"/>
-						
-					</td>
-					<td style="width:85%">
-						<table style="width: 100%">
-							<tr>
-								<td>
-									<p class="style-5">
-										Raz&#227;o Social
-									</p>
-									<p class="style-1">
-										<b>
-											{{%emirazao}}
-										</b>
-									</p>
-								</td>
-								<td>
-									<p class="style-5">
-										CPF/CNPJ
-									</p>
-									<p class="style-1">
-										<b>
-											{{%emicnpj}}
-										</b>
-									</p>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<table style="width: 100%">
-										<tr>
-											<td>
-												<p class="style-5">
-													Inscri&ccedil;&atilde;o Municipal
-												</p>
-											</td>
-											<td align="center">
-												<p class="style-5">
-													Fone/Fax
-												</p>
-											</td>
-											<td align="center">
-												<p class="style-5">
-													Simples Nacional
-												</p>
-											</td>
-											<td align="center">
-												<p class="style-5">
-													Incentivador Cultural
-												</p>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<p class="style-1">
-													<b>
-														{{%inscMuniEmi}}
-													</b>
-												</p>
-											</td>
-											<td align="center">
-												<p class="style-1">
-													{{%FoneEmi}}
-												</p>
-											</td>
-											<td align="center">
-												<p class="style-1">
-													{{%OpSimpleNaciEmi}}
-												</p>
-											</td>
-											<td align="center">
-												<p class="style-1">
-													{{%IncetCultEmi}}
-												</p>
-											</td>
-										</tr>
-									</table>
-								</td>
-								<td align="center">
-									<p class="style-5">
-										E-mail
-									</p>
-									<p class="style-2">
-										{{%email}}
-									</p>
-								</td>
-							</tr>
-							<tr>
-								<td colspan="2">
-									<p class="style-5">
-										Endere&ccedil;o
-									</p>
-									<p class="style-1">
-										{{%EnderecoEmi}}
-									</p>
-								</td>
-							</tr>
-						</table>
-					</td>
-				</tr>
-			</table>
-		</td>
-	</tr>
-	<tr>
-		<td colspan="5" class="height-40">
-			TOMADOR DE SERVI&Ccedil;OS
-		</td>
-	</tr>
-	<tr>
-		<td colspan="5">
-			<table style="width: 100%">
-				<tr>
-					<td style="width: 70%">
-						<p class="style-5">
-							Raz&#227;o Social
-						</p>
-						<p class="style-1">
-							<b>{{%destrazao}}</b>
-						</p>
-					</td>
-					<td style="width: 30%">
-						<p class="style-5">
-							CPF/CNPJ
-						</p>
-						<p class="style-1">
-							<b>{{%destCNPJ}}</b>
-						</p>
-					</td>
-				</tr>
-			</table>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<table style="width: 100%">
-				<tr>
-					<td>
-						<p class="style-5">
-							Inscri&ccedil;&atilde;o Municipal
-						</p>
-					</td>
-					<td align="center">
-						<p class="style-5">
-							Fone/Fax
-						</p>
-					</td>
-					<td align="center">
-						<p class="style-5">
-							Email
-						</p>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<p class="style-1">
-							<b>
-								{{%inscMuniDest}}
-							</b>
-						</p>
-					</td>
-					<td align="center">
-						<p class="style-1">
-							{{%FoneDest}}
-						</p>
-					</td>
-					<td align="center">
-						<p class="style-1">
-							{{%EmailDest}}
-						</p>
-					</td>
-				</tr>
-			</table>
-		</td>
-	</tr>
-	<tr>
-		<td colspan="5" class="border-bottom-strong">
-			<p class="style-5">
-				Endere&ccedil;o
-			</p>
-			<p class="style-1">
-				{{%EnderecoDest}}
-			</p>
-		</td>
-	</tr>
-	<tr>
-		<td colspan="5" class="descNFS border-bottom-strong style-5">
-			<div class="descNFS">
-				C&oacute;digo Tributa&ccedil;&atilde;o Munic&iacute;pio: {{%codTrib}} - {{%textCodeTrib}}
-			</div>
-		</td>
-	</tr>
-	<tr>
-		<td colspan="5">
-			DESCRI&Ccedil;&Atilde;O DOS SERVI&Ccedil;OS
-		</td>
-	</tr>
-	<tr>
-		<td colspan="5" class="descNFS border-bottom-strong style-5">
-			<div class="descNFS">{{%Discriminacao}}</div>
-		</td>
-	</tr>
-	<tr>
-		<td colspan="5">
-			RETEN&Ccedil;&Otilde;ES FEDERAIS
-		</td>
-	</tr>
-	<tr>
-		<td colspan="5" class="border-bottom-strong">
-			<table style="width: 100%">
-				<tr>
-					<td style="text-align: right;">
-						<p class="style-5">
-							PIS (R$)
-						</p>
-					</td>
-					<td style="text-align: right;">
-						<p class="style-5">
-							COFINS (R$)
-						</p>
-					</td>
-					<td style="text-align: right;">
-						<p class="style-5">
-							INSS (R$)
-						</p>
-					</td>
-					<td style="text-align: right;">
-						<p class="style-5">
-							IR (R$)
-						</p>
-					</td>
-					<td style="text-align: right;">
-						<p class="style-5">
-							CSLL (R$)
-						</p>
-					</td>
-					<td style="text-align: right;">
-						<p class="style-5">
-							Outras Reten&ccedil;&otilde;es (R$)
-						</p>
-					</td>
-				</tr>
-				<tr>
-					<td style="text-align: right;">
-						<p class="style-1">
-							{{%vPIS}}
-						</p>
-					</td>
-					<td style="text-align: right;">
-						<p class="style-1">
-							{{%vCOFINS}}
-						</p>
-					</td>
-					<td style="text-align: right;">
-						<p class="style-1">
-							{{%vINSS}}
-						</p>
-					</td>
-					<td style="text-align: right;">
-						<p class="style-1">
-							{{%vIR}}
-						</p>
-					</td>
-					<td style="text-align: right;">
-						<p class="style-1">
-							{{%vCSLL}}
-						</p>
-					</td>
-					<td style="text-align: right;">
-						<p class="style-1">
-							{{%vOthers}}
-						</p>
-					</td>
-				</tr>
-			</table>
-		</td>
-	</tr>
-	<tr>
-		<td colspan="5">
-			VALORES
-		</td>
-	</tr>
-	<tr>
-		<td colspan="5" class="border-bottom-strong">
-			<table style="width: 100%">
-				<tr>
-					<td style="text-align: right;">
-						<p class="style-5">
-							Valor dos Servi&ccedil;os (R$)
-						</p>
-					</td>
-					<td style="text-align: right;">
-						<p class="style-5">
-							Dedu&ccedil;&otilde;es (R$)
-						</p>
-					</td>
-					<td style="text-align: right;">
-						<p class="style-5">
-							Desconto Incondicionado (R$)
-						</p>
-					</td>
-					<td style="text-align: right;">
-						<p class="style-5">
-							Base de C&aacute;lculo (R$)
-						</p>
-					</td>
-					<td style="text-align: right;">
-						<p class="style-5">
-							Al&iacute;quota (%)
-						</p>
-					</td>
-				</tr>
-				<tr>
-					<td style="text-align: right;">
-						<p class="style-1">
-							{{%valorServ}}
-						</p>
-					</td>
-					<td style="text-align: right;">
-						<p class="style-1">
-							{{%valorDedu}}
-						</p>
-					</td>
-					<td style="text-align: right;">
-						<p class="style-1">
-							{{%valorIncod}}
-						</p>
-					</td>
-					<td style="text-align: right;">
-						<p class="style-1">
-							{{%valorBasecalc}}
-						</p>
-					</td>
-					<td style="text-align: right;">
-						<p class="style-1">
-							{{%Aliquota}}
-						</p>
-					</td>
-				</tr>
-				<tr>
-					<td style="text-align: right;">
-						<p class="style-5">
-							ISS (R$)
-						</p>
-					</td>
-					<td style="text-align: right;">
-						<p class="style-5">
-							ISS Retido (R$)
-						</p>
-					</td>
-					<td style="text-align: right;">
-						<p class="style-5">
-							Desconto Condicionado (R$)
-						</p>
-					</td>
-					<td style="text-align: right;">
-						<p class="style-5">
-							Valor L&iacute;quido (R$)
-						</p>
-					</td>
-					<td style="text-align: right;">
-						<p class="style-5">
-							<b>
-								Valor Total da Nota (R$)
-							</b>
-						</p>
-					</td>
-				</tr>
-				<tr>
-					<td style="text-align: right;">
-						<p class="style-1">
-							{{%valorISS}}
-						</p>
-					</td>
-					<td style="text-align: right;">
-						<p class="style-1">
-							{{%valorISSR}}
-						</p>
-					</td>
-					<td style="text-align: right;">
-						<p class="style-1">
-							{{%valorCond}}
-						</p>
-					</td>
-					<td style="text-align: right;">
-						<p class="style-1">
-							{{%valorLiquido}}
-						</p>
-					</td>
-					<td style="text-align: right;">
-						<p class="style-1">
-							<b>
-								{{%valorServ}}
-							</b>
-						</p>
-					</td>
-				</tr>
-			</table>
-		</td>
-	</tr>
-	<tr>
-		<td colspan="5">
-			OUTRAS INFORMA&Ccedil;&Otilde;ES
-		</td>
-	</tr>
-	<tr>
-		<td colspan="5" class="descNFS border-bottom-strong style-1">
-			<div class="descNFS"><b>{{%OutrasInformacoes}}</b></div>
-		</td>
-	</tr>
+        <tr>
+          <td class="border-bottom-strong">
+            <table style="width: 100%">
+              <tr>
+                <td class="style-4 height-20" align="center">
+                  <b>
+                    Nota Fiscal de Servi&ccedil;os Eletr&ocirc;nica - NFS-e
+                  </b>
+                </td>
+              </tr>
+              <tr>
+                <td align="center" class="height-30 style-2">
+                  RPS n&uacute;mero {{%nfenum}} S&eacute;rie {{%serie}} emitido
+                  em {{%dhemi}}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <table style="width: 100%">
+                    <tr>
+                      <td>
+                        <p class="style-5">
+                          Emiss&atilde;o (Hor&aacute;rio de Bras&iacute;lia)
+                        </p>
+                        <p class="style-1">
+                          <b> {{%dhEmisec}} </b>
+                        </p>
+                      </td>
+                      <td>
+                        <p class="style-5">
+                          Per&iacute;odo de Compet&ecirc;ncia
+                        </p>
+                        <p class="style-1">
+                          <b> {{%dhcomp}} </b>
+                        </p>
+                      </td>
+                      <td>
+                        <p class="style-5">
+                          Munic&iacute;pio de Presta&ccedil;&atilde;o do
+                          Servi&ccedil;o
+                        </p>
+                        <p class="style-1">
+                          <b> Uberaba - {{%xMun}} </b>
+                        </p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style="margin-top: 10px">
+                        <p class="style-5">
+                          Reg. Especial Tributa&ccedil;&atilde;o
+                        </p>
+                        <p class="style-1">
+                          <b> {{%regimeTrib}} </b>
+                        </p>
+                      </td>
+                      <td style="margin-top: 10px"></td>
+                      <td style="margin-top: 10px">
+                        <p class="style-5">
+                          Natureza da Opera&ccedil;&atilde;o
+                        </p>
+                        <p class="style-1">
+                          <b> {{%naturesaop}} </b>
+                        </p>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </td>
+    <td
+      style="width: 25%; padding: 10px"
+      class="background-selo height-50"
+      valign="top"
+      align="center"
+    >
+      <table>
+        <tr>
+          <td>
+            <p class="style-2">
+              <b>Nota: {{%nfsserie}}</b>
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <p class="style-2">
+              <b>{{%nfsnum}}</b>
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <p class="style-2 height-40">
+              <b>C&oacute;digo Verifica&ccedil;&atilde;o</b>
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <p class="style-2">
+              <b>{{%codveri}}</b>
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td align="center" style="padding: 10px">
+            <img
+              src="{{%img}}"
+              style="background-color: white"
+              width="100px"
+              alt=""
+            />
+          </td>
+        </tr>
+        <tr>
+          <td class="height-20"></td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="5" class="height-20 style-3">PRESTADOR DE SERVI&Ccedil;OS</td>
+  </tr>
+  <tr>
+    <td colspan="5" class="border-bottom-strong">
+      <table>
+        <tr>
+          <td style="width: 15%">
+            <img src="{{%logoPres}}" width="148px" alt="logo" />
+          </td>
+          <td style="width: 85%">
+            <table style="width: 100%">
+              <tr style="width: 100%">
+                <td style="width: 50%">
+                  <p class="style-5">Raz&#227;o Social</p>
+                  <p class="style-1">
+                    <b> {{%emirazao}} </b>
+                  </p>
+                </td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td style="width: 20%">
+                  <p class="style-5">CPF/CNPJ</p>
+                  <p class="style-1">
+                    <b> {{%emicnpj}} </b>
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <table style="width: 100%">
+                    <tr style="width: 100%">
+                      <td align="center" style="width: 20%">
+                        <p class="style-5">Inscri&ccedil;&atilde;o Municipal</p>
+                      </td>
+                      <td align="center" style="width: 20%">
+                        <p class="style-5">Fone/Fax</p>
+                      </td>
+                      <td align="center" style="width: 25%">
+                        <p class="style-5">Simples Nacional</p>
+                      </td>
+                      <td align="center" style="width: 25%">
+                        <p class="style-5">Incentivador Cultural</p>
+                      </td>
+                    </tr>
+                    <tr style="width: 100%">
+                      <td align="center" style="width: 28%">
+                        <p class="style-1">
+                          <b> {{%inscMuniEmi}} </b>
+                        </p>
+                      </td>
+                      <td align="left" style="width: 25%">
+                        <p class="style-1">{{%FoneEmi}}</p>
+                      </td>
+                      <td align="center" style="width: 24%">
+                        <p class="style-1">{{%OpSimpleNaciEmi}}</p>
+                      </td>
+                      <td align="center" style="width: 28%">
+                        <p class="style-1">{{%IncetCultEmi}}</p>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+                <td align="center" style="width: 20%">
+                  <p class="style-5">E-mail</p>
+                  <p class="style-2">{{%email}}</p>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2">
+                  <p class="style-5">Endere&ccedil;o</p>
+                  <p class="style-1">{{%EnderecoEmi}}</p>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="5" class="height-30 style-3">TOMADOR DE SERVI&Ccedil;OS</td>
+  </tr>
+  <tr>
+    <td colspan="5">
+      <table style="width: 100%">
+        <tr>
+          <td style="width: 70%">
+            <p class="style-5">Raz&#227;o Social</p>
+            <p class="style-1">
+              <b>{{%destrazao}}</b>
+            </p>
+          </td>
+          <td style="width: 30%">
+            <p class="style-5">CPF/CNPJ</p>
+            <p class="style-1">
+              <b>{{%destCNPJ}}</b>
+            </p>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <table style="width: 100%">
+        <tr style="width: 100%">
+          <td>
+            <p class="style-5">Inscri&ccedil;&atilde;o Municipal</p>
+          </td>
+          <td align="center">
+            <p class="style-5">Fone/Fax</p>
+          </td>
+          <td align="center">
+            <p class="style-5">Email</p>
+          </td>
+        </tr>
+        <tr style="width: 100%">
+          <td>
+            <p class="style-1">
+              <b> {{%inscMuniDest}} </b>
+            </p>
+          </td>
+          <td align="center">
+            <p class="style-1">{{%FoneDest}}</p>
+          </td>
+          <td align="center">
+            <p class="style-1">{{%EmailDest}}</p>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="5" class="border-bottom-strong">
+      <p class="style-5">Endere&ccedil;o</p>
+      <p class="style-1">{{%EnderecoDest}}</p>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="5" class="border-bottom-strong style-5" style="height: 100px">
+      <p class="descNFS">
+        C&oacute;digo Tributa&ccedil;&atilde;o Munic&iacute;pio: {{%codTrib}} -
+        {{%textCodeTrib}}
+      </p>
+    </td>
+  </tr>
+  <tr style="margin-top: 10px">
+    <td colspan="5" class="style-3 height-20">
+      DESCRI&Ccedil;&Atilde;O DOS SERVI&Ccedil;OS
+    </td>
+  </tr>
+  <tr style="width: 100%">
+    <td colspan="5" class="descNFS" align="justify">
+      <p class="style-1">{{%Discriminacao}}</p>
+    </td>
+  </tr>
+  <tr style="width: 100%">
+    <td colspan="5" class="border-bottom-strong" style="height: 200px"></td>
+  </tr>
+  <tr>
+    <td colspan="5" class="style-3">RETEN&Ccedil;&Otilde;ES FEDERAIS</td>
+  </tr>
+  <tr>
+    <td colspan="5" class="border-bottom-strong">
+      <table style="width: 100%">
+        <tr>
+          <td style="text-align: right">
+            <p class="style-5">PIS (R$)</p>
+          </td>
+          <td style="text-align: right">
+            <p class="style-5">COFINS (R$)</p>
+          </td>
+          <td style="text-align: right">
+            <p class="style-5">INSS (R$)</p>
+          </td>
+          <td style="text-align: right">
+            <p class="style-5">IR (R$)</p>
+          </td>
+          <td style="text-align: right">
+            <p class="style-5">CSLL (R$)</p>
+          </td>
+          <td style="text-align: right">
+            <p class="style-5">Outras Reten&ccedil;&otilde;es (R$)</p>
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align: right">
+            <p class="style-1">{{%vPIS}}</p>
+          </td>
+          <td style="text-align: right">
+            <p class="style-1">{{%vCOFINS}}</p>
+          </td>
+          <td style="text-align: right">
+            <p class="style-1">{{%vINSS}}</p>
+          </td>
+          <td style="text-align: right">
+            <p class="style-1">{{%vIR}}</p>
+          </td>
+          <td style="text-align: right">
+            <p class="style-1">{{%vCSLL}}</p>
+          </td>
+          <td style="text-align: right">
+            <p class="style-1">{{%vOthers}}</p>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="5" class="style-3">VALORES</td>
+  </tr>
+  <tr>
+    <td colspan="5" class="border-bottom-strong">
+      <table style="width: 100%">
+        <tr>
+          <td style="text-align: right">
+            <p class="style-5">Valor dos Servi&ccedil;os (R$)</p>
+          </td>
+          <td style="text-align: right">
+            <p class="style-5">Dedu&ccedil;&otilde;es (R$)</p>
+          </td>
+          <td style="text-align: right">
+            <p class="style-5">Desconto Incondicionado (R$)</p>
+          </td>
+          <td style="text-align: right">
+            <p class="style-5">Base de C&aacute;lculo (R$)</p>
+          </td>
+          <td style="text-align: right">
+            <p class="style-5">Al&iacute;quota (%)</p>
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align: right">
+            <p class="style-1">{{%valorServ}}</p>
+          </td>
+          <td style="text-align: right">
+            <p class="style-1">{{%valorDedu}}</p>
+          </td>
+          <td style="text-align: right">
+            <p class="style-1">{{%valorIncod}}</p>
+          </td>
+          <td style="text-align: right">
+            <p class="style-1">{{%valorBasecalc}}</p>
+          </td>
+          <td style="text-align: right">
+            <p class="style-1">{{%Aliquota}}</p>
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align: right">
+            <p class="style-5">ISS (R$)</p>
+          </td>
+          <td style="text-align: right">
+            <p class="style-5">ISS Retido (R$)</p>
+          </td>
+          <td style="text-align: right">
+            <p class="style-5">Desconto Condicionado (R$)</p>
+          </td>
+          <td style="text-align: right">
+            <p class="style-5">Valor L&iacute;quido (R$)</p>
+          </td>
+          <td style="text-align: right">
+            <p class="style-5">
+              <b> Valor Total da Nota (R$) </b>
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align: right">
+            <p class="style-1">{{%valorISS}}</p>
+          </td>
+          <td style="text-align: right">
+            <p class="style-1">{{%valorISSR}}</p>
+          </td>
+          <td style="text-align: right">
+            <p class="style-1">{{%valorCond}}</p>
+          </td>
+          <td style="text-align: right">
+            <p class="style-1">{{%valorLiquido}}</p>
+          </td>
+          <td style="text-align: right">
+            <p class="style-1">
+              <b> {{%valorServ}} </b>
+            </p>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="5" class="style-3">OUTRAS INFORMA&Ccedil;&Otilde;ES</td>
+  </tr>
+  <tr>
+    <td
+      colspan="5"
+      class="descNFS border-bottom-strong style-1"
+      style="height: 100px"
+    >
+      <div class="descNFS"><p>{{%OutrasInformacoes}}</p></div>
+    </td>
+  </tr>
 </table>
