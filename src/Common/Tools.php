@@ -98,7 +98,7 @@ class Tools {
      * Version of layout
      * @var string
      */
-    protected $versao = '1.0.7';
+    protected $versao = '2.0.2';
     /**
      * urlPortal
      * Instância do WebService
@@ -153,7 +153,7 @@ class Tools {
         'xmlns:soapenv'  => "http://schemas.xmlsoap.org/soap/envelope/",
         'xmlns:xsd'   => "http://www.w3.org/2001/XMLSchema",
         'xmlns:xsi'   => "http://www.w3.org/2001/XMLSchema-instance",
-        "xmlns" => "http://tempuri.org/"
+        "xmlns" => "http://nfse.abrasf.org.br"
     ];
 
     /**
@@ -161,6 +161,8 @@ class Tools {
      */
     protected $availableVersions = [
         '1.0.7' => 'WEBISS107',
+        '2.0.2' => 'WEBISS202',
+
     ];
     
     /**
@@ -196,7 +198,7 @@ class Tools {
 
         }
 
-        $this->urlPortal = 'http://tempuri.org/';
+        $this->urlPortal = 'http://nfse.abrasf.org.br';
 
     }
 
@@ -206,7 +208,8 @@ class Tools {
      * @return string
      * @throws InvalidArgumentException
      */
-    public function version($version = '1.0.7'){
+    public function version($version = '2.0.2'){
+        
         if (null === $version) {
             return $this->versao;
         }
@@ -325,7 +328,7 @@ class Tools {
         $this->urlOperation = $stdServ->$service->operation;
         //montagem do namespace do serviço
         $this->urlNamespace = sprintf(
-            "%sINfseServices",
+            "%s",
             $this->urlPortal
         );
 
@@ -336,7 +339,7 @@ class Tools {
 
         $this->urlAction = 
             $this->urlNamespace
-            . "/"
+            .'/'
             . $this->urlMethod;
        
         $this->objHeader = new SoapHeader(
@@ -386,12 +389,19 @@ class Tools {
         
         // $request = $this->stringTransform($request);
 
+        list($major,$middle,$minor) = explode('.', $this->versao);
+
+        $version = "{$major}.{$middle}{$minor}";
+
+        $servico .= 'Request';
+
         $xml = '<'.$servico.' xmlns="' . $this->urlPortal . '">';
    
-        // $xml .= '<cabec>' . Header::get(substr($this->versao, 0, 1)) . '</cabec>';
-        $xml .= '<cabec></cabec>';
+        $cabecalho =  Header::get($version) ;
 
-        $xml .= '<msg><![CDATA[' . $request . ']]></msg>';
+        $xml .= '<nfseCabecMsg>'.htmlentities($cabecalho).'</nfseCabecMsg>';
+
+        $xml .= '<nfseDadosMsg>' .'<![CDATA['.$request.']]>'. '</nfseDadosMsg>';
 
         $xml .= '</'.$servico.'>';
 
@@ -504,7 +514,7 @@ class Tools {
     */
     protected function getXmlUrlPath() {
         $file = $this->pathwsfiles
-            . "wsnfe_".$this->versao."_mod.xml";
+        . "wsnfe_".$this->versao."_mod.xml";
         
         if (! file_exists($file)) {
             return '';
