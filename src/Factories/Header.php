@@ -23,8 +23,9 @@ class Header
      */
     public static function get($version)
     {
-        return "<cabecalho "
-            . "versao=\"$version\" xmlns=\"http://www.abrasf.org.br/nfse.xsd\">"
+        return "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
+            . "<cabecalho "
+            . "xmlns=\"http://www.abrasf.org.br/nfse.xsd\" versao=\"$version\">"
             . "<versaoDados>$version</versaoDados>"
             . "</cabecalho>";
     }

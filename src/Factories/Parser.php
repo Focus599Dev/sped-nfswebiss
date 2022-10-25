@@ -117,7 +117,7 @@ class Parser {
         
         $sfls = explode('|', $struct);
         
-        $len = count($sfls)-1;
+        $len = count($sfls);
         
         $std = new \stdClass();
 

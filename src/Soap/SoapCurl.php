@@ -52,42 +52,43 @@ class SoapCurl extends SoapBase implements SoapInterface
         $request = '',
         $soapheader = null
     ) {
-
+     
         $this->validadeEf();
         
         $response = '';
-
+        
         $request = trim(preg_replace("/<\?xml.*?\?>/", "", $request));
-
+        
         $envelope = $this->makeEnvelopeSoap(
             $request,
             $namespaces,
             $soapver,
             $soapheader
         );
-
+        
         $msgSize = strlen($envelope);
         
         $parameters = [
             "Content-Type: text/xml;charset=utf-8;"
         ];
-
+        
         $parameters[] = "SOAPAction: $action";
         
         $parameters[] = "Content-length: $msgSize";
 
+        
         $this->requestHead = implode("\n", $parameters);
         
         $this->requestBody = '<?xml version="1.0" encoding="utf-8"?>' . chr(10) . $envelope;
-
+        
         try {
-
+            
             $oCurl = curl_init();
-
+            
             $this->setCurlProxy($oCurl);
-
+            
             curl_setopt($oCurl, CURLOPT_URL, $url);
-
+            
             curl_setopt($oCurl, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
 
             curl_setopt($oCurl, CURLOPT_CONNECTTIMEOUT, $this->soaptimeout);
@@ -176,6 +177,7 @@ class SoapCurl extends SoapBase implements SoapInterface
         if ($httpcode != 200) {
             throw SoapException::soapFault(" [$url]" . $this->responseHead);
         }
+
         return $this->responseBody;
     }
     

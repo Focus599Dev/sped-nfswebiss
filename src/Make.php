@@ -87,6 +87,11 @@ class Make{
     */
     public $item = 0;
 
+        /**
+     * @var stdClass
+    */
+    public $infoAdic = null;
+
     /**
      * XML RPS
      */
@@ -96,7 +101,7 @@ class Make{
     protected $soapnamespaces = [
         'xmlns:xsi' => "http://www.w3.org/2001/XMLSchema-instance",
         'xmlns:xsd' => "http://www.w3.org/2001/XMLSchema",
-        'xmlns'     => "http://www.abrasf.org.br/nfse"
+        'xmlns'     => "http://www.abrasf.org.br/nfse.xsd",
     ];
 
 	/**
@@ -120,12 +125,36 @@ class Make{
             
             $EnviarLoteRpsEnvio->setAttribute($key, $namespace);
         }
-
+        
         $this->loteRps->setAttribute('Id', $this->NumeroLote);
         
         $ListaRps = $this->dom->createElement("ListaRps");
 
         foreach ($this->rps as $key => $rps) {
+
+            $this->dom->addChild(
+                $this->infRps[$key],
+                "RegimeEspecialTributacao",
+                $this->infoAdic->RegimeEspecialTributacao,
+                false,
+                "RegimeEspecialTributacao"
+            );
+
+            $this->dom->addChild(
+                $this->infRps[$key],
+                "OptanteSimplesNacional",
+                $this->infoAdic->OptanteSimplesNacional,
+                true,
+                "OptanteSimplesNacional"
+            );
+
+            $this->dom->addChild(
+                $this->infRps[$key],
+                "IncentivoFiscal",
+                $this->infoAdic->IncentivoFiscal,
+                true,
+                "IncentivoFiscal ISS"
+            );
             
             $this->dom->appChild($this->rps[$key], $this->infRps[$key], 'Falta tag "InfRps"');
             
@@ -149,14 +178,26 @@ class Make{
 		$possible = [
 			'NumeroLote',
 			'versao',
-			'Cnpj',
+			'CpfCnpj',
 			'InscricaoMunicipal',
 			'QuantidadeRps',
 		];
 
+        $dt = new \DateTime();
+
+        $idLote = $lote = $dt->format('YmdHis').rand(0, 9);
+
+        $std->NumeroLote = $idLote;
+
         $std = $this->equilizeParameters($std, $possible);
         
         $loteRps = $this->dom->createElement("LoteRps");
+
+        if($std->versao){
+            $versao = $std->versao;
+            list($major,$middle,$minor) = explode('.',$versao);
+            $loteRps->setAttribute('versao', "{$major}.{$middle}{$minor}");
+        }
 
         $this->dom->addChild(
             $loteRps,
@@ -166,13 +207,27 @@ class Make{
             "Numero do Lote RPS"
         );
 
-        $this->dom->addChild(
-            $loteRps,
-            "Cnpj",
-            $std->Cnpj,
-            true,
-            "Numero do CNPJ"
-        );
+        $CpfCnpj = $this->dom->createElement("CpfCnpj");
+
+        if(strlen($std->CpfCnpj) <= 11){
+            $this->dom->addChild(
+                $CpfCnpj,
+                "Cpf",
+                $std->CpfCnpj,
+                true,
+                "Numero do Cpf"
+            );
+        }else{
+            $this->dom->addChild(
+                $CpfCnpj,
+                "Cnpj",
+                $std->CpfCnpj,
+                true,
+                "Numero do Cnpj"
+            );
+        }
+
+        $this->dom->appChild($loteRps, $CpfCnpj , 'Falta tag "CpfCnpj"');
 
         $this->dom->addChild(
             $loteRps,
@@ -191,7 +246,7 @@ class Make{
         );
 
         $this->loteRps =  $loteRps;
-
+    
         $this->NumeroLote = $std->NumeroLote;
 
         return $this->loteRps;
@@ -203,10 +258,14 @@ class Make{
         $possible = [
             'Numero',
             'Serie',
-            'Tipo'
+            'Tipo',
+            'DataEmissao',
+            'Status'
         ];
 
         $std = $this->equilizeParameters($std, $possible);
+        
+        $Rps = $this->dom->createElement("Rps");
 
         $identificacaoRps = $this->dom->createElement("IdentificacaoRps");
 
@@ -234,7 +293,25 @@ class Make{
             "Tipo do Lote RPS"
         );
 
-        $this->identificacaoRps[$this->item] = $identificacaoRps;
+        $this->dom->appChild($Rps, $identificacaoRps , 'Falta tag "identificacaoRps"');
+
+        $this->dom->addChild(
+            $Rps,
+            "DataEmissao",
+            $std->DataEmissao,
+            true,
+            "Data da Emissao"
+        );
+
+        $this->dom->addChild(
+            $Rps,
+            "Status",
+            $std->Status,
+            true,
+            "Status Rps"
+        );
+
+        $this->identificacaoRps[$this->item] = $Rps;
 
     }
 
@@ -245,7 +322,7 @@ class Make{
         $this->rps[$this->item] = $this->dom->createElement("Rps");
 
         $possible = [
-            'Cnpj',
+            'CpfCnpj',
             'InscricaoMunicipal'
         ];
 
@@ -253,13 +330,31 @@ class Make{
 
         $prestador = $this->dom->createElement("Prestador");
 
-        $this->dom->addChild(
-            $prestador,
-            "Cnpj",
-            $std->Cnpj,
-            true,
-            "Cnpj Prestador"
-        );
+        $CpfCnpj = $this->dom->createElement("CpfCnpj");
+
+        if($std->CpfCnpj <= 11){
+
+            $this->dom->addChild(
+                $CpfCnpj,
+                "Cpf",
+                $std->CpfCnpj,
+                true,
+                "CpfCnpj Prestador"
+            );
+        }else{
+            $this->dom->addChild(
+                $CpfCnpj,
+                "Cnpj",
+                $std->CpfCnpj,
+                true,
+                "CpfCnpj Prestador"
+            );
+        }
+
+        $this->dom->appChild($prestador, $CpfCnpj , 'Falta tag "CpfCnpj"');
+
+
+
 
         $this->dom->addChild(
             $prestador,
@@ -446,15 +541,10 @@ class Make{
 
         $std = $this->equilizeParameters($std, $possible);
 
-        $intermediarioServico = $this->dom->createElement("IntermediarioServico");
+        $intermediarioServico = $this->dom->createElement("Intermediario");
 
-        $this->dom->addChild(
-            $intermediarioServico,
-            "RazaoSocial",
-            $std->RazaoSocial,
-            true,
-            "RazaoSocial IntermediarioServico"
-        );
+        $identificacaoIntermediario = $this->dom->createElement("IdentificacaoIntermediario");
+
 
         $CpfCnpj = $this->dom->createElement("CpfCnpj");
 
@@ -480,14 +570,26 @@ class Make{
 
         }
 
-        $this->dom->appChild($intermediarioServico, $CpfCnpj , 'Falta tag "tomador"');
-
+        $this->dom->appChild($identificacaoIntermediario, $CpfCnpj , 'Falta tag "tomador"');
+       
+        
         $this->dom->addChild(
-            $intermediarioServico,
+            $identificacaoIntermediario,
             "InscricaoMunicipal",
             $std->InscricaoMunicipal,
             false,
             "InscricaoMunicipal IntermediarioServico"
+        );
+
+        
+        $this->dom->appChild($intermediarioServico,$identificacaoIntermediario, 'Falta tag "tomador"');
+        
+        $this->dom->addChild(
+            $intermediarioServico,
+            "RazaoSocial",
+            $std->RazaoSocial,
+            false,
+            "RazaoSocial IntermediarioServico"
         );
 
         $this->intermediarioServico[$this->item] = $intermediarioServico;
@@ -582,11 +684,16 @@ class Make{
            'ValorLiquidoNfse',
            'DescontoIncondicionado',
            'DescontoCondicionado',
+           'ResponsavelRetencao',
            'ItemListaServico',
            'CodigoCnae',
            'CodigoTributacaoMunicipio',
            'Discriminacao',
-           'CodigoMunicipio'
+           'CodigoMunicipio',
+           'CodigoPais',
+           'ExigibilidadeISS',
+           'MunicipioIncidencia',
+           'NumeroProcesso'
         ];
 
         $std = $this->equilizeParameters($std, $possible);
@@ -607,7 +714,7 @@ class Make{
             $valores,
             "ValorDeducoes",
             $std->ValorDeducoes,
-            true,
+            false,
             "ValorDeducoes RPS"
         );
 
@@ -642,7 +749,7 @@ class Make{
             false,
             "ValorIr RPS"
         );
-
+        
         $this->dom->addChild(
             $valores,
             "ValorCsll",
@@ -653,28 +760,21 @@ class Make{
 
         $this->dom->addChild(
             $valores,
-            "IssRetido",
-            $std->IssRetido,
-            true,
-            "IssRetido RPS"
-        );
-
-        $this->dom->addChild(
-            $valores,
-            "ValorIssRetido",
-            $std->ValorIssRetido,
-            false,
-            "ValorIssRetido RPS"
-        );
-
-        $this->dom->addChild(
-            $valores,
             "OutrasRetencoes",
             $std->OutrasRetencoes,
             false,
             "OutrasRetencoes RPS"
         );
-
+        
+        $this->dom->addChild(
+            $valores,
+            "ValorIss",
+            $std->ValorIss,
+            false,
+            "ValorIss RPS"
+        );
+        
+        /*
         $this->dom->addChild(
             $valores,
             "BaseCalculo",
@@ -682,7 +782,7 @@ class Make{
             false,
             "BaseCalculo RPS"
         );
-
+        */
         $this->dom->addChild(
             $valores,
             "Aliquota",
@@ -690,7 +790,7 @@ class Make{
             false,
             "Aliquota RPS"
         );
-
+      /*  
         $this->dom->addChild(
             $valores,
             "ValorLiquidoNfse",
@@ -698,7 +798,7 @@ class Make{
             false,
             "ValorLiquidoNfse RPS"
         );
-
+        */
         $this->dom->addChild(
             $valores,
             "DescontoIncondicionado",
@@ -706,7 +806,7 @@ class Make{
             false,
             "DescontoIncondicionado RPS"
         );
-
+        
         $this->dom->addChild(
             $valores,
             "DescontoCondicionado",
@@ -714,9 +814,26 @@ class Make{
             false,
             "DescontoCondicionado RPS"
         );
-
+        
         $this->dom->appChild($servico, $valores , 'Falta tag "servico"');
+        
+        $this->dom->addChild(
+            $servico,
+            "IssRetido",
+            $std->IssRetido,
+            true,
+            "IssRetido RPS"
+        );
 
+        $this->dom->addChild(
+            $servico,
+            "ResponsavelRetencao",
+            $std->ResponsavelRetencao,
+            false,
+            "Responsavel Retencao RPS"
+        );
+
+        
         $this->dom->addChild(
             $servico,
             "ItemListaServico",
@@ -732,7 +849,7 @@ class Make{
             false,
             "CodigoCnae RPS"
         );
-
+        
         $this->dom->addChild(
             $servico,
             "CodigoTributacaoMunicipio",
@@ -745,7 +862,7 @@ class Make{
             $servico,
             "Discriminacao",
             $std->Discriminacao,
-            false,
+            true,
             "Discriminacao RPS"
         );
 
@@ -753,41 +870,78 @@ class Make{
             $servico,
             "CodigoMunicipio",
             $std->CodigoMunicipio,
-            false,
+            true,
             "CodigoMunicipio RPS"
         );
 
+        $this->dom->addChild(
+            $servico,
+            "CodigoPais",
+            $std->CodigoPaisBacen,
+            false,
+            "Codigo Pais"
+        );
+
+        
+        $this->dom->addChild(
+            $servico,
+            "ExigibilidadeISS",
+            $std->ExigibilidadeISS,
+            true,
+            "Exigibilidade ISS"
+        );
+
+        $this->dom->addChild(
+            $servico,
+            "MunicipioIncidencia",
+            $std->MunicipioIncidencia,
+            false,
+            "MunicipioIncidencia ISS"
+        );
+
+        $this->dom->addChild(
+            $servico,
+            "NumeroProcesso",
+            $std->NumeroProcesso,
+            false,
+            "NumeroProcesso ISS"
+        );
+
+
         $this->servico[$this->item] = $servico;
+
 
     }
 
     public function buildInfNfse($std){
 
         $possible = [
-            'DataEmissao',
+            'Competencia',
             'NaturezaOperacao',
             'RegimeEspecialTributacao',
             'OptanteSimplesNacional',
             'IncentivadorCultural',
-            'Status'
+            'IncentivoFiscal'
         ];
 
         $std = $this->equilizeParameters($std, $possible);
 
-        $infRps = $this->dom->createElement("InfRps");
+        $infRps = $this->dom->createElement("InfDeclaracaoPrestacaoServico");
 
-        $infRps->setAttribute('Id', $this->NumeroLote);
+        $infRps->setAttribute('Id', 'RPS'.$this->NumeroLote);
         
-        $this->dom->appChild($infRps, $this->identificacaoRps[$this->item] , 'Falta tag "infRps"');
+        $this->dom->appChild($infRps, $this->identificacaoRps[$this->item] , 'Falta tag "InfDeclaracaoPrestacaoServico"');
 
         $this->dom->addChild(
             $infRps,
-            "DataEmissao",
-            $std->DataEmissao,
+            "Competencia",
+            $std->Competencia,
             true,
-            "DataEmissao RPS"
+            "Competencia RPS"
         );
 
+        $this->infoAdic = (object) array_merge(array(), (array)$std );
+/*
         $this->dom->addChild(
             $infRps,
             "NaturezaOperacao",
@@ -795,6 +949,7 @@ class Make{
             true,
             "NaturezaOperacao RPS"
         );
+
 
         $this->dom->addChild(
             $infRps,
@@ -827,6 +982,7 @@ class Make{
             true,
             "Status RPS"
         ); 
+ */       
 
         if (isset ($this->rpsSubstituido[$this->item])){
             
