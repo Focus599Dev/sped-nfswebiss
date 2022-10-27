@@ -317,7 +317,7 @@ class Tools extends ToolsBase {
         $namespaces = array(
             'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"',
             'xmlns:xsd="http://www.w3.org/2001/XMLSchema"',
-            'xmlns="http://www.abrasf.org.br/nfse"'
+            'xmlns="http://www.abrasf.org.br/nfse.xsd"'
         );
 
         $xml = '<CancelarNfseEnvio ';
@@ -332,7 +332,11 @@ class Tools extends ToolsBase {
 
                         $xml .= '<Numero>' . $pedCan->Numero . '</Numero>';
                         
-                        $xml .= '<Cnpj>' . $pedCan->cnpj . '</Cnpj>';
+                        $xml .= '<CpfCnpj>';
+
+                            $xml .= '<Cnpj>' . $pedCan->cnpj . '</Cnpj>';
+        
+                        $xml .= '</CpfCnpj>';
 
                         $xml .= '<InscricaoMunicipal>' . $pedCan->InscricaoMunicipal . '</InscricaoMunicipal>';
 
@@ -350,9 +354,22 @@ class Tools extends ToolsBase {
 
         $request = $xml;
 
+        // workraoud 
+        $find = array(
+            'http://www.abrasf.org.br/nfse.xsd'
+        );
+
+        $replace = array(
+            'http://www.abrasf.org.br/nfse'
+        );
+
+        $request = str_replace($find, $replace, $request);
+
         $this->lastRequest = $request;
 
         $this->isValid($this->versao, $request, 'servico_cancelar_nfse_envio');
+
+        $request = str_replace($replace, $find, $request);
 
         $parameters = ['CancelarNfseEnvio' => $request];
 

@@ -11,6 +11,7 @@
     "H01" : "H01|Numero|Serie|Tipo|DataEmissao|Status",
     "I02" : "I02|Numero|Serie|Tipo|DataEmissao|Status",
     "M" : "M|ValorServicos|ValorDeducoes|ValorPis|ValorCofins|ValorInss|ValorIr|ValorCsll|IssRetido|ValorIss|ValorIssRetido|OutrasRetencoes|BaseCalculo|Aliquota|ValorLiquidoNfse|DescontoIncondicionado|DescontoCondicionado|",
-    "N" : "N|ItemListaServico|CodigoCnae|CodigoTributacaoMunicipio|Discriminacao|CodigoMunicipio|CodigoPaisBacen|NumeroProcesso|ResponsavelRetencao|ExigibilidadeISS|MunicipioIncidencia",
-    "W" : "W|Competencia|RegimeEspecialTributacao|OptanteSimplesNacional|IncentivadorCultural|Status|IncentivoFiscal"
+    "N" : "N|ItemListaServico|CodigoCnae|CodigoTributacaoMunicipio|Discriminacao|CodigoMunicipio|ValorIcms|ValorIpi|ValorIof|ValorCide|ValorOutrosTributos|Codigo|ValorUnit|Quantidade|Desconto|CodigoPaisBacen|NumeroProcesso|ResponsavelRetencao|ExigibilidadeISS|MunicipioIncidencia",
+    "W" : "W|DataEmissao|NaturezaOperacao|RegimeEspecialTributacao|OptanteSimplesNacional|IncentivadorCultural|Status|IncentivoFiscal|Competencia"
 }
+
