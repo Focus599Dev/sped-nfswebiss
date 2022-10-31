@@ -354,6 +354,16 @@ class Tools extends ToolsBase {
 
         $request = $xml;
 
+        $request = Signer::sign(
+            $this->certificate,
+            $request,
+            'InfPedidoCancelamento',
+            'Id',
+            $this->algorithm,
+            $this->canonical,
+            'Pedido'
+        );
+
         // workraoud 
         $find = array(
             'http://www.abrasf.org.br/nfse.xsd'
