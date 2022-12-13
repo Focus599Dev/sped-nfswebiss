@@ -478,7 +478,7 @@ class Tools extends ToolsBase {
            'valorIncod' => '0,00',
            'valorBasecalc' => number_format((String)$xml->Nfse->InfNfse->ValoresNfse->BaseCalculo, 2 ,',', '.'),
            'Aliquota' => number_format(((Float)$xml->Nfse->InfNfse->ValoresNfse->Aliquota ), 2 ,',', '.'),
-           'valorISS' => $xml->Nfse->InfNfse->DeclaracaoPrestacaoServico->InfDeclaracaoPrestacaoServico->Servico->IssRetido == 0 ? number_format((String)$xml->Nfse->InfNfse->ValoresNfse->ValorIss, 2 ,',', '.'): '0,00',
+           'valorISS' => in_array($xml->Nfse->InfNfse->DeclaracaoPrestacaoServico->InfDeclaracaoPrestacaoServico->Servico->IssRetido, array(2)) ? number_format((String)$xml->Nfse->InfNfse->ValoresNfse->ValorIss, 2 ,',', '.'): '0,00',
            'valorISSR' => $xml->Nfse->InfNfse->DeclaracaoPrestacaoServico->InfDeclaracaoPrestacaoServico->Servico->IssRetido == 1 ? number_format((String)$xml->Nfse->InfNfse->ValoresNfse->ValorIss, 2 ,',', '.'): '0,00',
            'valorCond' => '0,00',
            'valorLiquido' => number_format((String)$xml->Nfse->InfNfse->ValoresNfse->ValorLiquidoNfse, 2 ,',', '.'),
