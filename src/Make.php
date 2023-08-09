@@ -119,7 +119,7 @@ class Make{
 
     public function monta(){
 
-        $EnviarLoteRpsEnvio = $this->dom->createElement('EnviarLoteRpsEnvio');
+        $EnviarLoteRpsEnvio = $this->dom->createElement('EnviarLoteRpsSincronoEnvio');
 
         foreach ($this->soapnamespaces as $key => $namespace) {
             

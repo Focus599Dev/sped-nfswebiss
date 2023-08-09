@@ -29,7 +29,7 @@ class Tools extends ToolsBase {
         //remove all invalid strings
         $xml = Strings::clearXmlString($xml);
 
-        $servico = 'RecepcionarLoteRps';
+        $servico = 'RecepcionarLoteRpsSincrono';
 
         $this->servico(
             $servico,
@@ -69,11 +69,11 @@ class Tools extends ToolsBase {
 
         $request = str_replace($find, $replace, $request);
         
-        $this->isValid($this->versao, $request, 'servico_enviar_lote_rps_envio');
+        $this->isValid($this->versao, $request, 'servico_enviar_lote_rps_sincrono_envio');
 
         $request = str_replace($replace, $find, $request);
 
-        $parameters = ['RecepcionarLoteRps' => $request];
+        $parameters = ['RecepcionarLoteRpsSincrono' => $request];
 
         $request = $this->MakeEnvelope($servico, $request);
         
@@ -83,9 +83,9 @@ class Tools extends ToolsBase {
 
         $this->lastResponse = simplexml_load_string($this->lastResponse);
 
-        if (isset($this->lastResponse->RecepcionarLoteRpsResult->EnviarLoteRpsResposta)){
+        if (isset($this->lastResponse->outputXML->EnviarLoteRpsSincronoResposta)){
 
-            return $this->lastResponse->RecepcionarLoteRpsResult->EnviarLoteRpsResposta->asXML();
+            return $this->lastResponse->outputXML->EnviarLoteRpsSincronoResposta->asXML();
         }
 
         return $this->lastResponse->asXML();
