@@ -1,5 +1,5 @@
 {
-  "name": "ssped-nfswebiss",
+  "name": "sysvale/ssped-nfswebiss",
   "type": "library",
   "description": "Api para comunicação com prefeituras que usando o sistema WebISS",
   "keywords": [
