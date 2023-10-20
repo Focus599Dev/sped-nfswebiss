@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace NFePHP\NFSe\WebISS\Common;
 
@@ -25,9 +25,10 @@ use NFePHP\NFSe\WebISS\Factories\Header;
 use NFePHP\Common\Validator;
 use NFePHP\NFSe\WebISS\Common\EntitiesCharacters;
 use DomXpath;
+use Illuminate\Support\Facades\File;
 
 class Tools {
-	
+
 	/**
      * config class
      * @var \stdClass
@@ -93,7 +94,7 @@ class Tools {
      * @var array
      */
     protected $canonical = [false,false,null,null];
-    
+
     /**
      * Version of layout
      * @var string
@@ -150,10 +151,10 @@ class Tools {
      */
 
     protected $soapnamespacesEnv = [
-        'xmlns:soapenv'  => "http://schemas.xmlsoap.org/soap/envelope/",
+        'xmlns:soap'  => "http://www.w3.org/2003/05/soap-envelope",
+        "xmlns:nfse" => "http://nfse.abrasf.org.br"
         // 'xmlns:xsd'   => "http://www.w3.org/2001/XMLSchema",
         // 'xmlns:xsi'   => "http://www.w3.org/2001/XMLSchema-instance",
-        "xmlns:nfse" => "http://nfse.abrasf.org.br"
     ];
 
     /**
@@ -164,7 +165,7 @@ class Tools {
         '2.0.2' => 'WEBISS202',
 
     ];
-    
+
     /**
      * Constructor
      * load configurations,
@@ -181,7 +182,7 @@ class Tools {
         ).'/';
         //valid config json string
         $this->config = json_decode($configJson);
-        
+
         $this->version($this->config->versao);
 
         $this->setEnvironmentTimeZone($this->config->siglaUF);
@@ -209,7 +210,7 @@ class Tools {
      * @throws InvalidArgumentException
      */
     public function version($version = '2.0.2'){
-        
+
         if (null === $version) {
             return $this->versao;
         }
@@ -217,7 +218,7 @@ class Tools {
         if (false === isset($this->availableVersions[$version])) {
             throw new \InvalidArgumentException('Essa versão de layout não está disponível');
         }
-        
+
         $this->versao = $version;
 
         $this->config->schemes = $this->availableVersions[$version];
@@ -225,7 +226,7 @@ class Tools {
         $this->pathschemes = realpath(
             __DIR__ . '/../../schemes/'. $this->config->schemes
         ).'/';
-        
+
         return $this->versao;
     }
 
@@ -234,9 +235,9 @@ class Tools {
      * @param string $acronym (ou seja a sigla do estado)
      * @return void
     */
-   
+
     public function setEnvironmentTimeZone($acronym){
-        
+
         date_default_timezone_set(TimeZoneByUF::get($acronym));
 
     }
@@ -246,7 +247,7 @@ class Tools {
      * @param int $tpAmb
      * @return void
     */
-    
+
     public function setEnvironment($tpAmb = 2){
         if (!empty($tpAmb) && ($tpAmb == 1 || $tpAmb == 2)) {
             $this->tpAmb = $tpAmb;
@@ -298,11 +299,10 @@ class Tools {
         $webs = new Webservices($this->getXmlUrlPath());
 
         $sigla = $mun;
-       
         $stdServ = $webs->get($sigla, $ambiente);
 
         if ($stdServ === false) {
-           
+
             throw new \RuntimeException(
                 "Nenhum serviço foi localizado para esta unidade "
                 . "da federação [$sigla]"
@@ -337,17 +337,17 @@ class Tools {
             substr($this->versao, 0, 1)
         );
 
-        $this->urlAction = 
+        $this->urlAction =
             $this->urlNamespace
             .'/'
             . $this->urlMethod;
-       
+
         $this->objHeader = new SoapHeader(
             $this->urlNamespace,
             'cabecalho',
             ['versao' => substr($this->versao, 0, 1)]
         );
-        
+
     }
 
     /**
@@ -363,11 +363,11 @@ class Tools {
             $this->urlService,
             $this->urlMethod,
             $this->urlAction,
-            1,
+            2,
             $parameters,
             $this->soapnamespacesEnv,
             $request,
-            null
+            $this->objHeader
         );
     }
 
@@ -384,10 +384,6 @@ class Tools {
      * Create envelope padrão
      */
     protected function MakeEnvelope($servico, $request){
-        
-        // $request = $this->clear($request);        
-        
-        // $request = $this->stringTransform($request);
 
         list($major,$middle,$minor) = explode('.', $this->versao);
 
@@ -396,12 +392,15 @@ class Tools {
         $servico .= 'Request';
 
         $xml = '<nfse:'.$servico.'>';
-   
-        $cabecalho =  Header::get($version) ;
 
-        $xml .= '<nfseCabecMsg>'.htmlentities($cabecalho).'</nfseCabecMsg>';
+        $cabecalho =  "<cabecalho "
+            . "xmlns=\"http://www.abrasf.org.br/nfse.xsd\" versao=\"$version\">"
+            . "<versaoDados>$version</versaoDados>"
+            . "</cabecalho>";
 
-        $xml .= '<nfseDadosMsg>' .'<![CDATA['.$request.']]>'. '</nfseDadosMsg>';
+        $xml .= '<nfseCabecMsg>'.'<![CDATA['.$cabecalho.']]>'.'</nfseCabecMsg>';
+
+        $xml .= '<nfseDadosMsg>'.'<![CDATA['.$request.']]>'.'</nfseDadosMsg>';
 
         $xml .= '</nfse:'.$servico.'>';
 
@@ -409,24 +408,24 @@ class Tools {
     }
 
 
-    public function removeStuffs($xml){     
+    public function removeStuffs($xml){
 
         if (preg_match('/<soap:Body>/', $xml)){
 
             $tag = '<soap:Body>';
 
             $xml = substr( $xml, ( strpos($xml, $tag) + strlen($tag) ), strlen($xml)  );
-            
+
             $tag = '</soap:Body>';
 
             $xml = substr( $xml, 0 , strpos($xml, $tag) );
-        
+
         } else if (preg_match('/<soapenv:Body>/', $xml)){
 
             $tag = '<soapenv:Body>';
 
             $xml = substr( $xml, ( strpos($xml, $tag) + strlen($tag) ), strlen($xml)  );
-            
+
             $tag = '</soapenv:Body>';
 
             $xml = substr( $xml, 0 , strpos($xml, $tag) );
@@ -436,7 +435,7 @@ class Tools {
             $tag = '<soap12:Body>';
 
             $xml = substr( $xml, ( strpos($xml, $tag) + strlen($tag) ), strlen($xml)  );
-            
+
             $tag = '</soap12:Body>';
 
             $xml = substr( $xml, 0 , strpos($xml, $tag) );
@@ -446,7 +445,7 @@ class Tools {
             $tag = '<env:Body>';
 
             $xml = substr( $xml, ( strpos($xml, $tag) + strlen($tag) ), strlen($xml)  );
-            
+
             $tag = '</env:Body>';
 
             $xml = substr( $xml, 0 , strpos($xml, $tag) );
@@ -456,7 +455,7 @@ class Tools {
             $tag = '<env:Body xmlns:env=\'http://www.w3.org/2003/05/soap-envelope\'>';
 
             $xml = substr( $xml, ( strpos($xml, $tag) + strlen($tag) ), strlen($xml)  );
-            
+
             $tag = '</env:Body>';
 
             $xml = substr( $xml, 0 , strpos($xml, $tag) );
@@ -466,7 +465,7 @@ class Tools {
             $tag = '<S:Body>';
 
             $xml = substr( $xml, ( strpos($xml, $tag) + strlen($tag) ), strlen($xml)  );
-            
+
             $tag = '</S:Body>';
 
             $xml = substr( $xml, 0 , strpos($xml, $tag) );
@@ -476,18 +475,18 @@ class Tools {
             $tag = '<s:Body>';
 
             $xml = substr( $xml, ( strpos($xml, $tag) + strlen($tag) ), strlen($xml)  );
-            
+
             $tag = '</s:Body>';
 
             $xml = substr( $xml, 0 , strpos($xml, $tag) );
 
-        } 
+        }
 
         if (preg_match('/ns3:/', $xml)){
 
            $xml = preg_replace('/ns3:/', '', $xml);
 
-        } 
+        }
 
         if (preg_match('/ns2:/', $xml)){
 
@@ -507,7 +506,7 @@ class Tools {
 
         return $xml;
     }
-    
+
     /**
      * Recover path to xml data base with list of soap services
      * @return string
@@ -515,7 +514,7 @@ class Tools {
     protected function getXmlUrlPath() {
         $file = $this->pathwsfiles
         . "wsnfe_".$this->versao."_mod.xml";
-        
+
         if (! file_exists($file)) {
             return '';
         }
@@ -539,7 +538,7 @@ class Tools {
     protected function stringTransform($message){
 
         return EntitiesCharacters::unconvert(htmlentities($message, ENT_NOQUOTES));
-        
+
     }
 
     /**
@@ -555,7 +554,7 @@ class Tools {
     }
 
     public function execCurl($url, $method, $data, $fallowLocation = true){
-        
+
         $httpcode = null;
 
         $response = null;
@@ -583,11 +582,11 @@ class Tools {
             // curl_setopt($ch, CURLOPT_HTTPHEADER, 0);
 
             // curl_setopt($ch, CURLOPT_COOKIEJAR, $this->cookieName);
-            
+
             // curl_setopt($ch, CURLOPT_COOKIEFILE, realpath(__DIR__ . '/../') . $this->cookieName); //saved cookies
 
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
-            
+
             curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
 
             $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
@@ -598,15 +597,15 @@ class Tools {
 
         } catch (\Exception $e){
 
-            throw $e; 
-            
+            throw $e;
+
         }
-        
+
         return $response;
     }
 
     public function fillPost ($post, $html){
-        
+
         $xpath = new DomXpath($html);
 
         foreach ($post as $key => $post_value) {
@@ -624,7 +623,7 @@ class Tools {
     public function formatCNPJ($cnpj){
         if (!$cnpj)
             return '';
-        
+
         return substr($cnpj, 0, 2) . '.' .  substr($cnpj, 2, 3) . '.' . substr($cnpj, 5, 3) . '/' . substr($cnpj, 8, 4) . '-' . substr($cnpj, 12, 2);
     }
 
@@ -634,7 +633,7 @@ class Tools {
 
         return substr($cpf, 0, 3) . '.' . substr($cpf, 3, 3) . '.' . substr($cpf, 6, 3) . '-' . substr($cpf, 9, 2);
     }
-    
+
     public function getPdfPath($xml){
 
         $oldEfit = config('envs.OLD_EFIT_ABSOLUTE');
@@ -655,7 +654,7 @@ class Tools {
 
         return $path;
     }
-    
+
 
     public function getPdfFileName($xml){
 
@@ -669,6 +668,6 @@ class Tools {
 
         return $fileName;
     }
-}                                                                                                                            
+}
 
 ?>

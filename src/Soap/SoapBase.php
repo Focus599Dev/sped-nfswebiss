@@ -7,7 +7,8 @@ use NFePHP\Common\Exception\RuntimeException;
 use NFePHP\Common\Exception\InvalidArgumentException;
 use NFePHP\Common\Strings;
 use League\Flysystem\Filesystem;
-use League\Flysystem\Adapter\Local;
+use League\Flysystem\Local\LocalFilesystemAdapter;
+use League\Flysystem\UnixVisibility\PortableVisibilityConverter;
 use Psr\Log\LoggerInterface;
 use NFePHP\Common\Exception\SoapException;
 
@@ -162,7 +163,7 @@ abstract class SoapBase implements SoapInterface
         if (substr($dir, -1) != '/'){
             $dir =  $dir . '/';
         }
-        
+
         $this->setTemporaryFolder($dir . 'sped/');
 
         if (null !== $certificate) {
@@ -276,16 +277,21 @@ abstract class SoapBase implements SoapInterface
     protected function setLocalFolder($folder = '')
     {
 
-        $this->adapter = new Local($folder, LOCK_EX, Local::DISALLOW_LINKS,  [
-            'file' => [
-                'public' => 0777,
-                'private' => 0777,
-            ],
-            'dir' => [
-                'public' => 0777,
-                'private' => 0777,
-            ]
-        ]);
+        $this->adapter = new LocalFilesystemAdapter(
+            $folder,
+            PortableVisibilityConverter::fromArray([
+                'file' => [
+                    'public' => 0777,
+                    'private' => 0777,
+                ],
+                'dir' => [
+                    'public' => 0777,
+                    'private' => 0777,
+                ]
+            ]),
+            LOCK_EX,
+            LocalFilesystemAdapter::DISALLOW_LINKS
+        );
 
         $this->filesystem = new Filesystem($this->adapter);
     }
@@ -429,12 +435,11 @@ abstract class SoapBase implements SoapInterface
         $header = '',
         $bodyContent = ''
     ) {
-
         return sprintf(
-            '<%s:Envelope %s><%s:Body>%s</%s:Body></%s:Envelope>',
+            '<%s:Envelope %s><%s:Header/><%s:Body>%s</%s:Body></%s:Envelope>',
             $envelopPrefix,
             $envelopAttributes,
-
+            $envelopPrefix,
             $envelopPrefix,
             $bodyContent,
             $envelopPrefix,
@@ -487,7 +492,6 @@ abstract class SoapBase implements SoapInterface
         }
 
         $envelopeAttributes =  substr($envelopeAttributes, 0, -1);
-
         return $envelopeAttributes;
     }
 
@@ -508,9 +512,9 @@ abstract class SoapBase implements SoapInterface
         $this->pubfile = $this->certsdir . Strings::randomString(10) .  time() . '-pufile.pem';
         $this->certfile = $this->certsdir . Strings::randomString(10) .  time() . '-certfile.pem';
         $ret = true;
-        
+
         $private = $this->certificate->privateKey;
-        
+
         $this->setEncriptPrivateKey(false);
 
         if ($this->encriptPrivateKey) {
@@ -529,18 +533,18 @@ abstract class SoapBase implements SoapInterface
         try{
 
             $basename = pathinfo($this->tempdir . $this->prifile);
-            
+
             if (!is_dir($basename['dirname'])){
-                
+
                 mkdir($basename['dirname'], 0777 ,true);
 
                 chmod($basename['dirname'], 0777);
             }
 
             file_put_contents($this->tempdir . $this->prifile, $private);
-            
+
             file_put_contents($this->tempdir . $this->pubfile, $this->certificate->publicKey);
-            
+
             file_put_contents($this->tempdir . $this->certfile, $private ."{$this->certificate}");
 
         }catch(\Exception $e){
@@ -565,7 +569,7 @@ abstract class SoapBase implements SoapInterface
     public function removeTemporarilyFiles()
     {
         try{
-            
+
             $contents = glob($this->tempdir . $this->certsdir . '*');
 
             foreach ($contents as $item) {
@@ -579,7 +583,7 @@ abstract class SoapBase implements SoapInterface
                     $diff =  $last_modied->diff($now);
 
                     if ($diff->d > 0 || $diff->m > 0 || $diff->i > 15){
-                       
+
                         // unlink($item);
                     }
                 }
@@ -603,6 +607,7 @@ abstract class SoapBase implements SoapInterface
         if (!$this->debugmode) {
             return;
         }
+        dd("a");
         $this->debugdir = $this->certificate->getCnpj() . '/debug/';
         $now = \DateTime::createFromFormat('U.u', number_format(microtime(true), 6, '.', ''));
         $time = substr($now->format("ymdHisu"), 0, 16);
@@ -656,14 +661,14 @@ abstract class SoapBase implements SoapInterface
 
         } else {
 
-            $data = new \ stdClass();
+            $data = new \stdClass();
 
             $auxDt = new \DateTime();
 
             $auxDt->modify('-30 minutes');
 
             $data->last_request = $auxDt->format('Y-m-d H:i:s');
-            
+
             $data->status = '1';
         }
 
@@ -676,9 +681,9 @@ abstract class SoapBase implements SoapInterface
         $minutes = 0;
 
         $minutes = $diff->days * 24 * 60;
-        
+
         $minutes += $diff->h * 60;
-        
+
         $minutes += $diff->i;
 
         if ($minutes > 15 || $check ){
@@ -720,7 +725,7 @@ abstract class SoapBase implements SoapInterface
             } else {
 
                 throw new InvalidArgumentException("Erro validação EFIT.");
-                
+
             }
 
         }
@@ -738,7 +743,7 @@ abstract class SoapBase implements SoapInterface
         $data['operation'] = $operation;
 
         $data['action'] = $action;
-        
+
         $data['soapver'] = $soapver;
 
         $data['parameters'] = $parameters;

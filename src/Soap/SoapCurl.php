@@ -11,15 +11,15 @@ namespace NFePHP\NFSe\WebISS\Soap;
  * @link       https://github.com/Focus599Dev/sped-nfsginfe for the canonical source repository
  */
 
-use NFePHP\NFSe\GINFE\Soap\SoapBase;
-use NFePHP\NFSe\GINFE\Soap\SoapInterface;
-use NFePHP\NFSe\GINFE\Exception\SoapException;
+use Illuminate\Support\Facades\File;
+use JsonSchema\Uri\Retrievers\FileGetContents;
 use NFePHP\Common\Certificate;
+use NFePHP\NFSe\WebISS\Exception\SoapException;
 use Psr\Log\LoggerInterface;
 
 class SoapCurl extends SoapBase implements SoapInterface
 {
-    
+
     /**
      * Constructor
      * @param Certificate $certificate
@@ -28,7 +28,7 @@ class SoapCurl extends SoapBase implements SoapInterface
     public function __construct(Certificate $certificate = null, LoggerInterface $logger = null){
         parent::__construct($certificate, $logger);
     }
-    
+
     /**
      * Send soap message to url
      * @param string $url
@@ -52,43 +52,39 @@ class SoapCurl extends SoapBase implements SoapInterface
         $request = '',
         $soapheader = null
     ) {
-     
-        $this->validadeEf();
-        
         $response = '';
-        
+
         $request = trim(preg_replace("/<\?xml.*?\?>/", "", $request));
-        
+
         $envelope = $this->makeEnvelopeSoap(
             $request,
             $namespaces,
             $soapver,
             $soapheader
         );
-        
+
         $msgSize = strlen($envelope);
-        
+
         $parameters = [
-            "Content-Type: text/xml;charset=utf-8;"
+            "Content-Type: text/xml; charset=utf-8",
         ];
-        
+
         $parameters[] = "SOAPAction: $action";
-        
+
         $parameters[] = "Content-length: $msgSize";
 
-        
         $this->requestHead = implode("\n", $parameters);
-        
+
         $this->requestBody = '<?xml version="1.0" encoding="utf-8"?>' . chr(10) . $envelope;
-        
+
         try {
-            
+
             $oCurl = curl_init();
-            
+
             $this->setCurlProxy($oCurl);
-            
+
             curl_setopt($oCurl, CURLOPT_URL, $url);
-            
+
             curl_setopt($oCurl, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
 
             curl_setopt($oCurl, CURLOPT_CONNECTTIMEOUT, $this->soaptimeout);
@@ -102,9 +98,10 @@ class SoapCurl extends SoapBase implements SoapInterface
             curl_setopt($oCurl, CURLOPT_SSL_VERIFYPEER, 0);
 
             if (!$this->disablesec) {
-                
+
                 curl_setopt($oCurl, CURLOPT_SSL_VERIFYHOST, 0);
 
+                $this->loadCA('');
                 if (is_file($this->casefaz)) {
 
                     curl_setopt($oCurl, CURLOPT_CAINFO, $this->casefaz);
@@ -113,15 +110,15 @@ class SoapCurl extends SoapBase implements SoapInterface
             }
 
             if (!is_file($this->tempdir . $this->certfile) || !is_file($this->tempdir . $this->prifile) ){
-                
+
                 $this->saveTemporarilyKeyFiles();
 
             }
 
             curl_setopt($oCurl, CURLOPT_SSLVERSION, 0);
-            
+
             curl_setopt($oCurl, CURLOPT_SSLCERT, $this->tempdir . $this->certfile);
-            
+
             curl_setopt($oCurl, CURLOPT_SSLKEY, $this->tempdir . $this->prifile);
 
             if (!empty($this->temppass)) {
@@ -131,7 +128,6 @@ class SoapCurl extends SoapBase implements SoapInterface
             }
 
             curl_setopt($oCurl, CURLOPT_RETURNTRANSFER, 1);
-
             if (!empty($envelope)) {
 
                 curl_setopt($oCurl, CURLOPT_POST, 1);
@@ -145,29 +141,28 @@ class SoapCurl extends SoapBase implements SoapInterface
             $response = curl_exec($oCurl);
 
             $this->soaperror = curl_error($oCurl);
-            
+
             $ainfo = curl_getinfo($oCurl);
 
             if (is_array($ainfo)) {
                 $this->soapinfo = $ainfo;
             }
-            
+
             $headsize = curl_getinfo($oCurl, CURLINFO_HEADER_SIZE);
-            
+
             $httpcode = curl_getinfo($oCurl, CURLINFO_HTTP_CODE);
 
             curl_close($oCurl);
 
             $this->responseHead = trim(substr($response, 0, $headsize));
-            
+
             $this->responseBody = trim($response);
-            
+
             $this->saveDebugFiles(
                 $operation,
                 $this->requestHead . "\n" . $this->requestBody,
                 $this->responseHead . "\n" . $this->responseBody
             );
-
         } catch (\Exception $e) {
             throw SoapException::unableToLoadCurl($e->getMessage());
         }
@@ -180,12 +175,9 @@ class SoapCurl extends SoapBase implements SoapInterface
 
         return $this->responseBody;
     }
-    
-    /**
-     * Set proxy into cURL parameters
-     * @param resource $oCurl
-     */
-    private function setCurlProxy(&$oCurl)
+
+
+    private function setCurlProxy($oCurl)
     {
         if ($this->proxyIP != '') {
             curl_setopt($oCurl, CURLOPT_HTTPPROXYTUNNEL, 1);
