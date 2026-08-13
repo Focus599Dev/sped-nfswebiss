@@ -559,36 +559,52 @@ abstract class SoapBase implements SoapInterface
     }
 
     /**
-     * Delete all files in folder
+     * Delete temporary files for this instance and periodically clean up orphaned files
      * @return void
      */
     public function removeTemporarilyFiles()
     {
-        try{
-            
-            $contents = glob($this->tempdir . $this->certsdir . '*');
+        try {
+            $filesToClean = array(
+                $this->tempdir . $this->certfile,
+                $this->tempdir . $this->prifile,
+                $this->tempdir . $this->pubfile,
+            );
 
-            foreach ($contents as $item) {
+            if (!empty($this->casefaz) && !empty($this->tempdir) && strpos($this->casefaz, $this->tempdir) === 0) {
+                $filesToClean[] = $this->casefaz;
+            }
 
-                if (is_file($item)){
+            foreach ($filesToClean as $file) {
+                if (!empty($file) && is_file($file)) {
+                    @unlink($file);
+                }
+            }
+        } catch (\Exception $e) {
+            // Silently ignore cleanup errors
+        }
 
-                    $last_modied = new \DateTime(date("Y-m-d H:i:s", filemtime($item)));
+        // Garbage collection probabilístico (~2% das requisições para evitar I/O desnecessário em cada chamada)
+        if (mt_rand(1, 50) !== 1) {
+            return;
+        }
 
-                    $now = new \DateTime();
+        try {
+            if (!empty($this->tempdir) && !empty($this->certsdir) && is_dir($this->tempdir . $this->certsdir)) {
+                $contents = glob($this->tempdir . $this->certsdir . '*');
+                if (is_array($contents)) {
+                    $expiredThreshold = time() - 120; // 2 minutos
 
-                    $diff =  $last_modied->diff($now);
-
-                    if ($diff->d > 0 || $diff->m > 0 || $diff->i > 15){
-                       
-                        // unlink($item);
+                    foreach ($contents as $item) {
+                        if (is_file($item) && filemtime($item) < $expiredThreshold) {
+                            @unlink($item);
+                        }
                     }
                 }
             }
-
-        } catch(\Exception $e){
-             var_dump($e->getMessage());
+        } catch (\Exception $e) {
+            // Silently ignore cleanup errors
         }
-
     }
 
     /**
@@ -616,9 +632,7 @@ abstract class SoapBase implements SoapInterface
                 $response
             );
         } catch (\Exception $e) {
-            throw new RuntimeException(
-                'Unable to create debug files.'
-            );
+            //noting to do
         }
     }
 
@@ -656,7 +670,7 @@ abstract class SoapBase implements SoapInterface
 
         } else {
 
-            $data = new \ stdClass();
+            $data = new \stdClass();
 
             $auxDt = new \DateTime();
 
