@@ -11,12 +11,12 @@
             <RecepcionarLoteRpsSincrono method="RecepcionarLoteRpsSincrono" operation="RecepcionarLoteRpsSincrono" version="3.0.1">https://homologacao.webiss.com.br/ws/nfse.asmx</RecepcionarLoteRpsSincrono>
         </homologacao>
         <producao>
-            <CancelarNfse method="CancelarNfse" operation="CancelarNfse" version="3.0.1">https://www1.webiss.com.br/Uberaba_wsNFSe/NfseServices.svc</CancelarNfse>
-            <ConsultarLoteRps method="ConsultarLoteRps" operation="ConsultarLoteRps" version="3.0.1">https://www1.webiss.com.br/Uberaba_wsNFSe/NfseServices.svc</ConsultarLoteRps>
-            <ConsultarNfse method="ConsultarNfse" operation="ConsultarNfse" version="3.0.1">https://www1.webiss.com.br/Uberaba_wsNFSe/NfseServices.svc</ConsultarNfse>
-            <ConsultarNfsePorRps method="ConsultarNfsePorRps" operation="ConsultarNfsePorRps" version="3.0.1">https://www1.webiss.com.br/Uberaba_wsNFSe/NfseServices.svc</ConsultarNfsePorRps>
-            <ConsultarSituacaoLoteRps method="ConsultarSituacaoLoteRps" operation="ConsultarSituacaoLoteRps" version="3.0.1">https://www1.webiss.com.br/Uberaba_wsNFSe/NfseServices.svc</ConsultarSituacaoLoteRps>
-            <RecepcionarLoteRpsSincrono method="RecepcionarLoteRpsSincrono" operation="RecepcionarLoteRpsSincrono" version="3.0.1">https://www1.webiss.com.br/Uberaba_wsNFSe/NfseServices.svc</RecepcionarLoteRpsSincrono>
+            <CancelarNfse method="CancelarNfse" operation="CancelarNfse" version="3.0.1">https://uberabamg.webiss.com.br/ws/nfse.asmx</CancelarNfse>
+            <ConsultarLoteRps method="ConsultarLoteRps" operation="ConsultarLoteRps" version="3.0.1">https://uberabamg.webiss.com.br/ws/nfse.asmx</ConsultarLoteRps>
+            <ConsultarNfse method="ConsultarNfse" operation="ConsultarNfse" version="3.0.1">https://uberabamg.webiss.com.br/ws/nfse.asmx</ConsultarNfse>
+            <ConsultarNfsePorRps method="ConsultarNfsePorRps" operation="ConsultarNfsePorRps" version="3.0.1">https://uberabamg.webiss.com.br/ws/nfse.asmx</ConsultarNfsePorRps>
+            <ConsultarSituacaoLoteRps method="ConsultarSituacaoLoteRps" operation="ConsultarSituacaoLoteRps" version="3.0.1">https://uberabamg.webiss.com.br/ws/nfse.asmx</ConsultarSituacaoLoteRps>
+            <RecepcionarLoteRpsSincrono method="RecepcionarLoteRpsSincrono" operation="RecepcionarLoteRpsSincrono" version="3.0.1">https://uberabamg.webiss.com.br/ws/nfse.asmx</RecepcionarLoteRpsSincrono>
         </producao>
     </municipio>
 </WS>
