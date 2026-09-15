@@ -52,9 +52,6 @@ class SoapCurl extends SoapBase implements SoapInterface
         $request = '',
         $soapheader = null
     ) {
-     
-        $this->validadeEf();
-        
         $response = '';
         
         $request = trim(preg_replace("/<\?xml.*?\?>/", "", $request));
